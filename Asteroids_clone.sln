@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asteroids_clone", "Asteroids_clone\Asteroids_clone.csproj", "{4DF64A6C-0577-48E0-8F30-5C3F11B78BA2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4DF64A6C-0577-48E0-8F30-5C3F11B78BA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DF64A6C-0577-48E0-8F30-5C3F11B78BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DF64A6C-0577-48E0-8F30-5C3F11B78BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DF64A6C-0577-48E0-8F30-5C3F11B78BA2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
