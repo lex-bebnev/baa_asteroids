@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asteroids_clone", "Asteroids_clone\Asteroids_clone.csproj", "{4DF64A6C-0577-48E0-8F30-5C3F11B78BA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asteroids.Entities", "Asteroids.Entities\Asteroids.Entities.csproj", "{A015F11F-682A-46CE-BB7A-EE30A632E52F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{4DF64A6C-0577-48E0-8F30-5C3F11B78BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DF64A6C-0577-48E0-8F30-5C3F11B78BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DF64A6C-0577-48E0-8F30-5C3F11B78BA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A015F11F-682A-46CE-BB7A-EE30A632E52F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A015F11F-682A-46CE-BB7A-EE30A632E52F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A015F11F-682A-46CE-BB7A-EE30A632E52F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A015F11F-682A-46CE-BB7A-EE30A632E52F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
