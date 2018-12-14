@@ -1,29 +1,37 @@
-﻿using OpenTK;
-using OpenTK.Graphics;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace Asteroids_clone
 {
-    public sealed class MainWindow: GameWindow
+    public sealed class MainWindow: Form
     {
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, 
+            int Msg, int wParam, int lParam);
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+        
+        
         public MainWindow()
-            : base(1280,
-                720,
-                GraphicsMode.Default,
-                "Asteroids",
-                GameWindowFlags.Default,
-                DisplayDevice.Default,
-                4,
-                0,
-                GraphicsContextFlags.ForwardCompatible)
         {
-            //Title += ": OpenGL Version: " + GL.GetString(StringName.Version);
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.BackColor = Color.Black;
+            this.MouseDown += MainWindow_MouseDown;
         }
         
-        protected override void OnRenderFrame(FrameEventArgs e)
-        {
-            Title = $" (Vsync: {VSync}) FPS: {1f / e.Time:0}";
-
-            SwapBuffers();
+        private void MainWindow_MouseDown(object sender, 
+            System.Windows.Forms.MouseEventArgs e)
+        {     
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
         }
     }
 }

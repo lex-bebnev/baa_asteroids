@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace Asteroids_clone
 {
@@ -8,7 +9,9 @@ namespace Asteroids_clone
         [STAThread]
         static void Main()
         {
-            new MainWindow().Run(60);
+            Application.EnableVisualStyles();
+            Application.DoEvents();
+            Application.Run(new MainWindow());
         }                
     }
 }
