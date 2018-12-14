@@ -10,8 +10,8 @@ namespace Asteroids_clone
         static void Main()
         {
             Application.EnableVisualStyles();
-            Application.DoEvents();
-            Application.Run(new MainWindow());
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run((Form) new MainWindow());
         }                
     }
 }

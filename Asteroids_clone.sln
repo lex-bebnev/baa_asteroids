@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asteroids_clone", "Asteroid
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asteroids.Entities", "Asteroids.Entities\Asteroids.Entities.csproj", "{A015F11F-682A-46CE-BB7A-EE30A632E52F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asteroids.Renderer", "Asteroids.Renderer\Asteroids.Renderer.csproj", "{2411D7BB-96A4-4644-8604-CE4D6039092A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{A015F11F-682A-46CE-BB7A-EE30A632E52F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A015F11F-682A-46CE-BB7A-EE30A632E52F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A015F11F-682A-46CE-BB7A-EE30A632E52F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2411D7BB-96A4-4644-8604-CE4D6039092A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2411D7BB-96A4-4644-8604-CE4D6039092A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2411D7BB-96A4-4644-8604-CE4D6039092A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2411D7BB-96A4-4644-8604-CE4D6039092A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

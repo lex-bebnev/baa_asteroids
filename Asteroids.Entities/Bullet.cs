@@ -1,6 +1,6 @@
 ﻿namespace Asteroids.Entities
 {
-    public class Bullet: GameObject
+    public class Bullet//: GameObject
     {
         
     }
