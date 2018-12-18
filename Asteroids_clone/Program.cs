@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Windows.Forms;
+using OpenTK;
 
 namespace Asteroids_clone
 {
-
     public class Program
     {
-        [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run((Form) new MainWindow());
-        }                
+            using (Game game = new Game(800, 600, "BAA-Asteroids"))
+            {
+                game.Run(60.0);
+            }
+        }
     }
 }

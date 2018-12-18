@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="OpenTK, Version=3.0.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4">
+      <HintPath>..\packages\OpenTK.3.0.1\lib\net20\OpenTK.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,7 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainWindow.cs" />
+    <Compile Include="Input.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -53,6 +58,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Shader.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -60,12 +66,26 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="OpenTK.dll.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Asteroids.Entities\Asteroids.Entities.csproj">
       <Project>{a015f11f-682a-46ce-bb7a-ee30a632e52f}</Project>
       <Name>Asteroids.Entities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Asteroids.Renderer\Asteroids.Renderer.csproj">
+      <Project>{2411d7bb-96a4-4644-8604-ce4d6039092a}</Project>
+      <Name>Asteroids.Renderer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="shader.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="shader.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
