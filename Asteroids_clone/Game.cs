@@ -1,7 +1,7 @@
 ﻿using System;
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 
 
@@ -10,62 +10,19 @@ namespace Asteroids_clone
     public sealed class Game: GameWindow
     {
 
-        private float[] vertices =
+        float[] vertices =
         {
-            /*0.5f,  0.5f, 0.0f, // top right
-            0.5f, -0.5f, 0.0f, // bottom right
-            -0.5f, -0.5f, 0.0f, // bottom left
-            -0.5f,  0.5f, 0.0f, // top left*/
-            0.0f, 0.0f, -0.05f, // center
-            -0.05f, 0.2f, 0.0f, // top left
-            -0.2f, -0.2f, -0.05f, // bottom left
-            0.2f, -0.05f, 0.0f // bottom right
+            //Position          
+            0.0f, 0.25f, -10.0f, // center
+            -0.25f, 0.4f, -10.0f, // top left
+            0.25f, 0.4f, -10.0f, // top right 
+            0.0f, -0.4f, -10.0f // bottom
         };
-        
-        Vector3[] vertdata = new Vector3[] { 
-            new Vector3(-0.8f, -0.8f,  -0.8f),
-            new Vector3(0.8f, -0.8f,  -0.8f),
-            new Vector3(0.8f, 0.8f,  -0.8f),
-            new Vector3(-0.8f, 0.8f,  -0.8f),
-            new Vector3(-0.8f, -0.8f,  0.8f),
-            new Vector3(0.8f, -0.8f,  0.8f),
-            new Vector3(0.8f, 0.8f,  0.8f),
-            new Vector3(-0.8f, 0.8f,  0.8f),
-        };
-        
-       
-        private Vector3[] modelPositions = new[]
-        {
-            new Vector3(5.0f, 5.0f, 0.0f),
-            /*new Vector3(-5.0f, -5.0f, 0.0f),*/
-        };
-        
-        Vector3 cameraPostiton = new Vector3(0.0f, 0.0f, 3.0f);
-        
+
         uint[] indices =
         {
-            //Note that indices start at 0!
-            0, 2, 1, //The first triangle will be the bottom-right half of the triangle
-            0, 2, 3  //Then the second will be the top-right half of the triangle
-            
-            /*//front
-            0, 7, 3,
-            0, 4, 7,
-            //back
-            1, 2, 6,
-            6, 5, 1,
-            //left
-            0, 2, 1,
-            0, 3, 2,
-            //right
-            4, 5, 6,
-            6, 7, 4,
-            //top
-            2, 3, 6,
-            6, 3, 7,
-            //bottom
-            0, 1, 5,
-            0, 5, 4*/
+            0, 1, 3,
+            0, 3, 2
         };
         
         
@@ -73,9 +30,9 @@ namespace Asteroids_clone
         private int VertexBufferObject;
         private int VertexArrayObject;
         Shader shader;
-        
         private int ElementBufferObject;
-        private int Degrees;
+        private float Degrees;
+        
         private Vector3 position = new Vector3(0.0f, 0.0f, 0.0f);
         
         Matrix4 view;
@@ -91,11 +48,15 @@ namespace Asteroids_clone
 
         protected override void OnLoad(EventArgs e)
         {
+            VSync = VSyncMode.Off;
             Color4 backColor = Color4.Black;
             GL.ClearColor(backColor);//0.2f, 0.3f, 0.3f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
+            //GL.Enable(EnableCap.CullFace);
+            CreateProjection();
             
             GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line); //See polygons
+
             
             //We need to send our vertices over to the graphics card so OpenGL can use them.
             //To do this, we need to create what's called a Vertex Buffer Object (VBO).
@@ -106,8 +67,7 @@ namespace Asteroids_clone
             ElementBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
             GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
-            
-            
+                   
             shader = new Shader("shader.vert", "shader.frag");
             shader.Use();
             
@@ -120,16 +80,8 @@ namespace Asteroids_clone
             int vertexLocation = shader.GetAttribLocation("aPosition");
             GL.EnableVertexAttribArray(vertexLocation);
             GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-
-            view = Matrix4.LookAt(new Vector3(0.0f, 0.0f, -5.0f), Vector3.Zero, Vector3.Zero);
-
-            projection = Matrix4.CreateOrthographic(Width, Height, 0.1f, 100f);//Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(50.0f), (float)Width / (float)Height, 0.1f, 100.0f);
             
-            GL.Viewport(0,0,Width,Height);
-            
-            Degrees = 0;
-            
-            base.OnLoad(e);
+            Degrees = 0.0f;
         }
 
         private void OnUpdateFrame(object sender, FrameEventArgs e)
@@ -138,28 +90,50 @@ namespace Asteroids_clone
         }
 
         private void OnRenderFrame(object sender, FrameEventArgs e)
-        {         
+        {       
             if (Input.KeyDown(Key.D))
             {
                 Title = $"Pressed D!";
-                Degrees += 1;
+                Degrees += 1.0f * (float) e.Time;
             }
             else
             if (Input.KeyDown(Key.A))
             {
                 Title = $"Pressed A!";
-                Degrees -= 1;
-            }
-            else if (Input.KeyDown(Key.W))
+                Degrees -= 1.0f * (float) e.Time;
+            }else 
+            if (Input.KeyDown(Key.W))
             {
                 Title = $"Pressed W!";
-                position.Y += 1;
+                position.X += 1.0f * (float)  e.Time;
             }
             else if (Input.KeyDown(Key.S))
             {
                 Title = $"Pressed s!";
-                position.Y -= 1;
+                position.X -= 1.0f * (float)  e.Time;
             }
+            
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+            
+            GL.BindVertexArray(VertexArrayObject);
+            
+            shader.Use();
+            var t2 = Matrix4.CreateTranslation(position.X, position.Y, position.Z);
+            var r3 = Matrix4.CreateRotationZ(Degrees);
+            var s = Matrix4.CreateScale(1.0f);
+            Matrix4 _modelView = r3*s*t2;
+            //GL.UniformMatrix4(21, false, ref _modelView);
+            
+            shader.SetMatrix4("projection", projection);
+            shader.SetMatrix4("model", _modelView);
+
+            
+            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+            
+            GL.BindVertexArray(0);
+            /*
+            
             
             else Title = $"(Vsync: {VSync}) FPS: {1f / e.Time:0}";
             
@@ -176,7 +150,7 @@ namespace Asteroids_clone
             shader.SetMatrix4("model", model);
 
             GL.BindVertexArray(VertexArrayObject);
-            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);*/
             
             SwapBuffers();
         }
@@ -184,7 +158,18 @@ namespace Asteroids_clone
         protected override void OnResize(EventArgs e)
         {
             GL.Viewport(0, 0, Width, Height);
-            base.OnResize(e);
+            CreateProjection();
+        }
+
+        private void CreateProjection()
+        {
+            float fov = 60.0f;
+            var aspect = Width / Height;
+            projection = Matrix4.CreatePerspectiveFieldOfView(
+                MathHelper.DegreesToRadians(fov), 
+                aspect,
+                0.1f, 
+                4000.0f);
         }
     }
 }

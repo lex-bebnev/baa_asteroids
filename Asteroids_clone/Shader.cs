@@ -122,7 +122,7 @@ namespace Asteroids_clone
                 throw new ArgumentException("uniform name not found");
             }
 
-            GL.UniformMatrix4(location, true, ref matrix);
+            GL.UniformMatrix4(location, false, ref matrix);
         }
 
         //This section is dedicated to cleaning up the shader after it's finished.
