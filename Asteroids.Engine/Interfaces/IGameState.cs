@@ -12,6 +12,11 @@ namespace Asteroids.Engine.Interfaces
         string Name { get; set; }
         
         /// <summary>
+        ///     Is ready game state
+        /// </summary>
+        bool IsReady { get; set; }
+        
+        /// <summary>
         ///     Load game state
         /// </summary>
         void Load();
@@ -21,10 +26,5 @@ namespace Asteroids.Engine.Interfaces
         /// </summary>
         /// <param name="elapsedTime">Time since last update</param>
         void Update(float elapsedTime);
-        
-        /// <summary>
-        ///     Render game state
-        /// </summary>
-        void Render();
     }
 }

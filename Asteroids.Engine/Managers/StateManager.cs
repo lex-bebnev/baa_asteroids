@@ -8,7 +8,7 @@ namespace Asteroids.Engine.Managers
     /// </summary>
     public static class StateManager
     {
-        private static Dictionary<string, IGameState> _gameStateDb = new Dictionary<string, IGameState>();
+        private static Dictionary<string, IGameState> _gameStatesDictionary = new Dictionary<string, IGameState>();
         private static IGameState _currentGameState = null;
 
         /// <summary>
@@ -21,21 +21,22 @@ namespace Asteroids.Engine.Managers
         }
 
         /// <summary>
-        ///     Render current state
-        /// </summary>
-        public static void Render()
-        {
-            _currentGameState?.Render();
-        }
-
-        /// <summary>
         ///     Add new state
         /// </summary>
         /// <param name="newState"></param>
         public static void AddState(IGameState newState)
         {
-            _gameStateDb.Add(newState.Name, newState);
+            _gameStatesDictionary.Add(newState.Name, newState);
             _currentGameState = newState;
+        }
+
+        /// <summary>
+        ///     Get current game state
+        /// </summary>
+        /// <returns></returns>
+        public static IGameState GetCurrentGameState()
+        {
+            return _currentGameState;
         }
     }
 }

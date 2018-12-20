@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace Asteroids.Engine.Utils
 {
@@ -8,7 +7,6 @@ namespace Asteroids.Engine.Utils
         private float _timeScale;
         private bool _isPaused;
         private Stopwatch _stopwatch;
-        
         
         public GameClock()
         {

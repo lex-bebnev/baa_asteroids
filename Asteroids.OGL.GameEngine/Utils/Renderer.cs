@@ -1,6 +1,6 @@
 ﻿using OpenTK;
 
-namespace Asteroids.Engine.Utils
+namespace Asteroids.OGL.GameEngine.Utils
 {
     public static class Renderer
     {

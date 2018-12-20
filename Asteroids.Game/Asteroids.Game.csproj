@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A015F11F-682A-46CE-BB7A-EE30A632E52F}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{F3389821-3833-4902-A123-89F11ADEC90C}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Asteroids.Entities</RootNamespace>
-    <AssemblyName>Asteroids.Entities</AssemblyName>
+    <RootNamespace>Asteroids.Game</RootNamespace>
+    <AssemblyName>Asteroids.Game</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,24 +32,29 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
+    <Reference Include="OpenTK, Version=3.0.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4">
+      <HintPath>..\packages\OpenTK.3.0.1\lib\net20\OpenTK.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Asteroid.cs" />
-    <Compile Include="Bullet.cs" />
-    <Compile Include="GameObject.cs" />
-    <Compile Include="GameWorld.cs" />
-    <Compile Include="Laser.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Components\PlayerInputComponent.cs" />
+    <Compile Include="GameWindow.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Ufo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Asteroids.Engine\Asteroids.Engine.csproj">
+      <Project>{a7687332-0c24-465c-947d-3d50e0c9314c}</Project>
+      <Name>Asteroids.Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Asteroids.OGL.GameEngine\Asteroids.OGL.GameEngine.csproj">
+      <Project>{fe8ffadb-0418-4dec-ae39-fa47aacc0fa7}</Project>
+      <Name>Asteroids.OGL.GameEngine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

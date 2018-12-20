@@ -8,3 +8,5 @@ Asteroids.Entities/bin/
 Asteroids.Entities/obj/
 Asteroids.Renderer/bin/
 Asteroids.Renderer/obj/
+*/obj/
+*/bin

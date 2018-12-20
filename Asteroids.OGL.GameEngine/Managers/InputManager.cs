@@ -2,18 +2,18 @@
 using OpenTK;
 using OpenTK.Input;
 
-namespace Asteroids_clone
+namespace Asteroids.OGL.GameEngine.Managers
 {
     /// <summary>
-    ///     Input manager for <see cref="M:OpenTK.GameWindow" />
+    ///     Input Manager for <see cref="M:OpenTK.GameWindow" />
     /// </summary>
-    public static class Input
+    public static class InputManager
     {
         private static List<Key> KeysDown;
         private static List<Key> KeysDownLast;
         
         /// <summary>
-        ///     Initialize input manager
+        ///     Initialize Input Manager
         /// </summary>
         /// <param name="game">Game window - source of input events</param>
         public static void Initialize(GameWindow game)
