@@ -32,6 +32,7 @@ namespace Asteroids.Game.States
         {
             Console.WriteLine("Load game state...");
             AddPlayer();
+            AddUfo();
             IsReady = true;
             Console.WriteLine("Load gamestate complete");
         }
@@ -52,7 +53,21 @@ namespace Asteroids.Game.States
                 0, 1, 3,
                 0, 3, 2
             };
+       
+            GameObject player = new GameObject(
+                "Player",
+                new PlayerInputComponent(new KeyboardInputHandler()),
+                new ColliderPhysicsComponent(),
+                new PolygonRenderComponent(shipVertices, shipIndices));
+            player.TransformComponent.Scale.X = 0.08f;
+            player.TransformComponent.Scale.Y = 0.08f;
+            player.TransformComponent.Scale.Z = 1.0f;
+            player.TransformComponent.Position.X = 0.5f;
 
+            _gameObjects.Add(player);
+        }
+        private void AddUfo()
+        {
             float[] UfoVertecies =
             {
                 -0.5f, 0.0f, 0.0f,
@@ -73,35 +88,42 @@ namespace Asteroids.Game.States
                 4, 6, 7,
                 4, 5, 7
             };
+
+            var mesh = new PolygonRenderComponent(UfoVertecies, UfoIndeces);
             
-            
-            GameObject player = new GameObject(
-                "Player",
-                new PlayerInputComponent(new KeyboardInputHandler()),
-                new ColliderPhysicsComponent(),
-                new PolygonRenderComponent(shipVertices, shipIndices));
-            player.TransformComponent.Scale.X = 0.08f;
-            player.TransformComponent.Scale.Y = 0.08f;
-            player.TransformComponent.Scale.Z = 1.0f;
-            player.TransformComponent.Position.X = 0.5f;
             
             GameObject ufo = new GameObject(
                 "Enemy",
-                new PlayerInputComponent(new KeyboardInputHandler()),
+                new AIInputComponent(),
                 new ColliderPhysicsComponent(),
-                new PolygonRenderComponent(UfoVertecies, UfoIndeces));
-            ufo.TransformComponent.Scale.X = 0.1f;
-            ufo.TransformComponent.Scale.Y = 0.1f;
+                mesh
+               );
+            ufo.TransformComponent.Scale.X = 0.2f;
+            ufo.TransformComponent.Scale.Y = 0.2f;
             ufo.TransformComponent.Scale.Z = 1.0f;
             ufo.TransformComponent.Rotation.Z = 0.5f;
             ufo.TransformComponent.Position.X = 0.0f;
             ufo.TransformComponent.Position.Z = -2.0f;
             
-
-            _gameObjects.Add(player);
             _gameObjects.Add(ufo);
+            
+            GameObject ufo2 = new GameObject(
+                "Enemy",
+                new AIInputComponent(),
+                new ColliderPhysicsComponent(),
+                mesh
+            );
+            ufo2.TransformComponent.Scale.X = 0.2f;
+            ufo2.TransformComponent.Scale.Y = 0.2f;
+            ufo2.TransformComponent.Scale.Z = 1.0f;
+            ufo2.TransformComponent.Rotation.Z = 0.5f;
+            ufo2.TransformComponent.Position.X = -0.5f;
+            ufo2.TransformComponent.Position.Z = -2.0f;
+
+            _gameObjects.Add(ufo2);
         }
 
+        
         public void Update(float elapsedTime)
         {
             if(!IsReady) return;

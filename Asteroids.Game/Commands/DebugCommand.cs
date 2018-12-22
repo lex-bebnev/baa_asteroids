@@ -1,4 +1,5 @@
 ﻿using System;
+using Asteroids.Engine.Common;
 using Asteroids.Engine.Interfaces;
 
 namespace Asteroids.Game.Commands
@@ -13,7 +14,7 @@ namespace Asteroids.Game.Commands
             _commandName = name;
         }
 
-        public void Execute()
+        public void Execute(GameObject actor)
         {
             Console.WriteLine($"Debug command {_commandName} executed.");
         }

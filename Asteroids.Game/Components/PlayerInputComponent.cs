@@ -17,7 +17,7 @@ namespace Asteroids.Game.Components
         public void Update(GameObject obj)
         {
             ICommand command = _inputHandler.HandleInput();
-            command?.Execute();
+            command?.Execute(obj);
         }
     }
 }

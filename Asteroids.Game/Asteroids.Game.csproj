@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\DebugCommand.cs" />
+    <Compile Include="Components\AIInputComponent.cs" />
     <Compile Include="Components\ColliderPhysicsComponent.cs" />
     <Compile Include="Components\PlayerInputComponent.cs" />
     <Compile Include="Components\PolygonRenderComponent.cs" />

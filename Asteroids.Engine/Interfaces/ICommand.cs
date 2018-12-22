@@ -1,4 +1,6 @@
-﻿namespace Asteroids.Engine.Interfaces
+﻿using Asteroids.Engine.Common;
+
+namespace Asteroids.Engine.Interfaces
 {
     /// <summary>
     ///     Base command interface
@@ -8,7 +10,7 @@
         /// <summary>
         ///     Execute the command
         /// </summary>
-        void Execute();
+        void Execute(GameObject actor);
         
         /// <summary>
         ///     Undo command
