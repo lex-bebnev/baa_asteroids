@@ -29,7 +29,7 @@ namespace Asteroids.OGL.GameEngine.Utils
 
             //Load vertex shader and compile
             //LoadSource is a simple function that just loads all text from the file whose path is given.
-            string VertexShaderSource = LoadSource(vertPath);
+            string VertexShaderSource = LoadSource($"Shaders/{vertPath}");
 
             //GL.CreateShader will create an empty shader (obviously). The ShaderType enum denotes which type of shader will be created.
             VertexShader = GL.CreateShader(ShaderType.VertexShader);
@@ -47,7 +47,7 @@ namespace Asteroids.OGL.GameEngine.Utils
 
 
             //Do the same thing for the fragment shader
-            string FragmentShaderSource = LoadSource(fragPath);
+            string FragmentShaderSource = LoadSource($"Shaders/{fragPath}");
             FragmentShader = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(FragmentShader, FragmentShaderSource);
             GL.CompileShader(FragmentShader);
@@ -73,7 +73,6 @@ namespace Asteroids.OGL.GameEngine.Utils
             string infoLogLink = GL.GetShaderInfoLog(VertexShader);
             if (infoLogLink != System.String.Empty)
                 System.Console.WriteLine(infoLogLink);
-
 
             //Now that it's done, clean up.
             //When the shader program is linked, it no longer needs the individual shaders attacked to it; the compiled code is copied into the shader program.
@@ -149,7 +148,6 @@ namespace Asteroids.OGL.GameEngine.Utils
         {
             GL.DeleteProgram(Handle);
         }
-
 
         public void Dispose()
         {

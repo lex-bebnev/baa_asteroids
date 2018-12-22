@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Input;
 
@@ -18,11 +19,14 @@ namespace Asteroids.OGL.GameEngine.Managers
         /// <param name="game">Game window - source of input events</param>
         public static void Initialize(GameWindow game)
         {
+            Console.WriteLine("Inputmanager initialize...");
             KeysDown = new List<Key>();
             KeysDownLast = new List<Key>();
             
             game.KeyDown += GameOnKeyDown;
             game.KeyUp += GameOnKeyUp;
+            
+            Console.WriteLine("Inputmanager initialize complete");
         }
 
         private static void GameOnKeyUp(object sender, KeyboardKeyEventArgs e)

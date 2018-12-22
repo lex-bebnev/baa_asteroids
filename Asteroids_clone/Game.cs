@@ -107,21 +107,21 @@ namespace Asteroids_clone
             
             //We need to send our vertices over to the graphics card so OpenGL can use them.
             //To do this, we need to create what's called a Vertex Buffer Object (VBO).
-            //PrepareRenderModel(UfoModel);
+            PrepareRenderModel();
 
             Degrees = 0.0f;
         }
 
-        /*private void PrepareRenderModel(RenderableObject model)
+        private void PrepareRenderModel()
         {
             VertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, model.GetVerticiesSize(), model.Verticies,
+            GL.BufferData(BufferTarget.ArrayBuffer, shipVertices.Length * sizeof(float), shipVertices,
                 BufferUsageHint.StaticDraw);
 
             ElementBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, model.GetIndecesSize(), model.Indices,
+            GL.BufferData(BufferTarget.ElementArrayBuffer, shipIndices.Length * sizeof(uint), shipIndices,
                 BufferUsageHint.StaticDraw);
 
             shader = new Shader("shader.vert", "shader.frag");
@@ -136,7 +136,7 @@ namespace Asteroids_clone
             int vertexLocation = shader.GetAttribLocation("aPosition");
             GL.EnableVertexAttribArray(vertexLocation);
             GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-        }*/
+        }
 
         private void OnUpdateFrame(object sender, FrameEventArgs e)
         {
@@ -169,12 +169,12 @@ namespace Asteroids_clone
             
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            //RenderModel(UfoModel);
+            RenderModel();
             
             SwapBuffers();
         }
 
-        /*private void RenderModel(RenderableObject model)
+        private void RenderModel()
         {
             GL.BindVertexArray(VertexArrayObject);
 
@@ -187,10 +187,10 @@ namespace Asteroids_clone
             shader.SetMatrix4("projection", projection);
             shader.SetMatrix4("model", _modelView);
 
-            GL.DrawElements(PrimitiveType.Triangles, model.Indices.Length, DrawElementsType.UnsignedInt, 0);
+            GL.DrawElements(PrimitiveType.Triangles, shipIndices.Length, DrawElementsType.UnsignedInt, 0);
 
             GL.BindVertexArray(0);
-        }*/
+        }
 
         protected override void OnResize(EventArgs e)
         {

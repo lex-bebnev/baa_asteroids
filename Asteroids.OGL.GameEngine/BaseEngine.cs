@@ -1,6 +1,7 @@
 ﻿using System;
 using Asteroids.Engine.Utils;
 using Asteroids.OGL.GameEngine.Managers;
+using Asteroids.OGL.GameEngine.Utils;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
@@ -19,11 +20,21 @@ namespace Asteroids.OGL.GameEngine
             Console.WriteLine("Initialization...");
             
             InputManager.Initialize(this);
+            //Renderer.SetupRenderer(this);
             InitializeStatesInternal();
 
             _timer = new GameClock();
             
+            Console.WriteLine(GL.GetString(StringName.Version));
+            
             Console.WriteLine("Initialization complete.");
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            Renderer.SetupRenderer(this);
+            
+            base.OnLoad(e);
         }
 
         #region Internal
@@ -68,12 +79,12 @@ namespace Asteroids.OGL.GameEngine
         //TODO Try to subscribe to the event instead override
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            base.OnRenderFrame(e);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             
             Render();
             
             SwapBuffers();
+            base.OnRenderFrame(e);
         }
         #endregion
     }

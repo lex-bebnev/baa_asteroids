@@ -1,31 +1,23 @@
-﻿using System;
-using Asteroids.Engine.Common;
+﻿using Asteroids.Engine.Common;
 using Asteroids.Engine.Components.Interfaces;
-using Asteroids.OGL.GameEngine.Managers;
-using OpenTK.Input;
+using Asteroids.Engine.Interfaces;
+using Asteroids.Game.InputHandlers;
 
 namespace Asteroids.Game.Components
 {
     public class PlayerInputComponent: IInputComponent
     {
+        private IInputHandler _inputHandler;
+
+        public PlayerInputComponent(IInputHandler handler)
+        {
+            _inputHandler = handler;
+        }
+
         public void Update(GameObject obj)
         {
-            if (InputManager.KeyDown(Key.W))
-            {
-                Console.WriteLine("W");
-            }
-            if (InputManager.KeyDown(Key.A))
-            {
-                Console.WriteLine("A");
-            }
-            if (InputManager.KeyDown(Key.D))
-            {
-                Console.WriteLine("D");
-            }
-            if (InputManager.KeyDown(Key.Space))
-            {
-                Console.WriteLine("Space");
-            }
+            ICommand command = _inputHandler.HandleInput();
+            command?.Execute();
         }
     }
 }

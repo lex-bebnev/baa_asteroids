@@ -9,20 +9,24 @@ namespace Asteroids.Engine.Common
     /// </summary>
     public class GameObject
     {
+        /// <summary>
+        ///     Game object tag
+        /// </summary>
+        public string Tag { get; private set; }
+        
         private IInputComponent _inputComponent;
         private IPhysicsComponent _physicsComponent;
         private IGraphicsComponent _graphycsComponent;
         public TransformComponent TransformComponent { get; }
-        public ModelComponent ModelComponent { get; }
 
-        public GameObject(ModelComponent modelComponent, IInputComponent inputComponent, 
+        public GameObject(string tag, IInputComponent inputComponent,
             IPhysicsComponent physicsComponent, IGraphicsComponent graphycsComponent)
         {
+            Tag = tag;
             _inputComponent = inputComponent;
             _physicsComponent = physicsComponent;
             _graphycsComponent = graphycsComponent;
             TransformComponent = new TransformComponent();
-            ModelComponent = modelComponent;
         }
 
         /// <summary>
@@ -34,7 +38,11 @@ namespace Asteroids.Engine.Common
         {
             _inputComponent.Update(this);
             _physicsComponent.Update(this, world);
-            _graphycsComponent.Update(this, ModelComponent);
+        }
+
+        public virtual void Render()
+        {
+            _graphycsComponent.Update(this);
         }
     }
 }

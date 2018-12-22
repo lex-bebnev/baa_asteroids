@@ -41,10 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\DebugCommand.cs" />
+    <Compile Include="Components\ColliderPhysicsComponent.cs" />
     <Compile Include="Components\PlayerInputComponent.cs" />
+    <Compile Include="Components\PolygonRenderComponent.cs" />
     <Compile Include="GameWindow.cs" />
+    <Compile Include="InputHandlers\KeyboardInputHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="States\GameState.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Asteroids.Engine\Asteroids.Engine.csproj">
