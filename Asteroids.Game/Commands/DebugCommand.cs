@@ -1,5 +1,6 @@
 ﻿using System;
 using Asteroids.Engine.Common;
+using Asteroids.Engine.Components.Interfaces;
 using Asteroids.Engine.Interfaces;
 
 namespace Asteroids.Game.Commands
@@ -14,9 +15,10 @@ namespace Asteroids.Game.Commands
             _commandName = name;
         }
 
-        public void Execute(GameObject actor)
+        public IStateComponent Execute(GameObject actor, float elapsedTime)
         {
             Console.WriteLine($"Debug command {_commandName} executed.");
+            return null;
         }
 
         public void Undo()

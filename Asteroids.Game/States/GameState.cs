@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using Asteroids.Engine.Common;
 using Asteroids.Engine.Components;
 using Asteroids.Engine.Interfaces;
+using Asteroids.Game.Commands;
+using Asteroids.Game.Common.Player;
 using Asteroids.Game.Components;
 using Asteroids.Game.InputHandlers;
+using OpenTK;
 
 namespace Asteroids.Game.States
 {
@@ -56,14 +59,14 @@ namespace Asteroids.Game.States
        
             GameObject player = new GameObject(
                 "Player",
-                new PlayerInputComponent(new KeyboardInputHandler()),
                 new ColliderPhysicsComponent(),
-                new PolygonRenderComponent(shipVertices, shipIndices));
-            player.TransformComponent.Scale.X = 0.08f;
-            player.TransformComponent.Scale.Y = 0.08f;
-            player.TransformComponent.Scale.Z = 1.0f;
-            player.TransformComponent.Position.X = 0.5f;
-
+                new PolygonRenderComponent(shipVertices, shipIndices),
+                new TransformComponent(new Vector3(0.5f, 0.0f, 0.0f),
+                    new Vector3(0.0f, 0.0f, 0.0f), 
+                    new Vector3(0.08f, 0.08f, 1.0f), 
+                    new Vector3(0.0f, -1.0f, 0.0f)),
+                new PlayerBaseState());
+            
             _gameObjects.Add(player);
         }
         private void AddUfo()
@@ -91,34 +94,29 @@ namespace Asteroids.Game.States
 
             var mesh = new PolygonRenderComponent(UfoVertecies, UfoIndeces);
             
-            
             GameObject ufo = new GameObject(
                 "Enemy",
-                new AIInputComponent(),
                 new ColliderPhysicsComponent(),
-                mesh
+                mesh,
+                new TransformComponent(new Vector3(0.0f, 0.0f, -2.0f),
+                    new Vector3(0.0f, 0.0f, -0.5f), 
+                    new Vector3(0.2f, 0.2f, 1.0f), 
+                    new Vector3(0.0f, 0.0f, 0.0f)),
+                null
                );
-            ufo.TransformComponent.Scale.X = 0.2f;
-            ufo.TransformComponent.Scale.Y = 0.2f;
-            ufo.TransformComponent.Scale.Z = 1.0f;
-            ufo.TransformComponent.Rotation.Z = 0.5f;
-            ufo.TransformComponent.Position.X = 0.0f;
-            ufo.TransformComponent.Position.Z = -2.0f;
             
             _gameObjects.Add(ufo);
             
             GameObject ufo2 = new GameObject(
                 "Enemy",
-                new AIInputComponent(),
                 new ColliderPhysicsComponent(),
-                mesh
+                mesh,
+                new TransformComponent(new Vector3(-0.5f, 0.0f, -2.0f),
+                    new Vector3(0.0f, 0.0f, 0.5f), 
+                    new Vector3(0.2f, 0.2f, 1.0f), 
+                    new Vector3(0.0f, 0.0f, 0.0f)),
+                null
             );
-            ufo2.TransformComponent.Scale.X = 0.2f;
-            ufo2.TransformComponent.Scale.Y = 0.2f;
-            ufo2.TransformComponent.Scale.Z = 1.0f;
-            ufo2.TransformComponent.Rotation.Z = 0.5f;
-            ufo2.TransformComponent.Position.X = -0.5f;
-            ufo2.TransformComponent.Position.Z = -2.0f;
 
             _gameObjects.Add(ufo2);
         }

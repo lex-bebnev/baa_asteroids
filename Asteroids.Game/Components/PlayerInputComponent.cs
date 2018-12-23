@@ -7,17 +7,11 @@ namespace Asteroids.Game.Components
 {
     public class PlayerInputComponent: IInputComponent
     {
-        private IInputHandler _inputHandler;
-
-        public PlayerInputComponent(IInputHandler handler)
+        public void Update(GameObject obj, float elapsedTime)
         {
-            _inputHandler = handler;
-        }
-
-        public void Update(GameObject obj)
-        {
-            ICommand command = _inputHandler.HandleInput();
-            command?.Execute(obj);
+            ICommand command = obj.StateComponent.InputHandler.HandleInput();
+            IStateComponent newState = command?.Execute(obj, elapsedTime);
+            if (newState != null) obj.StateComponent = newState;
         }
     }
 }

@@ -144,11 +144,11 @@ namespace Asteroids.OGL.GameEngine.Utils
         /// <summary>
         ///     Draw triangle
         /// </summary>
-        public static void DrawTriangle(int vertexArrayObject, int size, ObjectParams parameters)
+        public static void DrawTriangle(int vertexArrayObject, int size, Vector3 postiton, Vector3 rotation, Vector3 scale)
         {
-            var t2 = Matrix4.CreateTranslation(parameters.Position);
-            var r3 = Matrix4.CreateRotationZ(parameters.Rotation.Z);
-            var s = Matrix4.CreateScale(parameters.Scale);
+            var t2 = Matrix4.CreateTranslation(postiton);
+            var r3 = Matrix4.CreateRotationZ(rotation.Z);//(float)(2 * Math.PI * (rotation.Z / 360)));
+            var s = Matrix4.CreateScale(scale);
             Matrix4 _modelView = r3 * s * t2;
             
             shader.Use();

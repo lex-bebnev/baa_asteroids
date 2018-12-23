@@ -6,9 +6,9 @@ namespace Asteroids.Game.Components
 {
     public class AIInputComponent: IInputComponent
     {
-        public void Update(GameObject obj)
+        public void Update(GameObject obj, float elapsedTime)
         {
-            obj.TransformComponent.Rotation.Z += 0.1f * 0.1f;
+            
         }
     }
 }

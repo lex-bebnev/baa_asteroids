@@ -11,23 +11,32 @@ namespace Asteroids.Game.InputHandlers
     /// </summary>
     public class KeyboardInputHandler: IInputHandler
     {
-        public ICommand HandleInput()
+        private ICommand thrustCommand;
+        private ICommand leftRotateCommand;
+        private ICommand rightRotateCommand;
+        private ICommand fireCommand;
+
+        public KeyboardInputHandler()
+        {
+        }
+
+        public virtual ICommand HandleInput()
         {
             if (InputManager.KeyDown(Key.W))
-            {   
-                return new DebugCommand("W");
+            {
+                return null
             }
             if (InputManager.KeyDown(Key.A))
-            {   
-                return new DebugCommand("A");
+            {
+                return rightRotateCommand; 
             }
             if (InputManager.KeyDown(Key.D))
-            {   
-                return new DebugCommand("D");
+            {
+                return leftRotateCommand; 
             }
             if (InputManager.KeyDown(Key.Space))
             {
-                return new DebugCommand("Space");
+                return fireCommand; 
             }
 
             return null;

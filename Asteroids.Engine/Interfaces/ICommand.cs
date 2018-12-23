@@ -1,4 +1,5 @@
 ﻿using Asteroids.Engine.Common;
+using Asteroids.Engine.Components.Interfaces;
 
 namespace Asteroids.Engine.Interfaces
 {
@@ -10,7 +11,7 @@ namespace Asteroids.Engine.Interfaces
         /// <summary>
         ///     Execute the command
         /// </summary>
-        void Execute(GameObject actor);
+        IStateComponent Execute(GameObject actor, float elapsedTime);
         
         /// <summary>
         ///     Undo command

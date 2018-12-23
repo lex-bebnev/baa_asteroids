@@ -22,9 +22,9 @@ namespace Asteroids.Engine.Utils
             set => _isPaused = value;
         }
         
-        public float GetElaspedMilliseconds()
+        public float GetElaspedSeconds()
         {
-            float elapsed = (float)_stopwatch.Elapsed.TotalMilliseconds;
+            float elapsed = (float)_stopwatch.Elapsed.TotalSeconds;
             _stopwatch.Restart();
             return elapsed * _timeScale;
         }

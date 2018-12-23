@@ -2,8 +2,8 @@
 
 namespace Asteroids.Engine.Components.Interfaces
 {
-    public interface IInputComponent
+    public interface ITransformComponent
     {
-        void Update(GameObject obj, float elapsed);
+        void Update(GameObject obj);
     }
 }

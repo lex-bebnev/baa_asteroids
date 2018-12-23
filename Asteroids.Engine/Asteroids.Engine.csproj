@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="OpenTK, Version=3.0.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4">
+      <HintPath>..\packages\OpenTK.3.0.1\lib\net20\OpenTK.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -39,10 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\GameObject.cs" />
-    <Compile Include="Common\Vector3.cs" />
     <Compile Include="Components\Interfaces\IGraphicsComponent.cs" />
     <Compile Include="Components\Interfaces\IInputComponent.cs" />
     <Compile Include="Components\Interfaces\IPhysicsComponent.cs" />
+    <Compile Include="Components\Interfaces\IStateComponent.cs" />
+    <Compile Include="Components\Interfaces\ITransformComponent.cs" />
     <Compile Include="Components\TransformComponent.cs" />
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Interfaces\IGameState.cs" />

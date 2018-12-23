@@ -74,7 +74,8 @@ namespace Asteroids.OGL.GameEngine
         {
             base.OnUpdateFrame(e);
             InputManager.Update();
-            Update(_timer.GetElaspedMilliseconds());
+            
+            Update(_timer.GetElaspedSeconds());
         }
         
         //TODO Try to subscribe to the event instead override

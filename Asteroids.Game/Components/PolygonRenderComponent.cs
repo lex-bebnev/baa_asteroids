@@ -3,6 +3,7 @@ using Asteroids.Engine.Common;
 using Asteroids.Engine.Components;
 using Asteroids.Engine.Components.Interfaces;
 using Asteroids.OGL.GameEngine.Utils;
+using OpenTK;
 
 namespace Asteroids.Game.Components
 {
@@ -13,7 +14,6 @@ namespace Asteroids.Game.Components
         private int VAO;
         private int VBO;
         private int EBO;
-        private ObjectParams buferedParameters;
         
         public PolygonRenderComponent(float[] vertices, uint[] indices)
         {
@@ -43,25 +43,10 @@ namespace Asteroids.Game.Components
                 return;
             }
             
-            UpdateParams(obj.TransformComponent);
-            
-            Renderer.DrawTriangle(VAO, _indices.Length, buferedParameters);
-        }
-
-        private void UpdateParams(TransformComponent transform)
-        {
-            if (buferedParameters == null)
-                buferedParameters = CreateBuferedParams(transform);
-            buferedParameters.SetPosition(transform.Position.X, transform.Position.Y, transform.Position.Z);
-            buferedParameters.SetRotation(transform.Rotation.X, transform.Rotation.Y, transform.Rotation.Z);
-            buferedParameters.SetScale(transform.Scale.X, transform.Scale.Y, transform.Scale.Z);
-        }
-        
-        private ObjectParams CreateBuferedParams(TransformComponent transform)
-        {
-            return new ObjectParams(transform.Position.X, transform.Position.Y, transform.Position.Z,
-                transform.Rotation.X, transform.Rotation.Y, transform.Rotation.Z,
-                transform.Scale.X, transform.Scale.Y, transform.Scale.Z);
+            Renderer.DrawTriangle(VAO, _indices.Length, 
+                obj.TransformComponent.Position, 
+                obj.TransformComponent.Rotation, 
+                obj.TransformComponent.Scale);
         }
     }
 }

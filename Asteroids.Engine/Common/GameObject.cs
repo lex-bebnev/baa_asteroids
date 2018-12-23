@@ -14,19 +14,30 @@ namespace Asteroids.Engine.Common
         /// </summary>
         public string Tag { get; private set; }
         
-        private IInputComponent _inputComponent;
         private IPhysicsComponent _physicsComponent;
         private IGraphicsComponent _graphycsComponent;
+        private IStateComponent _stateComponent;
+        
         public TransformComponent TransformComponent { get; }
+        public IStateComponent StateComponent
+        {
+            get { return _stateComponent;} 
+            set
+            {
+                if (value == null) return;
+                _stateComponent = value;
+            } 
+        }
 
-        public GameObject(string tag, IInputComponent inputComponent,
-            IPhysicsComponent physicsComponent, IGraphicsComponent graphycsComponent)
+        public GameObject(string tag,
+            IPhysicsComponent physicsComponent, IGraphicsComponent graphycsComponent,
+            TransformComponent transformComponent, IStateComponent stateComponent)
         {
             Tag = tag;
-            _inputComponent = inputComponent;
             _physicsComponent = physicsComponent;
             _graphycsComponent = graphycsComponent;
-            TransformComponent = new TransformComponent();
+            TransformComponent = transformComponent;
+            _stateComponent = stateComponent;
         }
 
         /// <summary>
@@ -36,13 +47,16 @@ namespace Asteroids.Engine.Common
         /// <param name="world">Parent component of game object</param>
         public virtual void Update(float elapsed, IGameState world)
         {
-            _inputComponent.Update(this);
-            _physicsComponent.Update(this, world);
+            _stateComponent?.Update(this, elapsed);
+            _physicsComponent?.Update(this, world);
         }
 
+        /// <summary>
+        ///     Render game object on screen
+        /// </summary>
         public virtual void Render()
         {
-            _graphycsComponent.Update(this);
+            _graphycsComponent?.Update(this);
         }
     }
 }

@@ -1,19 +1,27 @@
-﻿using System;
-using Asteroids.Engine.Common;
+﻿using Asteroids.Engine.Common;
+using Asteroids.Engine.Components.Interfaces;
+using OpenTK;
 
 namespace Asteroids.Engine.Components
 {
-    public class TransformComponent
+    public class TransformComponent: ITransformComponent
     {
         public Vector3 Position { get; set; }
         public Vector3 Rotation { get; set; }
         public Vector3 Scale { get; set; }
-
-        public TransformComponent(Vector3 position = null, Vector3 rotation = null, Vector3 scale = null)
+        public Vector3 Direction { get; set; }
+        
+        public TransformComponent(Vector3 position, Vector3 rotation, Vector3 scale, Vector3 direction)
         {
-            Position = position ?? new Vector3();
-            Rotation = rotation ?? new Vector3();
-            Scale = scale ?? new Vector3();
+            Position = position;
+            Rotation = rotation;
+            Scale = scale;
+            Direction = direction;
+        }
+
+        public void Update(GameObject obj)
+        {
+            //Base do nothing
         }
     }
 }
