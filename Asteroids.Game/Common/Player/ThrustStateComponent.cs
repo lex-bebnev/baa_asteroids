@@ -7,12 +7,12 @@ using OpenTK.Input;
 
 namespace Asteroids.Game.Common.Player
 {
-    public class PlayerBaseState: IStateComponent
+    public class ThrustStateComponent: IStateComponent
     {
         float _velocity;
         private Vector3 _lastDelta;
         
-        public PlayerBaseState(float velocity)
+        public ThrustStateComponent(float velocity)
         {
             _velocity = velocity;
         }
@@ -21,8 +21,7 @@ namespace Asteroids.Game.Common.Player
         {
             if (InputManager.KeyRelease(Key.W))
             {
-                Console.WriteLine($"Last delta: {_lastDelta.X} - {_lastDelta.Y}");
-                return new DragPlayerState(0.05f, _lastDelta.X, _lastDelta.Y);
+                return new DragStateComponent(0.05f, _lastDelta.X, _lastDelta.Y);
             }
             return null;
         }

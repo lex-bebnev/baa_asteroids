@@ -62,7 +62,7 @@ namespace Asteroids.Game.States
                     new Vector3(0.0f, 0.0f, 0.0f), 
                     new Vector3(0.08f, 0.08f, 1.0f), 
                     new Vector3(0.0f, -1.0f, 0.0f)),
-                new DragPlayerState(1.0f, 0.0f, 0.0f));
+                new DragStateComponent(1.0f, 0.0f, 0.0f));
             
             _gameObjects.Add(player);
         }

@@ -7,7 +7,7 @@ using OpenTK.Input;
 
 namespace Asteroids.Game.Common.Player
 {
-    public class DragPlayerState: IStateComponent
+    public class DragStateComponent: IStateComponent
     {
         private float dragFactor;
         private Vector3 previousDirection;
@@ -15,7 +15,7 @@ namespace Asteroids.Game.Common.Player
         public float vX { get; set; }
         public float vY { get; set; }
         
-        public DragPlayerState(float dragFactor, float baseX, float baseY)
+        public DragStateComponent(float dragFactor, float baseX, float baseY)
         {
             this.dragFactor = dragFactor;
             vX = baseX;
@@ -26,21 +26,16 @@ namespace Asteroids.Game.Common.Player
         {
             if (InputManager.KeyDown(Key.W))
             {
-                return new PlayerBaseState(0.5f);
+                return new ThrustStateComponent(0.5f);
             }
             if (InputManager.KeyDown(Key.A))
             {
-                return null;//rightRotateCommand; 
+                return new RotatingStateComponent(RotateDirection.Right, 1.0f);
             }
             if (InputManager.KeyDown(Key.D))
             {
-                return null;//leftRotateCommand; 
+                return new RotatingStateComponent(RotateDirection.Left, 1.0f);
             }
-            if (InputManager.KeyDown(Key.Space))
-            {
-                return null;//fireCommand; 
-            }
-
             return null;
         }
 

@@ -41,12 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\DebugCommand.cs" />
-    <Compile Include="Commands\RotationCommand.cs" />
-    <Compile Include="Commands\StopCommand.cs" />
-    <Compile Include="Commands\ThrustCommand.cs" />
-    <Compile Include="Common\Player\DragPlayerState.cs" />
-    <Compile Include="Common\Player\PlayerBaseState.cs" />
+    <Compile Include="Common\Player\DragStateComponent.cs" />
+    <Compile Include="Common\Player\RotatingStateComponent.cs" />
+    <Compile Include="Common\Player\ThrustStateComponent.cs" />
     <Compile Include="Components\ColliderPhysicsComponent.cs" />
     <Compile Include="Components\PolygonRenderComponent.cs" />
     <Compile Include="GameWindow.cs" />
