@@ -45,19 +45,14 @@
     <Compile Include="Commands\RotationCommand.cs" />
     <Compile Include="Commands\StopCommand.cs" />
     <Compile Include="Commands\ThrustCommand.cs" />
-    <Compile Include="Common\Player\DragState.cs" />
+    <Compile Include="Common\Player\DragPlayerState.cs" />
     <Compile Include="Common\Player\PlayerBaseState.cs" />
-    <Compile Include="Components\AIInputComponent.cs" />
     <Compile Include="Components\ColliderPhysicsComponent.cs" />
-    <Compile Include="Components\PlayerInputComponent.cs" />
     <Compile Include="Components\PolygonRenderComponent.cs" />
     <Compile Include="GameWindow.cs" />
-    <Compile Include="InputHandlers\KeyboardInputHandler.cs" />
-    <Compile Include="InputHandlers\Player\DragStateInputHandler.cs" />
-    <Compile Include="InputHandlers\Player\MoveStateInputHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="States\GameState.cs" />
+    <Compile Include="States\SandboxGameState.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Asteroids.Engine\Asteroids.Engine.csproj">

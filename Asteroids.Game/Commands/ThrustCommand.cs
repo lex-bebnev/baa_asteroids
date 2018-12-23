@@ -5,7 +5,7 @@ using Asteroids.Game.Common.Player;
 
 namespace Asteroids.Game.Commands
 {
-    public class ThrustCommand: ICommand 
+    public class ThrustCommand 
     {
         float _velocity;
         private PlayerBaseState _moveState;
@@ -13,7 +13,7 @@ namespace Asteroids.Game.Commands
         public ThrustCommand(float velocity)
         {
             _velocity = velocity;
-            _moveState = new PlayerBaseState();
+            _moveState = new PlayerBaseState(0.5f);
         }
 
         public IStateComponent Execute(GameObject actor, float elapsedTime)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenTK;
 using OpenTK.Input;
 
@@ -12,6 +13,7 @@ namespace Asteroids.OGL.GameEngine.Managers
     {
         private static List<Key> KeysDown;
         private static List<Key> KeysDownLast;
+        private static List<Key> KeysDownPrevious;
         
         /// <summary>
         ///     Initialize Input Manager
@@ -19,14 +21,14 @@ namespace Asteroids.OGL.GameEngine.Managers
         /// <param name="game">Game window - source of input events</param>
         public static void Initialize(GameWindow game)
         {
-            Console.WriteLine("Inputmanager initialize...");
+            Console.WriteLine("Input Manager initialize...");
             KeysDown = new List<Key>();
             KeysDownLast = new List<Key>();
             
             game.KeyDown += GameOnKeyDown;
             game.KeyUp += GameOnKeyUp;
             
-            Console.WriteLine("Inputmanager initialize complete");
+            Console.WriteLine("Input Manager initialize complete");
         }
 
         private static void GameOnKeyUp(object sender, KeyboardKeyEventArgs e)
@@ -44,6 +46,7 @@ namespace Asteroids.OGL.GameEngine.Managers
 
         public static void Update()
         {
+            KeysDownPrevious = new List<Key>(KeysDownLast);
             KeysDownLast = new List<Key>(KeysDown);
         }
 
@@ -54,7 +57,7 @@ namespace Asteroids.OGL.GameEngine.Managers
 
         public static bool KeyRelease(Key key)
         {
-            return (!KeysDown.Contains(key) && KeysDownLast.Contains(key));
+            return (!KeysDown.Contains(key) && (KeysDownLast.Contains(key) || KeysDownPrevious.Contains(key)));
         }
 
         public static bool KeyDown(Key key)

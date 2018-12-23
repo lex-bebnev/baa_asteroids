@@ -18,7 +18,7 @@ namespace Asteroids.Game
         public override void InitializeStates()
         {
             Console.WriteLine("Initialize GameState...");
-            var level = new GameState("Level");
+            var level = new SandboxGameState("Level");
             _gameStates.Add(level.Name, level);
             _currentGameState = level;
             Console.WriteLine("Initialize GameState complete");

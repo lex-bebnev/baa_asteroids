@@ -1,4 +1,6 @@
-﻿namespace Asteroids.Engine.Interfaces
+﻿using Asteroids.Engine.Components.Interfaces;
+
+namespace Asteroids.Engine.Interfaces
 {
     /// <summary>
     ///     Handle input interface
@@ -10,6 +12,6 @@
         ///     Handle input
         /// </summary>
         /// <returns>Meaningful Command</returns>
-        ICommand HandleInput();
+        IStateComponent HandleInput();
     }
 }

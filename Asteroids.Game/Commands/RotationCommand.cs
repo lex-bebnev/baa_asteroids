@@ -12,7 +12,7 @@ namespace Asteroids.Game.Commands
         Left = -1, Right = 1
     }
     
-    public class RotationCommand: ICommand
+    public class RotationCommand
     {
         private RotateDirection _rotateDirection;
         float _rotateVelocity;

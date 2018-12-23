@@ -47,6 +47,8 @@ namespace Asteroids.Engine.Common
         /// <param name="world">Parent component of game object</param>
         public virtual void Update(float elapsed, IGameState world)
         {
+            IStateComponent newState = _stateComponent?.HandleInput();
+            if (newState != null) _stateComponent = newState;
             _stateComponent?.Update(this, elapsed);
             _physicsComponent?.Update(this, world);
         }

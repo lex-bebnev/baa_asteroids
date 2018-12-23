@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Asteroids.Engine.Common;
 using Asteroids.Engine.Components;
 using Asteroids.Engine.Interfaces;
-using Asteroids.Game.Commands;
 using Asteroids.Game.Common.Player;
 using Asteroids.Game.Components;
-using Asteroids.Game.InputHandlers;
 using OpenTK;
 
 namespace Asteroids.Game.States
 {
-    public class GameState: IGameState
+    public class SandboxGameState: IGameState
     {
         public string Name { get; }
         public bool IsReady { get; private set; }
@@ -24,7 +21,7 @@ namespace Asteroids.Game.States
         }
         
         
-        public GameState(string name)
+        public SandboxGameState(string name)
         {
             Name = name;
             _gameObjects = new List<GameObject>();
@@ -65,7 +62,7 @@ namespace Asteroids.Game.States
                     new Vector3(0.0f, 0.0f, 0.0f), 
                     new Vector3(0.08f, 0.08f, 1.0f), 
                     new Vector3(0.0f, -1.0f, 0.0f)),
-                new PlayerBaseState());
+                new DragPlayerState(1.0f, 0.0f, 0.0f));
             
             _gameObjects.Add(player);
         }

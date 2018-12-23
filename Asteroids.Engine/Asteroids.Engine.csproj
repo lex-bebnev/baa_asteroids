@@ -43,12 +43,10 @@
   <ItemGroup>
     <Compile Include="Common\GameObject.cs" />
     <Compile Include="Components\Interfaces\IGraphicsComponent.cs" />
-    <Compile Include="Components\Interfaces\IInputComponent.cs" />
     <Compile Include="Components\Interfaces\IPhysicsComponent.cs" />
     <Compile Include="Components\Interfaces\IStateComponent.cs" />
     <Compile Include="Components\Interfaces\ITransformComponent.cs" />
     <Compile Include="Components\TransformComponent.cs" />
-    <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Interfaces\IGameState.cs" />
     <Compile Include="Interfaces\IInputHandler.cs" />
     <Compile Include="Managers\StateManager.cs" />

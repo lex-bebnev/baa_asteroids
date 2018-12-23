@@ -5,7 +5,7 @@ namespace Asteroids.Engine.Components.Interfaces
 { 
     public interface IStateComponent
     {
-        IInputHandler InputHandler { get; }
+        IStateComponent HandleInput();
         
         void Update(GameObject obj, float elapsedTime);
     }

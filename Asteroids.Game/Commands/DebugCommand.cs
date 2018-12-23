@@ -5,7 +5,7 @@ using Asteroids.Engine.Interfaces;
 
 namespace Asteroids.Game.Commands
 {
-    public class DebugCommand: ICommand
+    public class DebugCommand
     {
         private string _commandName;
         
