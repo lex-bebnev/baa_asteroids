@@ -192,5 +192,14 @@ namespace Asteroids.OGL.GameEngine.Utils
         }
         
         #endregion
+
+        public static void Unload()
+        {
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            GL.BindVertexArray(0);
+            GL.UseProgram(0);
+            
+            shader.Dispose();
+        }
     }
 }

@@ -30,13 +30,7 @@ namespace Asteroids.OGL.GameEngine
             Console.WriteLine("Initialization complete.");
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            Renderer.SetupRenderer(this);
-            
-            base.OnLoad(e);
-        }
-
+        
         #region Internal
         
         private void InitializeStatesInternal()
@@ -68,6 +62,13 @@ namespace Asteroids.OGL.GameEngine
         
         #region Overrided OpenTK methods
         
+        protected override void OnLoad(EventArgs e)
+        {
+            Renderer.SetupRenderer(this);
+            
+            base.OnLoad(e);
+        }
+       
         //TODO Try to subscribe to the event instead override
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
@@ -86,6 +87,13 @@ namespace Asteroids.OGL.GameEngine
             SwapBuffers();
             base.OnRenderFrame(e);
         }
+
+        protected override void OnUnload(EventArgs e)
+        {
+            Renderer.Unload();
+            base.OnUnload(e);
+        }
+
         #endregion
     }
 }
