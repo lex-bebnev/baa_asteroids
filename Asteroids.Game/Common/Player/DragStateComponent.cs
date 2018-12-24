@@ -26,15 +26,15 @@ namespace Asteroids.Game.Common.Player
         {
             if (InputManager.KeyDown(Key.W))
             {
-                return new ThrustStateComponent(0.5f);
+                return new ThrustStateComponent(0.3f);
             }
             if (InputManager.KeyDown(Key.A))
             {
-                return new RotatingStateComponent(RotateDirection.Right, 1.0f);
+                return new RotatingStateComponent(RotateDirection.Right, 3.0f);
             }
             if (InputManager.KeyDown(Key.D))
             {
-                return new RotatingStateComponent(RotateDirection.Left, 1.0f);
+                return new RotatingStateComponent(RotateDirection.Left, 3.0f);
             }
             return null;
         }
