@@ -1,4 +1,6 @@
-﻿using Asteroids.Engine.Components;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Asteroids.Engine.Components;
 using Asteroids.Engine.Components.Interfaces;
 using Asteroids.Engine.Interfaces;
 
@@ -13,33 +15,40 @@ namespace Asteroids.Engine.Common
         ///     Game object tag
         /// </summary>
         public string Tag { get; private set; }
+        private IList<IComponent> _components;
         
-        private IPhysicsComponent _physicsComponent;
-        private IGraphicsComponent _graphycsComponent;
-        private IStateComponent _stateComponent;
-        
-        public TransformComponent TransformComponent { get; }
-        public IStateComponent StateComponent
-        {
-            get { return _stateComponent;} 
-            set
-            {
-                if (value == null) return;
-                _stateComponent = value;
-            } 
-        }
-
-        public GameObject(string tag,
-            IPhysicsComponent physicsComponent, IGraphicsComponent graphycsComponent,
-            TransformComponent transformComponent, IStateComponent stateComponent)
+        public TransformComponent TransformComponent { get; private set; }
+                
+        public GameObject(string tag, TransformComponent transformComponent)
         {
             Tag = tag;
-            _physicsComponent = physicsComponent;
-            _graphycsComponent = graphycsComponent;
+            _components = new List<IComponent>();
             TransformComponent = transformComponent;
-            _stateComponent = stateComponent;
+            TransformComponent.Parent = this; //TODO refactoring, add in component list
         }
 
+        public void AddComponent(IComponent component)
+        {
+            if (_components == null) _components = new List<IComponent>();
+            component.Parent = this;
+            _components.Add(component);
+        }
+
+        /// <summary>
+        ///     Get component if it contains in Game Object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public IComponent GetComponent<T>() where T: IComponent
+        {
+            foreach (var component in _components)
+            {
+                if (component.GetType() == typeof(T)) return (T)component;
+            }
+
+            return null;
+        }
+        
         /// <summary>
         ///     Update state of the GameObject
         /// </summary>
@@ -47,11 +56,11 @@ namespace Asteroids.Engine.Common
         /// <param name="world">Parent component of game object</param>
         public virtual void Update(float elapsed, IGameState world)
         {
-            IStateComponent newState = _stateComponent?.HandleInput();
-            if (newState != null) _stateComponent = newState;
-            _stateComponent?.Update(this, elapsed);
-            TransformComponent.Update(this);
-            _physicsComponent?.Update(this, world);
+            foreach (var component in _components)
+            {
+                component.Update(elapsed);
+            }
+            TransformComponent.Update(elapsed);
         }
 
         /// <summary>
@@ -59,7 +68,10 @@ namespace Asteroids.Engine.Common
         /// </summary>
         public virtual void Render()
         {
-            _graphycsComponent?.Update(this);
+            foreach (var component in _components)
+            {
+                component.Render();
+            }
         }
     }
 }

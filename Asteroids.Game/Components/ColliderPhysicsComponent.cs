@@ -4,11 +4,17 @@ using Asteroids.Engine.Interfaces;
 
 namespace Asteroids.Game.Components
 {
-    public class ColliderPhysicsComponent: IPhysicsComponent
+    public class ColliderPhysicsComponent: IComponent
     {
-        public void Update(GameObject obj, IGameState world)
+        public GameObject Parent { get; set; }
+        public void Update(float elapsedTime)
         {
-            //throw new System.NotImplementedException();
+            throw new System.NotImplementedException();
+        }
+
+        public void Render()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

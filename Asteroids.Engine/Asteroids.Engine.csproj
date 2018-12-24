@@ -42,10 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\GameObject.cs" />
-    <Compile Include="Components\Interfaces\IGraphicsComponent.cs" />
-    <Compile Include="Components\Interfaces\IPhysicsComponent.cs" />
-    <Compile Include="Components\Interfaces\IStateComponent.cs" />
-    <Compile Include="Components\Interfaces\ITransformComponent.cs" />
+    <Compile Include="Components\BaseComponent.cs" />
+    <Compile Include="Components\Interfaces\IComponent.cs" />
+    <Compile Include="Components\PhysicsComponent.cs" />
     <Compile Include="Components\TransformComponent.cs" />
     <Compile Include="Interfaces\IGameState.cs" />
     <Compile Include="Interfaces\IInputHandler.cs" />

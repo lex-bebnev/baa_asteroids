@@ -8,10 +8,10 @@ namespace Asteroids.Engine.Interfaces
     /// </summary>
     public interface IInputHandler
     {
-        /// <summary>
+        /*/// <summary>
         ///     Handle input
         /// </summary>
         /// <returns>Meaningful Command</returns>
-        IStateComponent HandleInput();
+        IStateComponent HandleInput();*/
     }
 }

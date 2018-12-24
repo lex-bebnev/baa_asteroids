@@ -41,12 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\Asteroid\DriftStateComponent.cs" />
-    <Compile Include="Common\Player\DragStateComponent.cs" />
-    <Compile Include="Common\Player\RotatingStateComponent.cs" />
-    <Compile Include="Common\Player\ThrustStateComponent.cs" />
+    <Compile Include="Components\AsteroidAiComponent.cs" />
     <Compile Include="Components\ColliderPhysicsComponent.cs" />
+    <Compile Include="Components\ControllerComponent.cs" />
     <Compile Include="Components\PolygonRenderComponent.cs" />
+    <Compile Include="Components\UfoAiComponent.cs" />
     <Compile Include="GameWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

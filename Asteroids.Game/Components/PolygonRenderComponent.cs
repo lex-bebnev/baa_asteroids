@@ -7,13 +7,15 @@ using OpenTK;
 
 namespace Asteroids.Game.Components
 {
-    public class PolygonRenderComponent: IGraphicsComponent
+    public class PolygonRenderComponent: IComponent
     {
         private float[] _vertices;
         private uint[] _indices;
         private int VAO;
         private int VBO;
         private int EBO;
+        
+        public GameObject Parent { get; set; }
         
         public PolygonRenderComponent(float[] vertices, uint[] indices)
         {
@@ -34,19 +36,23 @@ namespace Asteroids.Game.Components
             
             Console.WriteLine("Setup mesh complete.");
         }
-        
-        public void Update(GameObject obj)
+
+        public void Update(float elapsedTime)
         {
-            if (obj == null)
+        }
+        
+        public void Render()
+        {
+            if (Parent == null)
             {
                 Console.WriteLine("Error: Game object is null");
                 return;
             }
             
             Renderer.DrawTriangle(VAO, _indices.Length, 
-                obj.TransformComponent.Position, 
-                obj.TransformComponent.Rotation, 
-                obj.TransformComponent.Scale);
+                Parent.TransformComponent.Position, 
+                Parent.TransformComponent.Rotation, 
+                Parent.TransformComponent.Scale);
         }
     }
 }
