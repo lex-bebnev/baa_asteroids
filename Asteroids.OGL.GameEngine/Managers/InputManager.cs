@@ -52,7 +52,7 @@ namespace Asteroids.OGL.GameEngine.Managers
 
         public static bool KeyPress(Key key)
         {
-            return (KeysDown.Contains(key) && !KeysDownLast.Contains(key));
+           return (KeysDown.Contains(key) && (!KeysDownLast.Contains(key) || !KeysDownPrevious.Contains(key)));
         }
 
         public static bool KeyRelease(Key key)
