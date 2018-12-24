@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Asteroid\DriftStateComponent.cs" />
     <Compile Include="Common\Player\DragStateComponent.cs" />
     <Compile Include="Common\Player\RotatingStateComponent.cs" />
     <Compile Include="Common\Player\ThrustStateComponent.cs" />

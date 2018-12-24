@@ -21,7 +21,6 @@ namespace Asteroids.Engine.Components
 
         public void Update(GameObject obj)
         {
-            //Base do nothing
         }
     }
 }

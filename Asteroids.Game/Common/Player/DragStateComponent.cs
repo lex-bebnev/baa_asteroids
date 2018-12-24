@@ -26,7 +26,7 @@ namespace Asteroids.Game.Common.Player
         {
             if (InputManager.KeyDown(Key.W))
             {
-                return new ThrustStateComponent(0.3f);
+                return new ThrustStateComponent(0.25f);
             }
             if (InputManager.KeyDown(Key.A))
             {

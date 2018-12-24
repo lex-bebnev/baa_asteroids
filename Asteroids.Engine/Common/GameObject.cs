@@ -50,6 +50,7 @@ namespace Asteroids.Engine.Common
             IStateComponent newState = _stateComponent?.HandleInput();
             if (newState != null) _stateComponent = newState;
             _stateComponent?.Update(this, elapsed);
+            TransformComponent.Update(this);
             _physicsComponent?.Update(this, world);
         }
 

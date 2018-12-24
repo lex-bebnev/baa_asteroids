@@ -5,6 +5,7 @@ using Asteroids.Engine.Common;
 using Asteroids.Engine.Components;
 using Asteroids.Engine.Components.Interfaces;
 using Asteroids.Engine.Interfaces;
+using Asteroids.Game.Common.Asteroid;
 using Asteroids.Game.Common.Player;
 using Asteroids.Game.Components;
 using OpenTK;
@@ -34,8 +35,11 @@ namespace Asteroids.Game.States
         {
             Console.WriteLine("Load game state...");
             AddPlayer();
-            AddUfo();
-            AddAsteroid();
+            //AddUfo();
+            Random r = new Random();
+            AddAsteroid(new Vector3(0.0f, 0.5f, -2.0f), r);
+            AddAsteroid(new Vector3(0.0f, -0.5f, -2.0f), r);
+            AddAsteroid(new Vector3(0.6f, 0.3f, -2.0f), r);
             IsReady = true;
             Console.WriteLine("Load gamestate complete");
         }
@@ -100,7 +104,7 @@ namespace Asteroids.Game.States
                 mesh,
                 new TransformComponent(new Vector3(0.0f, 0.0f, -2.0f),
                     new Vector3(0.0f, 0.0f, -0.5f), 
-                    new Vector3(0.2f, 0.2f, 1.0f), 
+                    new Vector3(0.13f, 0.13f, 1.0f), 
                     new Vector3(0.0f, 0.0f, 0.0f)),
                 null
                );
@@ -113,16 +117,32 @@ namespace Asteroids.Game.States
                 mesh,
                 new TransformComponent(new Vector3(-0.5f, 0.0f, -2.0f),
                     new Vector3(0.0f, 0.0f, 0.5f), 
-                    new Vector3(0.2f, 0.2f, 1.0f), 
+                    new Vector3(0.13f, 0.13f, 1.0f), 
                     new Vector3(0.0f, 0.0f, 0.0f)),
                 null
             );
 
             _gameObjects.Add(ufo2);
         }
-        private void AddAsteroid()
+        private void AddAsteroid(Vector3 coordinate, Random r)
         {
-            Random r = new Random();
+            var mesh = GenerateAsteroidMesh(r);
+
+            GameObject asteroid = new GameObject(
+                "Enemy",
+                new ColliderPhysicsComponent(),
+                mesh,
+                new TransformComponent(coordinate,
+                    new Vector3(0.0f, 0.0f, 0.5f), 
+                    new Vector3(0.0025f, 0.0025f, 1.0f), 
+                    new Vector3((r.Next(0,100)/100.0f), (r.Next(0,100)/100.0f), 0.0f)),
+                new DriftStateComponent(0.2f)
+            );
+            
+            _gameObjects.Add(asteroid);
+        }
+        private IGraphicsComponent GenerateAsteroidMesh(Random r)
+        {
             int minRadius = 30;
             int maxRadius = 50;
             int granularity = 21;
@@ -130,27 +150,27 @@ namespace Asteroids.Game.States
             int maxVary = 75;
 
             double tau = 2 * Math.PI;
-            
+
             IList<float> points = new List<float>();
-            IList<uint> indices = new List<uint>(); 
-            
+            IList<uint> indices = new List<uint>();
+
             points.Add(0.0f);
             points.Add(0.0f);
             points.Add(0.0f);
 
             uint prevIndex = 0;
             uint currentIndex = 1;
-            
+
             for (float angle = 0; angle < tau; angle += (float) (tau / granularity))
             {
                 int angleVary = r.Next(minVary, maxVary);
-                var angleVaryRadians = (tau/granularity) * angleVary / 100;
+                var angleVaryRadians = (tau / granularity) * angleVary / 100;
                 var angleFinal = angle + angleVaryRadians - (Math.PI / granularity);
                 int radius = r.Next(minRadius, maxRadius);
 
-                float x = (float)Math.Sin(angleFinal) * radius;
+                float x = (float) Math.Sin(angleFinal) * radius;
                 float y = (float) -Math.Cos(angleFinal) * radius;
-                
+
                 points.Add(x);
                 points.Add(y);
                 points.Add(0.0f);
@@ -161,35 +181,23 @@ namespace Asteroids.Game.States
                     currentIndex++;
                     continue;
                 }
-                
+
                 indices.Add(0);
                 indices.Add(prevIndex);
                 indices.Add(currentIndex);
-                
+
                 prevIndex = currentIndex;
                 currentIndex++;
             }
-            
+
             indices.Add(0);
-            indices.Add(currentIndex-1);
+            indices.Add(currentIndex);
             indices.Add(1);
 
             IGraphicsComponent mesh = new PolygonRenderComponent(points.ToArray(), indices.ToArray());
-            
-            GameObject asteroid = new GameObject(
-                "Enemy",
-                new ColliderPhysicsComponent(),
-                mesh,
-                new TransformComponent(new Vector3(0.0f, 0.5f, -2.0f),
-                    new Vector3(0.0f, 0.0f, 0.5f), 
-                    new Vector3(0.0025f, 0.0025f, 1.0f), 
-                    new Vector3(0.0f, 0.0f, 0.0f)),
-                null
-            );
-            
-            _gameObjects.Add(asteroid);
+            return mesh;
         }
-        
+
         public void Update(float elapsedTime)
         {
             if(!IsReady) return;
