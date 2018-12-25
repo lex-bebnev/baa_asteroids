@@ -31,15 +31,46 @@ namespace Asteroids.Game.States
         public void Load()
         {
             Console.WriteLine("Load game state...");
+            
             AddPlayer();
             AddUfo();
             Random r = new Random();
             AddAsteroid(new Vector3(0.0f, 0.5f, -2.0f), r);
             AddAsteroid(new Vector3(0.0f, -0.5f, -2.0f), r);
             AddAsteroid(new Vector3(0.6f, 0.3f, -2.0f), r);
+            
             IsReady = true;
             Console.WriteLine("Load gamestate complete");
         }
+
+        public void AddGameObject(GameObject obj)
+        {
+            if(obj == null) return;
+            GameObjects.Add(obj);
+        }
+        
+        public void Update(float elapsedTime)
+        {
+            if(!IsReady) return;
+
+            for (int i = 0; i < _gameObjects.Count; i++)
+            {
+                _gameObjects[i].Update(elapsedTime, this);
+            }
+        }
+
+        public void Render()
+        {
+            if(!IsReady) return;
+
+            for (int i = 0; i < _gameObjects.Count; i++)
+            {
+                _gameObjects[i].Render();
+            }
+        }
+
+
+        #region Private methods
 
         private void AddPlayer()
         {
@@ -67,8 +98,9 @@ namespace Asteroids.Game.States
             
             player.AddComponent(new PolygonRenderComponent(shipVertices, shipIndices));     
             player.AddComponent(new ControllerComponent());     
-            player.AddComponent(new PhysicsComponent());     
-            _gameObjects.Add(player);
+            player.AddComponent(new PhysicsComponent());
+            player.AddComponent(new GunComponent(this));
+            AddGameObject(player);
         }
         private void AddUfo()
         {
@@ -118,7 +150,7 @@ namespace Asteroids.Game.States
             ufo2.AddComponent(mesh);//TODO Parent in component wil be overwrite
             ufo2.AddComponent(new PhysicsComponent());
             ufo2.AddComponent(new UfoAiComponent(this));
-            _gameObjects.Add(ufo2);
+            AddGameObject(ufo2);
         }
         private void AddAsteroid(Vector3 coordinate, Random r)
         {
@@ -135,7 +167,7 @@ namespace Asteroids.Game.States
             asteroid.AddComponent(new PhysicsComponent());
             asteroid.AddComponent(new AsteroidAiComponent());
             
-            _gameObjects.Add(asteroid);
+            AddGameObject(asteroid);
         }
         private IComponent GenerateAsteroidMesh(Random r)
         {
@@ -194,24 +226,7 @@ namespace Asteroids.Game.States
             return mesh;
         }
 
-        public void Update(float elapsedTime)
-        {
-            if(!IsReady) return;
+        #endregion
 
-            foreach (var objects in _gameObjects)
-            {
-                objects.Update(elapsedTime, this);
-            }
-        }
-
-        public void Render()
-        {
-            if(!IsReady) return;
-
-            foreach (var objects in _gameObjects)
-            {
-                objects.Render();
-            }
-        }
     }
 }

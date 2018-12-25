@@ -9,6 +9,11 @@ namespace Asteroids.Engine.Interfaces
     public interface IGameState
     {
         /// <summary>
+        ///     Lists of all game objects contained in
+        /// </summary>
+        IList<GameObject> GameObjects { get; }
+        
+        /// <summary>
         ///     State name
         /// </summary>
         string Name { get; }
@@ -17,11 +22,17 @@ namespace Asteroids.Engine.Interfaces
         ///     Is ready game state
         /// </summary>
         bool IsReady { get; }
-        
+
         /// <summary>
         ///     Load game state
         /// </summary>
         void Load();
+
+        /// <summary>
+        ///     Add game object in state
+        /// </summary>
+        /// <param name="obj"></param>
+        void AddGameObject(GameObject obj);
         
         /// <summary>
         ///     Update game state
@@ -34,9 +45,5 @@ namespace Asteroids.Engine.Interfaces
         /// </summary>
         void Render();
         
-        /// <summary>
-        ///     Lists of all game objects contained in
-        /// </summary>
-        IList<GameObject> GameObjects { get; }
     }
 }

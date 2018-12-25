@@ -45,6 +45,8 @@
     <Compile Include="Components\ColliderPhysicsComponent.cs" />
     <Compile Include="Components\ControllerComponent.cs" />
     <Compile Include="Components\PolygonRenderComponent.cs" />
+    <Compile Include="Components\GunComponent.cs" />
+    <Compile Include="Components\TtlComponent.cs" />
     <Compile Include="Components\UfoAiComponent.cs" />
     <Compile Include="GameWindow.cs" />
     <Compile Include="Program.cs" />
