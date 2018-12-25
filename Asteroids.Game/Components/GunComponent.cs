@@ -12,7 +12,7 @@ namespace Asteroids.Game.Components
     {
         private static float LASER_CHARGE_TIME = 2.0f;
         private static float LASER_COOLDOWN_TIME = 5.0f;
-        private static float BASE_BULLET_VELOCITY = 2.0f;
+        private static float BASE_BULLET_VELOCITY = 300.0f;
         
         
         private float _chargeLaserTime;
@@ -41,7 +41,7 @@ namespace Asteroids.Game.Components
             
             if (InputManager.KeyPress(Key.F))
             {
-                var transfom = new TransformComponent(Parent.TransformComponent.Position, Parent.TransformComponent.Rotation, new Vector3(0.025f,0.025f, 1.0f), 
+                var transfom = new TransformComponent(Parent.TransformComponent.Position, Parent.TransformComponent.Rotation, new Vector3(10.0f, 10.0f, 1.0f), 
                     Parent.TransformComponent.Direction);
                 var bullet = new GameObject("Bullet", transfom);
                 
@@ -64,8 +64,11 @@ namespace Asteroids.Game.Components
                 PolygonRenderComponent renderer = new PolygonRenderComponent(vertices, indices);
                 bullet.AddComponent(renderer);
 
-                var bulletTtl = new TtlComponent(_gameWorld, 2.0f);
+                var bulletTtl = new LifetimeComponent(_gameWorld, 2.0f);
                 bullet.AddComponent(bulletTtl);
+
+                var colider = new ColisionsComponent(_gameWorld, 1.0f, 1.0f);
+                bullet.AddComponent(colider);
                 
                 _gameWorld.AddGameObject(bullet);
                 

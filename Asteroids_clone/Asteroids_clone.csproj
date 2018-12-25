@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AntTweakBar.NET, Version=0.6.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\AntTweakBar.NET.Standalone.0.6.0\lib\net40\AntTweakBar.NET.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="OpenTK, Version=3.0.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4">
       <HintPath>..\packages\OpenTK.3.0.1\lib\net20\OpenTK.dll</HintPath>
       <Private>True</Private>

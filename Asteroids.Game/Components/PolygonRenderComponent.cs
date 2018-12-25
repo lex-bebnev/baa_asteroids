@@ -14,6 +14,7 @@ namespace Asteroids.Game.Components
         private int VAO;
         private int VBO;
         private int EBO;
+        private int _centerVAO;
         
         public GameObject Parent { get; set; }
         
@@ -34,6 +35,9 @@ namespace Asteroids.Game.Components
             VBO = buffers.VBO;
             EBO = buffers.EBO;
             
+            buffers = Renderer.LoadObject(new float[]{0.0f, 0.0f, 0.0f}, new uint[] {0});
+            _centerVAO = buffers.VAO;
+
             Console.WriteLine("Setup mesh complete.");
         }
 
@@ -50,6 +54,11 @@ namespace Asteroids.Game.Components
             }
             
             Renderer.DrawTriangle(VAO, _indices.Length, 
+                Parent.TransformComponent.Position, 
+                Parent.TransformComponent.Rotation, 
+                Parent.TransformComponent.Scale);
+            
+            Renderer.DrawPoint(_centerVAO, 
                 Parent.TransformComponent.Position, 
                 Parent.TransformComponent.Rotation, 
                 Parent.TransformComponent.Scale);

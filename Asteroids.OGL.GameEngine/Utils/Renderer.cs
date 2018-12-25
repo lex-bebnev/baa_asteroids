@@ -19,43 +19,6 @@ namespace Asteroids.OGL.GameEngine.Utils
         }
     }
 
-    public class ObjectParams
-    {
-        internal Vector3 Position;
-        internal Vector3 Rotation;
-        internal Vector3 Scale;
-
-        public ObjectParams(float positionX, float positionY, float positionZ,
-            float rotationX, float rotationY, float rotationZ,
-            float scaleX, float scaleY, float scaleZ)
-        {
-            Position = new Vector3(positionX, positionY, positionZ);
-            Rotation = new Vector3(rotationX, rotationY, rotationZ);
-            Scale = new Vector3(scaleX, scaleY, scaleZ);
-        }
-
-        public void SetPosition(float positionX, float positionY, float positionZ)
-        {
-            Position.X = positionX;
-            Position.Y = positionY;
-            Position.Z = positionZ;
-        }
-
-        public void SetRotation(float rotationX, float rotationY, float rotationZ)
-        {
-            Rotation.X = rotationX;
-            Rotation.Y = rotationY;
-            Rotation.Z = rotationZ;
-        }
-
-        public void SetScale(float scaleX, float scaleY, float scaleZ)
-        {
-            Scale.X = scaleX;
-            Scale.Y = scaleY;
-            Scale.Z = scaleZ;
-        }
-    }
-    
     public static class Renderer
     {
         public static Matrix4 ModelMatrix { get; set; }
@@ -78,6 +41,11 @@ namespace Asteroids.OGL.GameEngine.Utils
                 aspect,
                 0.1f, 
                 4000.0f);
+        }
+
+        public static void SetOrthographic(int width, int height)
+        {
+            ProjectionMatrix = Matrix4.CreateOrthographic((float)width, (float)height,0.1f, 4000f);
         }
         
         /// <summary>
@@ -118,11 +86,13 @@ namespace Asteroids.OGL.GameEngine.Utils
         public static void SetupRenderer(GameWindow window)
         {
             SetViewport(0, 0, window.Width, window.Height);
-            SetProjection(window.Width, window.Height);
+            //SetProjection(window.Width, window.Height);
+            SetOrthographic(window.Width, window.Height);
             Color4 backColor = Color4.Black;
             GL.ClearColor(backColor);
             GL.Enable(EnableCap.DepthTest);
             GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+            GL.PointSize(10.0f);
             shader = new Shader("shader.vert","shader.frag");
         }
 
@@ -147,16 +117,18 @@ namespace Asteroids.OGL.GameEngine.Utils
         public static void DrawTriangle(int vertexArrayObject, int size, Vector3 postiton, Vector3 rotation, Vector3 scale)
         {
             var t2 = Matrix4.CreateTranslation(postiton);
-            var r3 = Matrix4.CreateRotationZ(rotation.Z);//(float)(2 * Math.PI * (rotation.Z / 360)));
+            var r3 = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(rotation.Z));//(float)(2 * Math.PI * (rotation.Z / 360)));
             var s = Matrix4.CreateScale(scale);
-            Matrix4 _modelView = r3 * s * t2;
-            
+            Matrix4 _modelView = s * r3 * t2;
+
             shader.Use();
             GL.BindVertexArray(vertexArrayObject);
             shader.SetMatrix4("projection", ProjectionMatrix);
             shader.SetMatrix4("model", _modelView);
+            shader.SetMatrix4("view", Matrix4.CreateTranslation(0.0f, 0.0f, -1.0f));
             
             GL.DrawElements(PrimitiveType.Triangles, size, DrawElementsType.UnsignedInt, 0);
+           
             GL.BindVertexArray(0);
         }
 
@@ -168,6 +140,26 @@ namespace Asteroids.OGL.GameEngine.Utils
         public static void DrawLine(float[] verteces, float[] colors)
         {
             throw new NotImplementedException();
+        }
+
+        public static void DrawPoint(int vertexArrayObject, Vector3 postiton, Vector3 rotation, Vector3 scale)
+        {
+            var t1 = Matrix4.CreateTranslation(Vector3.Zero);
+            var t2 = Matrix4.CreateTranslation(postiton);
+            var r3 = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(rotation.Z));//(float)(2 * Math.PI * (rotation.Z / 360)));
+            var s = Matrix4.CreateScale(1f);
+            Matrix4 _modelView = s * r3 * t2;// * r3;//r3 * s * t2;
+            //_modelView *= t2;
+            
+            shader.Use();
+            GL.BindVertexArray(vertexArrayObject);
+            shader.SetMatrix4("projection", ProjectionMatrix);
+            shader.SetMatrix4("model", _modelView);
+            shader.SetMatrix4("view", Matrix4.CreateTranslation(0.0f, 0.0f, -10.0f));
+            
+            GL.DrawArrays(PrimitiveType.Points, 0, 1);
+            
+            GL.BindVertexArray(0);
         }
         
         #endregion

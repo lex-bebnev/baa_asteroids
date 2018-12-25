@@ -7,8 +7,8 @@ namespace Asteroids.Game.Components
 {
     public class ControllerComponent : BaseComponent
     {
-        private static float VELOCITY = 0.4f;
-        private static float ANGULAR_VELOCITY = 3.0f;
+        private static float VELOCITY = 90f;
+        private static float ANGULAR_VELOCITY = 90.0f;
         private static float DGAR_FACTOR = 0.005f;
         
         

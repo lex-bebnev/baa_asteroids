@@ -4,7 +4,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using Vector3 = OpenTK.Vector3;
-
+using AntTweakBar;
 
 namespace Asteroids_clone
 {
@@ -74,10 +74,16 @@ namespace Asteroids_clone
         private Vector3 position = new Vector3(0.0f, 0.0f, -5.0f);
         
         Matrix4 view;
-        Matrix4 projection;   
+        Matrix4 projection;
+
+        private Context context;
+        private DoubleVariable FpsLabel;
+        
         
         public Game(int width, int height, string title): base(width, height, GraphicsMode.Default, title)
         {
+            
+            
             Console.WriteLine("Initialization...");
             //InputManager.Initialize(this);
 
@@ -96,15 +102,23 @@ namespace Asteroids_clone
 
         protected override void OnLoad(EventArgs e)
         {
-            VSync = VSyncMode.Off;
+            context = new Context(Tw.GraphicsAPI.OpenGL);
+            
+            var configsBar = new Bar(context);
+            configsBar.Label = "Configuration";
+            configsBar.Contained = true;
+            
+            FpsLabel = new DoubleVariable(configsBar, 0.0d);
+            FpsLabel.Label = "FPS";
+            
+            VSync = VSyncMode.On;
             Color4 backColor = Color4.Black;
             GL.ClearColor(backColor);//0.2f, 0.3f, 0.3f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
             CreateProjection();
             
             GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line); //See polygons
-
-            
+  
             //We need to send our vertices over to the graphics card so OpenGL can use them.
             //To do this, we need to create what's called a Vertex Buffer Object (VBO).
             PrepareRenderModel();
@@ -169,7 +183,12 @@ namespace Asteroids_clone
             
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            RenderModel();
+            double fps = 1d / e.Time;
+            FpsLabel.Value = fps;
+            
+            //RenderModel();
+            
+            context.Draw();
             
             SwapBuffers();
         }
@@ -195,6 +214,7 @@ namespace Asteroids_clone
         protected override void OnResize(EventArgs e)
         {
             GL.Viewport(0, 0, Width, Height);
+            context.HandleResize(ClientSize);
             CreateProjection();
         }
 

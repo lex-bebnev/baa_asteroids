@@ -3,13 +3,13 @@ using Asteroids.Engine.Interfaces;
 
 namespace Asteroids.Game.Components
 {
-    public class TtlComponent: BaseComponent
+    public class LifetimeComponent: BaseComponent
     {
         private float _baseTTL;
         private IGameState _gameWorld;
         private float _liveTime;
         
-        public TtlComponent(IGameState world, float baseTtl)
+        public LifetimeComponent(IGameState world, float baseTtl)
         {
             _baseTTL = baseTtl;
             _gameWorld = world;

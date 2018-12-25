@@ -41,12 +41,13 @@ namespace Asteroids.Engine.Components
         private void RotateObject(float elapsedTime)
         {
             Parent.TransformComponent.Rotation += new Vector3(0.0f, 0.0f, (float) (AngularVelocity * elapsedTime));
+
+            float radians = MathHelper.DegreesToRadians(Parent.TransformComponent.Rotation.Z);
+            
             float
-                xD = (float) (Math.Sin(Parent.TransformComponent.Rotation
-                    .Z)); //2 * Math.PI * (actor.TransformComponent.Rotation.Z / 360.0f)));
+                xD = (float) (Math.Sin(radians));
             float
-                yD = (float) (Math.Cos(Parent.TransformComponent.Rotation
-                    .Z)); //2 * Math.PI * (actor.TransformComponent.Rotation.Z / 360.0f)));
+                yD = (float) (Math.Cos(radians));
             var d = new Vector3(xD, -yD, 0.0f);
             d.Normalize();
             Parent.TransformComponent.Direction = d;

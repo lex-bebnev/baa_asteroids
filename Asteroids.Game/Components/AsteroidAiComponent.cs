@@ -10,7 +10,7 @@ namespace Asteroids.Game.Components
         
         public AsteroidAiComponent()
         {
-            _velocity = Randomizer.Next(25, 80)/100.0f;
+            _velocity = Randomizer.Next(80, 220);
         }
 
         public override void Update(float elapsedTime)

@@ -28,16 +28,18 @@ namespace Asteroids.Game.States
             IsReady = false;
         }
 
+        private Random r;
+        
         public void Load()
         {
             Console.WriteLine("Load game state...");
             
             AddPlayer();
             AddUfo();
-            Random r = new Random();
-            AddAsteroid(new Vector3(0.0f, 0.5f, -2.0f), r);
-            AddAsteroid(new Vector3(0.0f, -0.5f, -2.0f), r);
-            AddAsteroid(new Vector3(0.6f, 0.3f, -2.0f), r);
+            r = new Random();
+            AddAsteroid(new Vector3(50.0f, 0.0f, -2.0f));
+            AddAsteroid(new Vector3(400.0f, -200.0f, -2.0f));
+            AddAsteroid(new Vector3(-350.0f, -230.0f, -2.0f));
             
             IsReady = true;
             Console.WriteLine("Load gamestate complete");
@@ -93,7 +95,7 @@ namespace Asteroids.Game.States
                 "Player",
                 new TransformComponent(new Vector3(0.5f, 0.0f, -2.0f),
                     new Vector3(0.0f, 0.0f, 0.0f),
-                    new Vector3(0.25f, 0.25f, 1.0f),
+                    new Vector3(45.0f, 45.0f, 1.0f),
                     new Vector3(0.0f, -1.0f, 0.0f)));
             
             player.AddComponent(new PolygonRenderComponent(shipVertices, shipIndices));     
@@ -129,39 +131,41 @@ namespace Asteroids.Game.States
             
             GameObject ufo = new GameObject(
                 "Enemy",
-                new TransformComponent(new Vector3(0.0f, 0.0f, -2.0f),
-                    new Vector3(0.0f, 0.0f, -0.5f), 
-                    new Vector3(0.13f, 0.13f, 1.0f), 
+                new TransformComponent(new Vector3(250.0f, 0.0f, -2.0f),
+                    new Vector3(0.0f, 0.0f, 0.0f), 
+                    new Vector3(50.0f, 40.0f, 1.0f), 
                     new Vector3(0.0f, 0.0f, 0.0f))
                );
             ufo.AddComponent(mesh);
             ufo.AddComponent(new PhysicsComponent());
-            ufo.AddComponent(new UfoAiComponent(this));
+            //ufo.AddComponent(new UfoAiComponent(this));
             
-            _gameObjects.Add(ufo);
+            AddGameObject(ufo);
             
-            GameObject ufo2 = new GameObject(
+            /*GameObject ufo2 = new GameObject(
                 "Enemy",
-                new TransformComponent(new Vector3(-0.5f, 0.0f, -2.0f),
+                new TransformComponent(new Vector3(-0.0f, 0.0f, -2.0f),
                     new Vector3(0.0f, 0.0f, 0.5f), 
                     new Vector3(0.13f, 0.13f, 1.0f), 
                     new Vector3(0.0f, 0.0f, 0.0f))
             );
             ufo2.AddComponent(mesh);//TODO Parent in component wil be overwrite
             ufo2.AddComponent(new PhysicsComponent());
-            ufo2.AddComponent(new UfoAiComponent(this));
-            AddGameObject(ufo2);
+            ufo2.AddComponent(new UfoAiComponent(this));*/
+            //AddGameObject(ufo2);
         }
-        private void AddAsteroid(Vector3 coordinate, Random r)
+        private void AddAsteroid(Vector3 coordinate)
         {
-            var rendererComponent = GenerateAsteroidMesh(r);
+            var rendererComponent = GenerateAsteroidMesh();
 
+            var rotations = r.Next(0, 360);
+            
             GameObject asteroid = new GameObject(
                 "Enemy",
                 new TransformComponent(coordinate,
-                    new Vector3(0.0f, 0.0f, 0.5f), 
-                    new Vector3(0.0025f, 0.0025f, 1.0f), 
-                    new Vector3((r.Next(0,100)/100.0f), (r.Next(0,100)/100.0f), 0.0f))
+                    new Vector3(0.0f, 0.0f, rotations), 
+                    new Vector3(1.0f, 1.0f, 1.0f), 
+                    Vector3.Zero)
             );
             asteroid.AddComponent(rendererComponent);
             asteroid.AddComponent(new PhysicsComponent());
@@ -169,7 +173,7 @@ namespace Asteroids.Game.States
             
             AddGameObject(asteroid);
         }
-        private IComponent GenerateAsteroidMesh(Random r)
+        private IComponent GenerateAsteroidMesh()
         {
             int minRadius = 30;
             int maxRadius = 50;
@@ -226,6 +230,7 @@ namespace Asteroids.Game.States
             return mesh;
         }
 
+        
         #endregion
 
     }
