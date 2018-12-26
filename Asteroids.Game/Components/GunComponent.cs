@@ -41,7 +41,7 @@ namespace Asteroids.Game.Components
             
             if (InputManager.KeyPress(Key.F))
             {
-                var transfom = new TransformComponent(Parent.TransformComponent.Position, Parent.TransformComponent.Rotation, new Vector3(10.0f, 10.0f, 1.0f), 
+                var transfom = new TransformComponent(Parent.TransformComponent.Position, Parent.TransformComponent.Rotation, new Vector3(5.0f, 5.0f, 1.0f), 
                     Parent.TransformComponent.Direction);
                 var bullet = new GameObject("Bullet", transfom);
                 
@@ -64,8 +64,8 @@ namespace Asteroids.Game.Components
                 PolygonRenderComponent renderer = new PolygonRenderComponent(vertices, indices);
                 bullet.AddComponent(renderer);
 
-                var bulletTtl = new LifetimeComponent(_gameWorld, 2.0f);
-                bullet.AddComponent(bulletTtl);
+                var bulletLifetime = new LifetimeComponent(_gameWorld, 2.0f);
+                bullet.AddComponent(bulletLifetime);
 
                 var colider = new ColisionsComponent(_gameWorld, 1.0f, 1.0f);
                 bullet.AddComponent(colider);

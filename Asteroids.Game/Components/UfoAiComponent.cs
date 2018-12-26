@@ -25,15 +25,11 @@ namespace Asteroids.Game.Components
             var physics = (PhysicsComponent) Parent.GetComponent<PhysicsComponent>();
             if(physics == null) return;
             
-            #warning postion in scaled coordinates of object!
             var d = new Vector3(_player.TransformComponent.Position.X, _player.TransformComponent.Position.Y, 0.0f);
             d.Normalize();
             Parent.TransformComponent.Direction = d;
             
-            //TODO Refactor following code
-            var dX = _player.TransformComponent.Position.X - Parent.TransformComponent.Position.X;
-            var dY = _player.TransformComponent.Position.Y - Parent.TransformComponent.Position.Y;
-            physics.Velocity = (float)Math.Sqrt((Math.Pow(dX,2.0f) + Math.Pow(dY, 2.0f)));
+            physics.Velocity = 120.0f;
         }
     }
 }

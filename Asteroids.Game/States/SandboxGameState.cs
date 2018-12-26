@@ -102,6 +102,7 @@ namespace Asteroids.Game.States
             player.AddComponent(new ControllerComponent());     
             player.AddComponent(new PhysicsComponent());
             player.AddComponent(new GunComponent(this));
+            player.AddComponent(new ColisionsComponent(this, 0.5f, 0.8f));
             AddGameObject(player);
         }
         private void AddUfo()
@@ -138,7 +139,8 @@ namespace Asteroids.Game.States
                );
             ufo.AddComponent(mesh);
             ufo.AddComponent(new PhysicsComponent());
-            //ufo.AddComponent(new UfoAiComponent(this));
+            ufo.AddComponent(new UfoAiComponent(this));
+            //ufo.AddComponent(new ColisionsComponent(this, 1.0f, 0.7f));
             
             AddGameObject(ufo);
             

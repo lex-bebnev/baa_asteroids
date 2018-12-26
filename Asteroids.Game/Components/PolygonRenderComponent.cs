@@ -58,10 +58,11 @@ namespace Asteroids.Game.Components
                 Parent.TransformComponent.Rotation, 
                 Parent.TransformComponent.Scale);
             
-            Renderer.DrawPoint(_centerVAO, 
+            /*Renderer.DrawPoint(_centerVAO, 
                 Parent.TransformComponent.Position, 
                 Parent.TransformComponent.Rotation, 
                 Parent.TransformComponent.Scale);
+        */
         }
     }
 }

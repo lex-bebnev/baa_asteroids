@@ -44,6 +44,7 @@
     <Compile Include="Components\AsteroidAiComponent.cs" />
     <Compile Include="Components\ColisionsComponent.cs" />
     <Compile Include="Components\ControllerComponent.cs" />
+    <Compile Include="Components\DebugComponent.cs" />
     <Compile Include="Components\PolygonRenderComponent.cs" />
     <Compile Include="Components\GunComponent.cs" />
     <Compile Include="Components\LifetimeComponent.cs" />

@@ -2,6 +2,7 @@
 using System.Linq;
 using Asteroids.Engine.Components;
 using Asteroids.Engine.Interfaces;
+using Asteroids.OGL.GameEngine.Utils;
 
 namespace Asteroids.Game.Components
 {
@@ -10,12 +11,19 @@ namespace Asteroids.Game.Components
         private IGameState _gameWorld;
         private float _width;
         private float _height;
+
+        private int VAO;
         
         public ColisionsComponent(IGameState gameWorld, float width, float height)
         {
             _gameWorld = gameWorld ?? throw new ArgumentNullException(nameof(gameWorld));
             _width = width;
             _height = height;
+
+            float x = _width / 2.0f;
+            float y = _height / 2.0f;
+            
+            VAO = Renderer.LoadObject(new float[]{x,y,0.0f, -x,y,0.0f, x,-y,0.0f, -x,-y,0.0f}, new uint[]{0,1,2, 1,3,2}).VAO;
         }
 
         public override void Update(float elapsedTime)
@@ -41,8 +49,7 @@ namespace Asteroids.Game.Components
 
         public override void Render()
         {
-            
-            base.Render();
+            Renderer.DrawTriangle(VAO, 6, Parent.TransformComponent.Position, Parent.TransformComponent.Rotation, Parent.TransformComponent.Scale);
         }
     }
 }
