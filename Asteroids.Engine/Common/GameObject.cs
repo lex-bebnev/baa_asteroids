@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Asteroids.Engine.Components;
-using Asteroids.Engine.Components.Interfaces;
 using Asteroids.Engine.Interfaces;
+using IComponent = Asteroids.Engine.Components.Interfaces.IComponent;
 
 namespace Asteroids.Engine.Common
 {
@@ -29,6 +30,7 @@ namespace Asteroids.Engine.Common
 
         public void AddComponent(IComponent component)
         {
+            //TODO Make sure that this type of component is not added to the object.
             if (_components == null) _components = new List<IComponent>();
             component.Parent = this;
             _components.Add(component);
@@ -41,6 +43,8 @@ namespace Asteroids.Engine.Common
         /// <returns></returns>
         public IComponent GetComponent<T>() where T: IComponent
         {
+            if (typeof(T) == typeof(TransformComponent)) return TransformComponent;
+            
             foreach (var component in _components)
             {
                 if (component.GetType() == typeof(T)) return (T)component;

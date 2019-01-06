@@ -8,9 +8,9 @@ namespace Asteroids.Game.Components
         private static Random Randomizer = new Random();
         private float _velocity;
         
-        public AsteroidAiComponent()
+        public AsteroidAiComponent(int minVelocity, int maxVelocity)
         {
-            _velocity = Randomizer.Next(80, 220);
+            _velocity = Randomizer.Next(minVelocity, maxVelocity);
         }
 
         public override void Update(float elapsedTime)

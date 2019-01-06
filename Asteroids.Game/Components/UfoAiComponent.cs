@@ -9,10 +9,11 @@ namespace Asteroids.Game.Components
 {
     public class UfoAiComponent: BaseComponent
     {
-        //private static float VELOCITY = 0.5f;
+        private static float VELOCITY = 80.0f;
         
         private IGameState _gameWorld;
         private GameObject _player;
+        private PhysicsComponent _physicsComponent;
         
         public UfoAiComponent(IGameState gameWorld)
         {
@@ -22,14 +23,19 @@ namespace Asteroids.Game.Components
 
         public override void Update(float elapsedTime)
         {
-            var physics = (PhysicsComponent) Parent.GetComponent<PhysicsComponent>();
-            if(physics == null) return;
+            if(_player == null) return;
+            if (_physicsComponent == null)
+            {
+                var physics = (PhysicsComponent) Parent.GetComponent<PhysicsComponent>();
+                if (physics == null) return;
+                _physicsComponent = physics;
+            }
             
-            var d = new Vector3(_player.TransformComponent.Position.X, _player.TransformComponent.Position.Y, 0.0f);
-            d.Normalize();
-            Parent.TransformComponent.Direction = d;
+            var direction = _player.TransformComponent.Position - Parent.TransformComponent.Position;
+            direction.Normalize();
+            Parent.TransformComponent.Direction = direction;
             
-            physics.Velocity = 120.0f;
+            _physicsComponent.Velocity = VELOCITY; //TODO increase velocity with distance
         }
     }
 }

@@ -3,6 +3,7 @@ using Asteroids.Engine.Common;
 using Asteroids.Engine.Components;
 using Asteroids.Engine.Interfaces;
 using Asteroids.OGL.GameEngine.Managers;
+using Asteroids.OGL.GameEngine.Utils;
 using OpenTK;
 using OpenTK.Input;
 
@@ -20,11 +21,16 @@ namespace Asteroids.Game.Components
         
         private IGameState _gameWorld;
 
+        private int VAO;
+        private int _verticesCount;
+        
+        
         public GunComponent(IGameState gameWorld)
         {
             _gameWorld = gameWorld ?? throw new ArgumentNullException(nameof(gameWorld));
             _chargeLaserTime = 0;
             _laserCooldownTime = 0;
+            LoadBulletModel();
         }
         
         public override void Update(float elapsedTime)
@@ -49,26 +55,14 @@ namespace Asteroids.Game.Components
                 physics.Velocity = BASE_BULLET_VELOCITY;
                 bullet.AddComponent(physics);
 
-                var vertices = new float[]
-                {
-                    0.5f, 0.5f, 0.0f, 
-                    -0.5f, 0.5f, 0.0f,
-                    0.5f, -0.5f, 0.0f,
-                    -0.5f, -0.5f, 0.0f
-                };
-                var indices = new uint[]
-                {
-                    0, 1, 2,
-                    3, 1, 2
-                };
-                PolygonRenderComponent renderer = new PolygonRenderComponent(vertices, indices);
+                PolygonRenderComponent renderer = new PolygonRenderComponent(VAO, _verticesCount);
                 bullet.AddComponent(renderer);
 
                 var bulletLifetime = new LifetimeComponent(_gameWorld, 2.0f);
                 bullet.AddComponent(bulletLifetime);
 
-                var colider = new ColisionsComponent(_gameWorld, 1.0f, 1.0f);
-                bullet.AddComponent(colider);
+                //var colider = new BulletCollisionsComponent(_gameWorld, 20.0f, 20.0f);
+                //bullet.AddComponent(colider);
                 
                 _gameWorld.AddGameObject(bullet);
                 
@@ -91,6 +85,26 @@ namespace Asteroids.Game.Components
             {
                 _chargeLaserTime = 0;
             }
+        }
+
+        private void LoadBulletModel()
+        {
+            var vertices = new float[]
+            {
+                0.5f, 0.5f, 0.0f,
+                -0.5f, 0.5f, 0.0f,
+                0.5f, -0.5f, 0.0f,
+                -0.5f, -0.5f, 0.0f
+            };
+            var indices = new uint[]
+            {
+                0, 1, 2,
+                3, 1, 2
+            };
+
+            var result = Renderer.LoadObject(vertices, indices);
+            VAO = result.VAO;
+            _verticesCount = indices.Length;
         }
     }
 }

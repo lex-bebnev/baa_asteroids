@@ -42,14 +42,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\AsteroidAiComponent.cs" />
-    <Compile Include="Components\ColisionsComponent.cs" />
+    <Compile Include="Components\BulletCollisionsComponent.cs" />
     <Compile Include="Components\ControllerComponent.cs" />
     <Compile Include="Components\DebugComponent.cs" />
     <Compile Include="Components\PolygonRenderComponent.cs" />
     <Compile Include="Components\GunComponent.cs" />
     <Compile Include="Components\LifetimeComponent.cs" />
     <Compile Include="Components\UfoAiComponent.cs" />
+    <Compile Include="Factories\AsteroidFactory.cs" />
+    <Compile Include="Factories\UfoFactory.cs" />
     <Compile Include="GameWindow.cs" />
+    <Compile Include="Managers\ModelManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="States\SandboxGameState.cs" />

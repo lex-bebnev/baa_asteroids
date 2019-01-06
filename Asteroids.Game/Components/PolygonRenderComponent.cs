@@ -7,22 +7,29 @@ using OpenTK;
 
 namespace Asteroids.Game.Components
 {
-    public class PolygonRenderComponent: IComponent
+    public class PolygonRenderComponent: BaseComponent
     {
         private float[] _vertices;
         private uint[] _indices;
         private int VAO;
+        private int _verticesCount;
         private int VBO;
         private int EBO;
         private int _centerVAO;
         
-        public GameObject Parent { get; set; }
+        public PolygonRenderComponent(int vertexArrayObject, int verticesCount)
+        {
+            VAO = vertexArrayObject;
+            _verticesCount = verticesCount;
+        }
         
+        //TODO Obsolete constructor?
         public PolygonRenderComponent(float[] vertices, uint[] indices)
         {
             Console.WriteLine("Create new Render component...");
             _vertices = vertices;
             _indices = indices;
+            _verticesCount = indices.Length;
             SetupMesh();
             Console.WriteLine("Create new Render component complete.");
         }
@@ -40,12 +47,8 @@ namespace Asteroids.Game.Components
 
             Console.WriteLine("Setup mesh complete.");
         }
-
-        public void Update(float elapsedTime)
-        {
-        }
         
-        public void Render()
+        public override void Render()
         {
             if (Parent == null)
             {
@@ -53,7 +56,7 @@ namespace Asteroids.Game.Components
                 return;
             }
             
-            Renderer.DrawTriangle(VAO, _indices.Length, 
+            Renderer.DrawTriangle(VAO, _verticesCount, 
                 Parent.TransformComponent.Position, 
                 Parent.TransformComponent.Rotation, 
                 Parent.TransformComponent.Scale);
@@ -64,5 +67,6 @@ namespace Asteroids.Game.Components
                 Parent.TransformComponent.Scale);
         */
         }
+          
     }
 }
