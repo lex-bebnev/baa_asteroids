@@ -1,7 +1,7 @@
 ﻿using System;
 using Asteroids.Engine.Components;
 
-namespace Asteroids.Game.Components
+namespace Asteroids.Game.Components.EnemyComponents
 {
     public class AsteroidAiComponent: BaseComponent
     {

@@ -1,6 +1,6 @@
 ﻿using Asteroids.Engine.Components;
 
-namespace Asteroids.Game.Components
+namespace Asteroids.Game.Components.CommonComponents
 {
     public class DebugComponent: BaseComponent
     {

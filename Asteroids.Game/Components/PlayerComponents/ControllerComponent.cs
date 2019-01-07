@@ -1,9 +1,8 @@
-﻿using System;
-using Asteroids.Engine.Components;
+﻿using Asteroids.Engine.Components;
 using Asteroids.OGL.GameEngine.Managers;
 using OpenTK.Input;
 
-namespace Asteroids.Game.Components
+namespace Asteroids.Game.Components.PlayerComponents
 {
     public class ControllerComponent : BaseComponent
     {

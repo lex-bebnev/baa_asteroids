@@ -2,12 +2,14 @@
 using Asteroids.Engine.Common;
 using Asteroids.Engine.Components;
 using Asteroids.Engine.Interfaces;
+using Asteroids.Game.Components.CommonComponents;
+using Asteroids.Game.Components.EnemyComponents;
 using Asteroids.OGL.GameEngine.Managers;
 using Asteroids.OGL.GameEngine.Utils;
 using OpenTK;
 using OpenTK.Input;
 
-namespace Asteroids.Game.Components
+namespace Asteroids.Game.Components.PlayerComponents
 {
     public class GunComponent: BaseComponent
     {
@@ -61,9 +63,6 @@ namespace Asteroids.Game.Components
                 var bulletLifetime = new LifetimeComponent(_gameWorld, 2.0f);
                 bullet.AddComponent(bulletLifetime);
 
-                //var colider = new BulletCollisionsComponent(_gameWorld, 20.0f, 20.0f);
-                //bullet.AddComponent(colider);
-                
                 _gameWorld.AddGameObject(bullet);
                 
                 Console.WriteLine("Rocket Fire!");

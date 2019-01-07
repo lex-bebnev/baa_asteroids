@@ -6,6 +6,9 @@ using Asteroids.Engine.Components;
 using Asteroids.Engine.Components.Interfaces;
 using Asteroids.Engine.Interfaces;
 using Asteroids.Game.Components;
+using Asteroids.Game.Components.CommonComponents;
+using Asteroids.Game.Components.EnemyComponents;
+using Asteroids.Game.Components.PlayerComponents;
 using Asteroids.Game.Factories;
 using Asteroids.OGL.GameEngine.Utils;
 using OpenTK;
@@ -80,7 +83,7 @@ namespace Asteroids.Game.States
 
         private void AddPlayer()
         {
-            //TODO remove
+            //TODO Create resource manager
             float[] shipVertices =
             {
                 //Position          
@@ -106,6 +109,10 @@ namespace Asteroids.Game.States
             player.AddComponent(new ControllerComponent());     
             player.AddComponent(new PhysicsComponent());
             player.AddComponent(new GunComponent(this));
+            player.AddComponent(new CoordinateComponent());
+            player.AddComponent(new PlayerCollisionsComponent(this, 20.0f, 20.0f));
+            player.AddComponent(new PlayerStateComponent());
+            
             AddGameObject(player);
         }
         

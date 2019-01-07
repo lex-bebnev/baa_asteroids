@@ -2,6 +2,9 @@
 using Asteroids.Engine.Components;
 using Asteroids.Engine.Interfaces;
 using Asteroids.Game.Components;
+using Asteroids.Game.Components.CommonComponents;
+using Asteroids.Game.Components.EnemyComponents;
+using Asteroids.Game.Components.PlayerComponents;
 using Asteroids.OGL.GameEngine.Utils;
 using OpenTK;
 
@@ -20,7 +23,6 @@ namespace Asteroids.Game.Factories
             -0.05f, 0.5f, 0.0f,
             0.05f, 0.5f, 0.0f
         };
-        
         static uint[] UfoIndeces =
         {
             0, 1, 2,
@@ -34,7 +36,7 @@ namespace Asteroids.Game.Factories
         public static GameObject GetUfoGameObject(Vector3 coordinate, Vector3 scale, IGameState gameWotld)
         {
             //TODO Load only once 
-            var mesh = Renderer.LoadObject(UfoVertecies, UfoIndeces);//new PolygonRenderComponent(UfoVertecies, UfoIndeces);
+            var mesh = Renderer.LoadObject(UfoVertecies, UfoIndeces);
             
             GameObject ufo = new GameObject(
                 "Ufo",
@@ -47,6 +49,7 @@ namespace Asteroids.Game.Factories
             ufo.AddComponent(new PhysicsComponent());
             ufo.AddComponent(new UfoAiComponent(gameWotld));
             ufo.AddComponent(new BulletCollisionsComponent(gameWotld, 20.0f, 20.0f));
+            ufo.AddComponent(new CoordinateComponent());
 
             return ufo;
         }

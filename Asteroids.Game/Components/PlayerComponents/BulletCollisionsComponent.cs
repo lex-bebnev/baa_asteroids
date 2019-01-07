@@ -5,7 +5,7 @@ using Asteroids.Engine.Interfaces;
 using Asteroids.Game.Factories;
 using Asteroids.OGL.GameEngine.Utils;
 
-namespace Asteroids.Game.Components
+namespace Asteroids.Game.Components.PlayerComponents
 {
     public class BulletCollisionsComponent: BaseComponent
     {
@@ -50,7 +50,6 @@ namespace Asteroids.Game.Components
                 return;
             }
         }
-
 
         public void GameObjectDestroy()
         {

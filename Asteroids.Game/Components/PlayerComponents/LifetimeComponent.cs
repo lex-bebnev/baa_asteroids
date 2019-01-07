@@ -1,7 +1,7 @@
 ﻿using Asteroids.Engine.Components;
 using Asteroids.Engine.Interfaces;
 
-namespace Asteroids.Game.Components
+namespace Asteroids.Game.Components.PlayerComponents
 {
     public class LifetimeComponent: BaseComponent
     {

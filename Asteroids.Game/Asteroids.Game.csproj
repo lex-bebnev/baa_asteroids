@@ -41,14 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\AsteroidAiComponent.cs" />
-    <Compile Include="Components\BulletCollisionsComponent.cs" />
-    <Compile Include="Components\ControllerComponent.cs" />
-    <Compile Include="Components\DebugComponent.cs" />
-    <Compile Include="Components\PolygonRenderComponent.cs" />
-    <Compile Include="Components\GunComponent.cs" />
-    <Compile Include="Components\LifetimeComponent.cs" />
-    <Compile Include="Components\UfoAiComponent.cs" />
+    <Compile Include="Components\CommonComponents\CoordinateComponent.cs" />
+    <Compile Include="Components\CommonComponents\DebugComponent.cs" />
+    <Compile Include="Components\CommonComponents\PolygonRenderComponent.cs" />
+    <Compile Include="Components\EnemyComponents\AsteroidAiComponent.cs" />
+    <Compile Include="Components\EnemyComponents\UfoAiComponent.cs" />
+    <Compile Include="Components\PlayerComponents\BulletCollisionsComponent.cs" />
+    <Compile Include="Components\PlayerComponents\ControllerComponent.cs" />
+    <Compile Include="Components\PlayerComponents\GunComponent.cs" />
+    <Compile Include="Components\PlayerComponents\LifetimeComponent.cs" />
+    <Compile Include="Components\PlayerComponents\PlayerCollisionsComponent.cs" />
+    <Compile Include="Components\PlayerComponents\PlayerStateComponent.cs" />
     <Compile Include="Factories\AsteroidFactory.cs" />
     <Compile Include="Factories\UfoFactory.cs" />
     <Compile Include="GameWindow.cs" />

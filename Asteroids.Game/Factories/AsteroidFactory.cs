@@ -6,6 +6,9 @@ using Asteroids.Engine.Components;
 using Asteroids.Engine.Components.Interfaces;
 using Asteroids.Engine.Interfaces;
 using Asteroids.Game.Components;
+using Asteroids.Game.Components.CommonComponents;
+using Asteroids.Game.Components.EnemyComponents;
+using Asteroids.Game.Components.PlayerComponents;
 using OpenTK;
 
 namespace Asteroids.Game.Factories
@@ -30,7 +33,8 @@ namespace Asteroids.Game.Factories
             asteroid.AddComponent(rendererComponent);
             asteroid.AddComponent(new PhysicsComponent());
             asteroid.AddComponent(new AsteroidAiComponent(80,120));
-            asteroid.AddComponent(new BulletCollisionsComponent(gameWorld, 20.0f, 20.0f,isBreaking));
+            asteroid.AddComponent(new BulletCollisionsComponent(gameWorld, 20.0f, 20.0f, isBreaking));
+            asteroid.AddComponent(new CoordinateComponent());
             
             return asteroid;
         }

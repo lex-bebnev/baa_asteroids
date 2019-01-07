@@ -1,11 +1,8 @@
 ﻿using System;
-using Asteroids.Engine.Common;
 using Asteroids.Engine.Components;
-using Asteroids.Engine.Components.Interfaces;
 using Asteroids.OGL.GameEngine.Utils;
-using OpenTK;
 
-namespace Asteroids.Game.Components
+namespace Asteroids.Game.Components.CommonComponents
 {
     public class PolygonRenderComponent: BaseComponent
     {
