@@ -25,6 +25,8 @@ namespace Asteroids.Game.States
         {
             get { return _gameObjects; }
         }
+
+        private GameObject _player; 
         
         public SandboxGameState(string name)
         {
@@ -32,14 +34,14 @@ namespace Asteroids.Game.States
             _gameObjects = new List<GameObject>();
             IsReady = false;
         }
-
-        private Random r;
         
         public void Load()
         {
             Console.WriteLine("Load game state...");
             
-            AddPlayer();
+            _player = AddPlayer(); //TODO Create factory
+            
+            AddGameObject(_player);
             
             AddGameObject(UfoFactory.GetUfoGameObject(new Vector3(-300.0f, -150.0f, -2.0f), new Vector3(45.0f, 35.0f, 1.0f), this));
             AddGameObject(UfoFactory.GetUfoGameObject(new Vector3(300.0f, 150.0f, -2.0f), new Vector3(45.0f, 35.0f, 1.0f), this));
@@ -62,6 +64,8 @@ namespace Asteroids.Game.States
         {
             if(!IsReady) return;
 
+            if (!GameLogicUpdate()) return;
+            
             for (int i = 0; i < _gameObjects.Count; i++)
             {
                 _gameObjects[i].Update(elapsedTime, this);
@@ -78,10 +82,15 @@ namespace Asteroids.Game.States
             }
         }
 
-
+        private bool GameLogicUpdate()
+        {
+            PlayerStateComponent playerState = (PlayerStateComponent) _player.GetComponent<PlayerStateComponent>();
+            return playerState.IsAlive;
+        }
+        
         #region Private methods
 
-        private void AddPlayer()
+        private GameObject AddPlayer()
         {
             //TODO Create resource manager
             float[] shipVertices =
@@ -112,8 +121,8 @@ namespace Asteroids.Game.States
             player.AddComponent(new CoordinateComponent());
             player.AddComponent(new PlayerCollisionsComponent(this, 20.0f, 20.0f));
             player.AddComponent(new PlayerStateComponent());
-            
-            AddGameObject(player);
+
+            return player;
         }
         
             

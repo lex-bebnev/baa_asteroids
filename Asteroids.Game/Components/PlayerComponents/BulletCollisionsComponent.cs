@@ -32,10 +32,13 @@ namespace Asteroids.Game.Components.PlayerComponents
         public override void Update(float elapsedTime)
         {
             var colideObjects = _gameWorld.GameObjects.Where(item => item.Tag == "Bullet").Select(item => item);
+            var playerObject = _gameWorld.GameObjects.Where(item => item.Tag == "Player").Select(item => item).SingleOrDefault();
+            var playerState = (PlayerStateComponent) playerObject?.GetComponent<PlayerStateComponent>();
+            
             var positionTwo = Parent.TransformComponent.Position;
             foreach (var colideObject in colideObjects)
             {
-                float coliderSize = 20.0f; //TODO Unnecessary
+                //float coliderSize = 20.0f; //TODO Unnecessary
                 
                 var positionOne = colideObject.TransformComponent.Position;
                 bool collisionX = (positionOne.X + _width/*coliderSize*/) >= positionTwo.X &&
@@ -45,8 +48,9 @@ namespace Asteroids.Game.Components.PlayerComponents
                 
                 if (!(collisionX && collisionY)) continue;
                 _gameWorld.GameObjects.Remove(colideObject);
-                GameObjectDestroy();
                 _gameWorld.GameObjects.Remove(Parent);
+                playerState?.IncreaseScore();
+                GameObjectDestroy();
                 return;
             }
         }

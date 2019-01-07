@@ -1,17 +1,19 @@
-﻿using Asteroids.Engine.Components;
+﻿using System;
+using Asteroids.Engine.Components;
 
 namespace Asteroids.Game.Components.PlayerComponents
 {
     public class PlayerStateComponent: BaseComponent
     {
-        private bool _isDead = false;
+        private bool _isAlive = true;
         private int _score = 0;
         
-        public bool IsDead
+        public bool IsAlive
         {
-            get => _isDead;
-            set => _isDead = value;
+            get => _isAlive;
+            set => _isAlive = value;
         }
+        
         public int Score
         {
             get => _score;
@@ -25,6 +27,7 @@ namespace Asteroids.Game.Components.PlayerComponents
         public void IncreaseScore()
         {
             Score++;
+            Console.WriteLine($"Score: {Score}");
         }
     }
 }

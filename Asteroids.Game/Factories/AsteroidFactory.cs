@@ -20,8 +20,10 @@ namespace Asteroids.Game.Factories
         public static GameObject GetAsteroid(Vector3 coordinate, float scale, IGameState gameWorld, bool isBreaking = true)
         {
             var rendererComponent = GenerateAsteroidMesh();
-
             var rotations = r.Next(0, 360);
+            
+            int minVelocity = isBreaking ? 80 : 120;
+            int maxVelocity = isBreaking ? 120 : 160;
             
             GameObject asteroid = new GameObject(
                 "Asteroid",
@@ -32,7 +34,7 @@ namespace Asteroids.Game.Factories
             );
             asteroid.AddComponent(rendererComponent);
             asteroid.AddComponent(new PhysicsComponent());
-            asteroid.AddComponent(new AsteroidAiComponent(80,120));
+            asteroid.AddComponent(new AsteroidAiComponent(minVelocity,maxVelocity));
             asteroid.AddComponent(new BulletCollisionsComponent(gameWorld, 20.0f, 20.0f, isBreaking));
             asteroid.AddComponent(new CoordinateComponent());
             
