@@ -33,7 +33,7 @@ namespace Asteroids.Game.Components.PlayerComponents
                                   (positionTwo.Y + _height/*coliderSize*/) >= positionOne.Y;
                 
                 if (!(collisionX && collisionY)) continue;
-                _gameWorld.GameObjects.Remove(Parent);
+                //_gameWorld.GameObjects.Remove(Parent);
                 var playerState = (PlayerStateComponent)Parent.GetComponent<PlayerStateComponent>();
                 if(playerState != null)
                     playerState.IsAlive = false;

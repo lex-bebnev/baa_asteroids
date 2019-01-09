@@ -80,6 +80,11 @@ namespace Asteroids.Game.States
             {
                 _gameObjects[i].Render();
             }
+
+            if (!GameLogicUpdate())
+            {
+                Renderer.RenderText("GAME OVER", new Vector3(-25.0f, 100.0f, -1.0f), 1);
+            }
         }
 
         private bool GameLogicUpdate()
