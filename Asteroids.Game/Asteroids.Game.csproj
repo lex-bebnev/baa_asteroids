@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32bit>false</Prefer32bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -44,6 +45,7 @@
     <Compile Include="Components\CommonComponents\CoordinateComponent.cs" />
     <Compile Include="Components\CommonComponents\DebugComponent.cs" />
     <Compile Include="Components\CommonComponents\PolygonRenderComponent.cs" />
+    <Compile Include="Components\CommonComponents\SpriteRendererComponent.cs" />
     <Compile Include="Components\EnemyComponents\AsteroidAiComponent.cs" />
     <Compile Include="Components\EnemyComponents\UfoAiComponent.cs" />
     <Compile Include="Components\PlayerComponents\BulletCollisionsComponent.cs" />

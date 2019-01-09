@@ -1,5 +1,7 @@
 ﻿using System;
 using Asteroids.Engine.Components;
+using Asteroids.OGL.GameEngine.Utils;
+using OpenTK;
 
 namespace Asteroids.Game.Components.PlayerComponents
 {
@@ -28,6 +30,11 @@ namespace Asteroids.Game.Components.PlayerComponents
         {
             Score++;
             Console.WriteLine($"Score: {Score}");
+        }
+
+        public override void Render()
+        {
+            Renderer.RenderText($"Score: {Score}", new Vector3(-380, 280, -1.0f), 1.0f);
         }
     }
 }
