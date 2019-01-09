@@ -2,6 +2,8 @@
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
+using QuickFont;
+using QuickFont.Configuration;
 
 namespace Asteroids.OGL.GameEngine.Utils
 {
@@ -25,7 +27,12 @@ namespace Asteroids.OGL.GameEngine.Utils
         public static Matrix4 ViewMatrix { get; set; }
         public static Matrix4 ProjectionMatrix { get; set; }
         
+        public static int Width { get; private set; }
+        public static int Height { get; private set; }
+        
         private static Shader shader;
+        private static QFontDrawing _drawing;
+        private static QFont _font;
         
         public static void SetViewport(int x, int y, int width, int height)
         {
@@ -43,9 +50,9 @@ namespace Asteroids.OGL.GameEngine.Utils
                 4000.0f);
         }
 
-        public static void SetOrthographic(int width, int height)
+        public static void SetOrthographic()
         {
-            ProjectionMatrix = Matrix4.CreateOrthographic((float)width, (float)height,0.1f, 4000f);
+            ProjectionMatrix = Matrix4.CreateOrthographic((float)Width, (float)Height, 0.1f, 4000f);
         }
         
         /// <summary>
@@ -85,15 +92,23 @@ namespace Asteroids.OGL.GameEngine.Utils
 
         public static void SetupRenderer(GameWindow window)
         {
+            Width = window.Width;
+            Height = window.Height;
             SetViewport(0, 0, window.Width, window.Height);
+
+            window.VSync = VSyncMode.On;
+            
             //SetProjection(window.Width, window.Height);
-            SetOrthographic(window.Width, window.Height);
+            SetOrthographic();
             Color4 backColor = Color4.Black;
             GL.ClearColor(backColor);
-            GL.Enable(EnableCap.DepthTest);
-            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+            GL.Enable(EnableCap.DepthTest); 
+            
             GL.PointSize(10.0f);
-            shader = new Shader("shader.vert","shader.frag");
+            shader = new Shader("shader.vert", "shader.frag");
+
+            _font = new QFont("/Fonts/HappySans.ttf", 8.0f, new QFontBuilderConfiguration());
+            _drawing = new QFontDrawing();
         }
 
         public static void UnloadObject(int vertexBufferObject, int vertexArrayObject)
@@ -114,22 +129,30 @@ namespace Asteroids.OGL.GameEngine.Utils
         /// <summary>
         ///     Draw triangle
         /// </summary>
+        /// <param name="vertexArrayObject"></param>
+        /// <param name="size"></param>
+        /// <param name="postiton"></param>
+        /// <param name="rotation"></param>
+        /// <param name="scale"></param>
         public static void DrawTriangle(int vertexArrayObject, int size, Vector3 postiton, Vector3 rotation, Vector3 scale)
         {
             var t2 = Matrix4.CreateTranslation(postiton);
-            var r3 = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(rotation.Z));//(float)(2 * Math.PI * (rotation.Z / 360)));
+            var r3 = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(rotation.Z));
             var s = Matrix4.CreateScale(scale);
-            Matrix4 _modelView = s * r3 * t2;
+            Matrix4 modelView = s * r3 * t2;
 
             shader.Use();
             GL.BindVertexArray(vertexArrayObject);
             shader.SetMatrix4("projection", ProjectionMatrix);
-            shader.SetMatrix4("model", _modelView);
+            shader.SetMatrix4("model", modelView);
             shader.SetMatrix4("view", Matrix4.CreateTranslation(0.0f, 0.0f, -1.0f));
+            
+            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
             
             GL.DrawElements(PrimitiveType.Triangles, size, DrawElementsType.UnsignedInt, 0);
            
             GL.BindVertexArray(0);
+            
         }
 
         /// <summary>
@@ -142,6 +165,13 @@ namespace Asteroids.OGL.GameEngine.Utils
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        ///     Draw point 
+        /// </summary>
+        /// <param name="vertexArrayObject">Point VAO</param>
+        /// <param name="postiton">pount position</param>
+        /// <param name="rotation">Point rotation</param>
+        /// <param name="scale">Point scale</param>
         public static void DrawPoint(int vertexArrayObject, Vector3 postiton, Vector3 rotation, Vector3 scale)
         {
             var t1 = Matrix4.CreateTranslation(Vector3.Zero);
@@ -173,14 +203,26 @@ namespace Asteroids.OGL.GameEngine.Utils
         /// <param name="x">Coordinate X</param>
         /// <param name="y">Coordinate Y</param>
         /// <param name="scale">Font scale</param>
-        public static void RenderText(string text, float x, float y, float scale)
+        public static void RenderText(string text, Vector3 position, float scale)
         {
-            throw new NotImplementedException();
+            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+            
+            _drawing.DrawingPrimitives.Clear();            
+            _drawing.Print(_font, text, position, QFontAlignment.Left);           
+            _drawing.RefreshBuffers();
+            
+            _drawing.ProjectionMatrix = ProjectionMatrix;
+            _drawing.Draw();
+            
+            GL.Disable(EnableCap.Blend);
         }
-
+        
+        /// <summary>
+        ///     Render sprite on screen
+        /// </summary>
         public static void RenderSprite(/*Sprite sprite*/)
         {
-            throw new NotImplementedException();      
+            SetOrthographic();
         }
         
         #endregion
@@ -192,6 +234,8 @@ namespace Asteroids.OGL.GameEngine.Utils
             GL.UseProgram(0);
             
             shader.Dispose();
+            _drawing.Dispose();
+            _font.Dispose();
         }
     }
 }

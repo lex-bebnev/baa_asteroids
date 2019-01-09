@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using Vector3 = OpenTK.Vector3;
 using AntTweakBar;
+using QuickFont;
+using QuickFont.Configuration;
 
 namespace Asteroids_clone
 {
@@ -78,7 +83,9 @@ namespace Asteroids_clone
 
         private Context context;
         private DoubleVariable FpsLabel;
-        
+
+        private QFontDrawing _drawing;
+        private QFont _font;
         
         public Game(int width, int height, string title): base(width, height, GraphicsMode.Default, title)
         {
@@ -114,15 +121,22 @@ namespace Asteroids_clone
             VSync = VSyncMode.On;
             Color4 backColor = Color4.Black;
             GL.ClearColor(backColor);//0.2f, 0.3f, 0.3f, 1.0f);
-            GL.Enable(EnableCap.DepthTest);
+            GL.Enable(EnableCap.DepthTest);/*
+            GL.DepthFunc(DepthFunction.Less);
+            GL.Enable(EnableCap.CullFace);*/
+            /*GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);*/
+            
+            
             CreateProjection();
             
-            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line); //See polygons
-  
-            //We need to send our vertices over to the graphics card so OpenGL can use them.
-            //To do this, we need to create what's called a Vertex Buffer Object (VBO).
-            PrepareRenderModel();
+            _font = new QFont("/Fonts/HappySans.ttf", 24.0f, new QFontBuilderConfiguration(true));
+            _drawing = new QFontDrawing();
+            
+            //GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line); //See polygons
 
+            PrepareRenderModel();
+            
             Degrees = 0.0f;
         }
 
@@ -182,11 +196,20 @@ namespace Asteroids_clone
             }*/
             
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
+            GL.ClearColor(Color4.Black);
+            
+            _drawing.DrawingPrimitives.Clear();
+            _drawing.Print(_font, "TEXT!!!", new Vector3(50.0f, 100.0f, -1.0f), QFontAlignment.Left);
+            
+            _drawing.RefreshBuffers();
+            _drawing.ProjectionMatrix = projection;
+            _drawing.Draw();
+            GL.Disable(EnableCap.Blend);
+            
             double fps = 1d / e.Time;
             FpsLabel.Value = fps;
             
-            //RenderModel();
+            RenderModel();
             
             context.Draw();
             
@@ -200,7 +223,7 @@ namespace Asteroids_clone
             shader.Use();
             var t2 = Matrix4.CreateTranslation(position.X, position.Y, position.Z);
             var r3 = Matrix4.CreateRotationZ(Degrees);
-            var s = Matrix4.CreateScale(0.5f);
+            var s = Matrix4.CreateScale(100.0f);
             Matrix4 _modelView = r3 * s * t2;
 
             shader.SetMatrix4("projection", projection);
@@ -220,13 +243,15 @@ namespace Asteroids_clone
 
         private void CreateProjection()
         {
-            float fov = 60.0f;
+            /*float fov = 60.0f;
             var aspect = Width / Height;
             projection = Matrix4.CreatePerspectiveFieldOfView(
                 MathHelper.DegreesToRadians(fov), 
                 aspect,
                 0.1f, 
                 4000.0f);
+            */
+            projection = Matrix4.CreateOrthographic((float)Width, (float)Height, 0.1f, 4000f);
         }
     }
 }

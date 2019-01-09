@@ -1,6 +1,7 @@
 ﻿using System;
 using Asteroids.Engine.Components;
 using Asteroids.OGL.GameEngine.Utils;
+using OpenTK;
 
 namespace Asteroids.Game.Components.CommonComponents
 {
@@ -52,12 +53,14 @@ namespace Asteroids.Game.Components.CommonComponents
                 Console.WriteLine("Error: Game object is null");
                 return;
             }
-            
-            Renderer.DrawTriangle(VAO, _verticesCount, 
-                Parent.TransformComponent.Position, 
-                Parent.TransformComponent.Rotation, 
+
+            Renderer.DrawTriangle(VAO, _verticesCount,
+                Parent.TransformComponent.Position,
+                Parent.TransformComponent.Rotation,
                 Parent.TransformComponent.Scale);
-            
+
+            Renderer.RenderText($"{Parent.TransformComponent.Position.X:F1}, {Parent.TransformComponent.Position.Y:F1}", Parent.TransformComponent.Position, 1);
+
             /*Renderer.DrawPoint(_centerVAO, 
                 Parent.TransformComponent.Position, 
                 Parent.TransformComponent.Rotation, 
