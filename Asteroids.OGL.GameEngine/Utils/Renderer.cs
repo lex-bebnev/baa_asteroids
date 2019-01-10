@@ -90,6 +90,11 @@ namespace Asteroids.OGL.GameEngine.Utils
             return new LoadResult(vertexBufferObject, elementBufferObject, vertexArrayObject);
         }
 
+        public static void LoadSprite(float[] vertices, uint[] indices, float[] uvCoordinate)
+        {
+            
+        }
+        
         public static void SetupRenderer(GameWindow window)
         {
             Width = window.Width;
@@ -160,9 +165,24 @@ namespace Asteroids.OGL.GameEngine.Utils
         /// </summary>
         /// <param name="verteces">Array of vertces coordinate (x,y,z)</param>
         /// <param name="colors">Array of verteces color (r,g,b,a)</param>
-        public static void DrawLine(float[] verteces, float[] colors)
+        public static void DrawLineLoop(int vertexArrayObject, int size, Vector3 postiton, Vector3 rotation, Vector3 scale)
         {
-            throw new NotImplementedException();
+            var t2 = Matrix4.CreateTranslation(postiton);
+            var r3 = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(rotation.Z));
+            var s = Matrix4.CreateScale(scale);
+            Matrix4 modelView = s * r3 * t2;
+
+            shader.Use();
+            GL.BindVertexArray(vertexArrayObject);
+            shader.SetMatrix4("projection", ProjectionMatrix);
+            shader.SetMatrix4("model", modelView);
+            shader.SetMatrix4("view", Matrix4.CreateTranslation(0.0f, 0.0f, -1.0f));
+            
+            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+            
+            GL.DrawElements(PrimitiveType.LineLoop, size, DrawElementsType.UnsignedInt, 0);
+           
+            GL.BindVertexArray(0);
         }
 
         /// <summary>
@@ -223,6 +243,7 @@ namespace Asteroids.OGL.GameEngine.Utils
         public static void RenderSprite(/*Sprite sprite*/)
         {
             SetOrthographic();
+            throw new NotImplementedException();
         }
         
         #endregion
