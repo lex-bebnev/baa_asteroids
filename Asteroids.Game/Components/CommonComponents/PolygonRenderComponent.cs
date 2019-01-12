@@ -34,16 +34,16 @@ namespace Asteroids.Game.Components.CommonComponents
 
         private void SetupMesh()
         {
-            Console.WriteLine("Setup mesh for render component...");
+            Console.WriteLine("Setup polygon mesh for render component...");
             LoadResult buffers = Renderer.LoadObject(_vertices, _indices);
             VAO = buffers.VAO;
             VBO = buffers.VBO;
             EBO = buffers.EBO;
             
-            buffers = Renderer.LoadObject(new float[]{0.0f, 0.0f, 0.0f}, new uint[] {0});
-            _centerVAO = buffers.VAO;
+            //buffers = Renderer.LoadObject(new float[]{0.0f, 0.0f, 0.0f}, new uint[] {0});
+            //_centerVAO = buffers.VAO;
 
-            Console.WriteLine("Setup mesh complete.");
+            Console.WriteLine("Setup polygon mesh complete.");
         }
         
         public override void Render()

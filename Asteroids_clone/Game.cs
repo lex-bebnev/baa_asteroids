@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
@@ -19,9 +20,9 @@ namespace Asteroids_clone
         float[] shipVertices =
         {
             //Position          
-             0.0f,   0.25f, 0.0f, 
-            -0.25f,   0.4f, 0.0f, 
-             0.25f,   0.4f, 0.0f, 
+             0.0f,   0.25f, 0.0f,
+            -0.25f,   0.4f, 0.0f,
+             0.25f,   0.4f, 0.0f,
               0.0f,  -0.4f, 0.0f
         };
         uint[] shipIndices =
@@ -29,6 +30,20 @@ namespace Asteroids_clone
             0, 1, 3,
             0, 3, 2
         };
+        uint[] shipIndices2 =
+        {
+            0, 1, 3,
+            1, 2, 3
+        };
+        
+        float[] shipVertices2 =
+        {
+            0.5f,  0.5f, 0.0f, 1.0f, 1.0f, // top right
+            0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // bottom right
+            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // bottom left
+            -0.5f,  0.5f, 0.0f, 0.0f, 1.0f  // top left 
+        };
+        
 
         private float[] UfoVertecies =
         {
@@ -69,10 +84,12 @@ namespace Asteroids_clone
         //private RenderableObject UfoModel;
         //private RenderableObject asteroidModel;
         
+        Textures texture;
         
         private int VertexBufferObject;
         private int VertexArrayObject;
         Shader shader;
+        Shader spriteShader;
         private int ElementBufferObject;
         private float Degrees;
         
@@ -89,8 +106,6 @@ namespace Asteroids_clone
         
         public Game(int width, int height, string title): base(width, height, GraphicsMode.Default, title)
         {
-            
-            
             Console.WriteLine("Initialization...");
             //InputManager.Initialize(this);
 
@@ -133,6 +148,8 @@ namespace Asteroids_clone
             _font = new QFont("/Fonts/HappySans.ttf", 24.0f, new QFontBuilderConfiguration(true));
             _drawing = new QFontDrawing();
             
+           
+            
             //GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line); //See polygons
 
             PrepareRenderModel();
@@ -144,12 +161,12 @@ namespace Asteroids_clone
         {
             VertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, shipVertices.Length * sizeof(float), shipVertices,
+            GL.BufferData(BufferTarget.ArrayBuffer, shipVertices2.Length * sizeof(float), shipVertices2,
                 BufferUsageHint.StaticDraw);
 
             ElementBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, shipIndices.Length * sizeof(uint), shipIndices,
+            GL.BufferData(BufferTarget.ElementArrayBuffer, shipIndices2.Length * sizeof(uint), shipIndices2,
                 BufferUsageHint.StaticDraw);
 
             shader = new Shader("shader.vert", "shader.frag");
@@ -163,8 +180,47 @@ namespace Asteroids_clone
 
             int vertexLocation = shader.GetAttribLocation("aPosition");
             GL.EnableVertexAttribArray(vertexLocation);
-            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+            
+            int texCoordLocation = shader.GetAttribLocation("aTexCoord");
+            GL.EnableVertexAttribArray(texCoordLocation);
+            GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
         }
+
+        private void PrepareSprite()
+        {
+            VertexBufferObject = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, shipVertices2.Length * sizeof(float), shipVertices2,
+                BufferUsageHint.StaticDraw);
+
+            ElementBufferObject = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, shipIndices2.Length * sizeof(uint), shipIndices2,
+                BufferUsageHint.StaticDraw);
+
+            shader = new Shader("shader.vert", "shader.frag");
+            spriteShader = new Shader("spriteShader.vert", "spriteShader.frag");
+            spriteShader.Use();
+
+            texture = new Textures("D:\\gameProjects\\Asteroids_clone\\Asteroids_clone\\Fonts\\asteroid-3.png");
+            texture.Use();
+            
+            VertexArrayObject = GL.GenVertexArray();
+            GL.BindVertexArray(VertexArrayObject);
+
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexArrayObject);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
+
+            int vertexLocation = shader.GetAttribLocation("aPosition");
+            GL.EnableVertexAttribArray(vertexLocation);
+            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+            
+            int texCoordLocation = shader.GetAttribLocation("aTexCoord");
+            GL.EnableVertexAttribArray(texCoordLocation);
+            GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+        }
+        
 
         private void OnUpdateFrame(object sender, FrameEventArgs e)
         {
@@ -204,13 +260,13 @@ namespace Asteroids_clone
             _drawing.RefreshBuffers();
             _drawing.ProjectionMatrix = projection;
             _drawing.Draw();
-            GL.Disable(EnableCap.Blend);
+            
             
             double fps = 1d / e.Time;
             FpsLabel.Value = fps;
             
             RenderModel();
-            
+            GL.Disable(EnableCap.Blend);
             context.Draw();
             
             SwapBuffers();
@@ -221,9 +277,10 @@ namespace Asteroids_clone
             GL.BindVertexArray(VertexArrayObject);
 
             shader.Use();
+            texture.Use();
             var t2 = Matrix4.CreateTranslation(position.X, position.Y, position.Z);
             var r3 = Matrix4.CreateRotationZ(Degrees);
-            var s = Matrix4.CreateScale(100.0f);
+            var s = Matrix4.CreateScale(50.0f);
             Matrix4 _modelView = r3 * s * t2;
 
             shader.SetMatrix4("projection", projection);

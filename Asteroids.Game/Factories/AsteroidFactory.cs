@@ -32,7 +32,8 @@ namespace Asteroids.Game.Factories
                     new Vector3(scale, scale, 1.0f), 
                     Vector3.Zero)
             );
-            asteroid.AddComponent(rendererComponent);
+            //asteroid.AddComponent(rendererComponent);
+            asteroid.AddComponent(new SpriteRendererComponent("asteroid-2.png"));
             asteroid.AddComponent(new PhysicsComponent());
             asteroid.AddComponent(new AsteroidAiComponent(minVelocity,maxVelocity));
             asteroid.AddComponent(new BulletCollisionsComponent(gameWorld, 20.0f, 20.0f, isBreaking));
@@ -66,7 +67,7 @@ namespace Asteroids.Game.Factories
                 int angleVary = r.Next(minVary, maxVary);
                 var angleVaryRadians = (tau / granularity) * angleVary / 100;
                 var angleFinal = angle + angleVaryRadians - (Math.PI / granularity);
-                int radius = r.Next(minRadius, maxRadius);
+                float radius = r.Next(minRadius, maxRadius) / 100.0f;
 
                 float x = (float) Math.Sin(angleFinal) * radius;
                 float y = (float) -Math.Cos(angleFinal) * radius;

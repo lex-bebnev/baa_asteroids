@@ -45,7 +45,8 @@ namespace Asteroids.Game.Factories
                     scale, 
                     new Vector3(0.0f, 0.0f, 0.0f))
             );
-            ufo.AddComponent(new PolygonRenderComponent(mesh.VAO, UfoIndeces.Length));
+            //ufo.AddComponent(new PolygonRenderComponent(mesh.VAO, UfoIndeces.Length));
+            ufo.AddComponent(new SpriteRendererComponent("ufo-2.png"));
             ufo.AddComponent(new PhysicsComponent());
             ufo.AddComponent(new UfoAiComponent(gameWotld));
             ufo.AddComponent(new BulletCollisionsComponent(gameWotld, 20.0f, 20.0f));

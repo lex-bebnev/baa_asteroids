@@ -43,12 +43,12 @@ namespace Asteroids.Game.States
             
             AddGameObject(_player);
             
-            AddGameObject(UfoFactory.GetUfoGameObject(new Vector3(-300.0f, -150.0f, -2.0f), new Vector3(45.0f, 35.0f, 1.0f), this));
-            AddGameObject(UfoFactory.GetUfoGameObject(new Vector3(300.0f, 150.0f, -2.0f), new Vector3(45.0f, 35.0f, 1.0f), this));
+            AddGameObject(UfoFactory.GetUfoGameObject(new Vector3(-300.0f, -150.0f, -2.0f), new Vector3(45.0f, 25.0f, 1.0f), this));
+            AddGameObject(UfoFactory.GetUfoGameObject(new Vector3(300.0f, 150.0f, -2.0f), new Vector3(45.0f, 25.0f, 1.0f), this));
            
-            AddGameObject(AsteroidFactory.GetAsteroid(new Vector3(50.0f, 0.0f, -2.0f), 1.0f, this));
-            AddGameObject(AsteroidFactory.GetAsteroid(new Vector3(400.0f, -200.0f, -2.0f), 1.0f, this));
-            AddGameObject(AsteroidFactory.GetAsteroid(new Vector3(-350.0f, -230.0f, -2.0f), 1.0f, this));
+            AddGameObject(AsteroidFactory.GetAsteroid(new Vector3(50.0f, 0.0f, -2.0f), 50.0f, this));
+            AddGameObject(AsteroidFactory.GetAsteroid(new Vector3(400.0f, -200.0f, -2.0f), 50.0f, this));
+            AddGameObject(AsteroidFactory.GetAsteroid(new Vector3(-350.0f, -230.0f, -2.0f), 50.0f, this));
             
             IsReady = true;
             Console.WriteLine("Load gamestate complete");
@@ -119,8 +119,9 @@ namespace Asteroids.Game.States
                     new Vector3(45.0f, 45.0f, 1.0f),
                     new Vector3(0.0f, -1.0f, 0.0f)));
             
-            player.AddComponent(new PolygonRenderComponent(shipVertices, shipIndices));     
-            player.AddComponent(new ControllerComponent());     
+            //player.AddComponent(new PolygonRenderComponent(shipVertices, shipIndices));     
+            player.AddComponent(new SpriteRendererComponent("ship-1.png"));
+            player.AddComponent(new ControllerComponent());
             player.AddComponent(new PhysicsComponent());
             player.AddComponent(new GunComponent(this));
             player.AddComponent(new CoordinateComponent());
