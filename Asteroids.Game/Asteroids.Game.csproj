@@ -58,10 +58,12 @@
     <Compile Include="Components\PlayerComponents\PlayerStateComponent.cs" />
     <Compile Include="Factories\AsteroidFactory.cs" />
     <Compile Include="Factories\BulletFactory.cs" />
+    <Compile Include="Factories\PlayerFatory.cs" />
     <Compile Include="Factories\UfoFactory.cs" />
     <Compile Include="GameWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="States\MenuGameState.cs" />
     <Compile Include="States\SandboxGameState.cs" />
   </ItemGroup>
   <ItemGroup>

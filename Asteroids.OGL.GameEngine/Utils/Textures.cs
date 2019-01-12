@@ -107,7 +107,7 @@ namespace Asteroids.OGL.GameEngine.Utils
 
         ~Texture()
         {
-            GL.DeleteProgram(Handle);
+            //GL.DeleteProgram(Handle);
         }
 
         public void Dispose()

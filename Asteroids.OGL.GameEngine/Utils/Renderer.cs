@@ -241,11 +241,12 @@ namespace Asteroids.OGL.GameEngine.Utils
             Matrix4 modelView = GetModelViewMatrix(postiton, rotation, scale);
 
             GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
-            GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             
             SetShaderData(vertexArrayObject, modelView, SpriteShader);
             texture.Use();
+            
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             
             GL.DrawElements(PrimitiveType.Triangles, size, DrawElementsType.UnsignedInt, 0);
            

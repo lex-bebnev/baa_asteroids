@@ -10,8 +10,10 @@ using Asteroids.Game.Components.CommonComponents;
 using Asteroids.Game.Components.EnemyComponents;
 using Asteroids.Game.Components.PlayerComponents;
 using Asteroids.Game.Factories;
+using Asteroids.OGL.GameEngine.Managers;
 using Asteroids.OGL.GameEngine.Utils;
 using OpenTK;
+using OpenTK.Input;
 
 namespace Asteroids.Game.States
 {
@@ -66,7 +68,15 @@ namespace Asteroids.Game.States
         {
             if(!IsReady) return;
 
-            if (!GameLogicUpdate()) return;
+            if (!GameLogicUpdate())
+            {
+                if (InputManager.KeyDown(Key.Enter))
+                {
+                    _gameObjects = new List<GameObject>();
+                    Load();
+                }
+                return;
+            }
             
             for (int i = 0; i < _gameObjects.Count; i++)
             {
@@ -85,7 +95,8 @@ namespace Asteroids.Game.States
 
             if (!GameLogicUpdate())
             {
-                Renderer.RenderText("GAME OVER", new Vector3(-25.0f, 100.0f, -1.0f), 1);
+                Renderer.RenderText("GAME OVER", new Vector3(-45.0f, 50.0f, -1.0f), 1);
+                Renderer.RenderText("Press \"ENTER\" to restart", new Vector3(-100.0f, -150.0f, -1.0f), 1);
             }
         }
 
