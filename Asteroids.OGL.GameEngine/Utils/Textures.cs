@@ -88,11 +88,11 @@ namespace Asteroids.OGL.GameEngine.Utils
             GL.BindTexture(TextureTarget.Texture2D, Handle);
         }
 
-        private bool disposedValue = false;
+        private bool _disposedValue = false;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
@@ -101,7 +101,7 @@ namespace Asteroids.OGL.GameEngine.Utils
 
                 GL.DeleteProgram(Handle);
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

@@ -8,28 +8,28 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace Asteroids.OGL.GameEngine
 {
+    /// <inheritdoc />
+    /// <summary>
+    ///     Main engine class with Gameloop
+    /// </summary>
     public abstract class BaseEngine: GameWindow
     {    
-        public int ScreenWidth { get { return this.Width; } }
-        public int ScreenHeight { get { return this.Height; } }
-
-        protected GameClock _timer;
+        protected GameClock Timer;
         
-        public BaseEngine(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
+        public BaseEngine(int width, int height, string title) 
+            : base(width, height, GraphicsMode.Default, title)
         {
-            Console.WriteLine("Initialization...");
+            Console.WriteLine("Engine initialization...");
             
             InputManager.Initialize(this);
-            //Renderer.SetupRenderer(this);
             InitializeStatesInternal();
 
-            _timer = new GameClock();
+            Timer = new GameClock();
             
             Console.WriteLine(GL.GetString(StringName.Version));
             
-            Console.WriteLine("Initialization complete.");
+            Console.WriteLine("Engine initialization complete.");
         }
-
         
         #region Internal
         
@@ -69,16 +69,14 @@ namespace Asteroids.OGL.GameEngine
             base.OnLoad(e);
         }
        
-        //TODO Try to subscribe to the event instead override
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
             InputManager.Update();
             
-            Update(_timer.GetElaspedSeconds());
+            Update(Timer.GetElaspedSeconds());
         }
         
-        //TODO Try to subscribe to the event instead override
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);

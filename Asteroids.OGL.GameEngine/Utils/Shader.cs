@@ -29,33 +29,33 @@ namespace Asteroids.OGL.GameEngine.Utils
 
             //Load vertex shader and compile
             //LoadSource is a simple function that just loads all text from the file whose path is given.
-            string VertexShaderSource = LoadSource($"Shaders/{vertPath}");
+            string vertexShaderSource = LoadSource($"Shaders/{vertPath}");
 
             //GL.CreateShader will create an empty shader (obviously). The ShaderType enum denotes which type of shader will be created.
             VertexShader = GL.CreateShader(ShaderType.VertexShader);
 
             //Now, bind the GLSL source code
-            GL.ShaderSource(VertexShader, VertexShaderSource);
+            GL.ShaderSource(VertexShader, vertexShaderSource);
 
             //And then compile
             GL.CompileShader(VertexShader);
 
             //Check for compile errors
             string infoLogVert = GL.GetShaderInfoLog(VertexShader);
-            if (infoLogVert != System.String.Empty)
-                System.Console.WriteLine(infoLogVert);
+            if (infoLogVert != String.Empty)
+                Console.WriteLine(infoLogVert);
 
 
             //Do the same thing for the fragment shader
-            string FragmentShaderSource = LoadSource($"Shaders/{fragPath}");
+            string fragmentShaderSource = LoadSource($"Shaders/{fragPath}");
             FragmentShader = GL.CreateShader(ShaderType.FragmentShader);
-            GL.ShaderSource(FragmentShader, FragmentShaderSource);
+            GL.ShaderSource(FragmentShader, fragmentShaderSource);
             GL.CompileShader(FragmentShader);
 
             //Check for compile errors
             string infoLogFrag = GL.GetShaderInfoLog(VertexShader);
-            if (infoLogFrag != System.String.Empty)
-                System.Console.WriteLine(infoLogFrag);
+            if (infoLogFrag != String.Empty)
+                Console.WriteLine(infoLogFrag);
 
 
             //These two shaders must then be merged into a shader program, which can then be used by OpenGL.
@@ -71,8 +71,8 @@ namespace Asteroids.OGL.GameEngine.Utils
 
             //Check for linker errors
             string infoLogLink = GL.GetShaderInfoLog(VertexShader);
-            if (infoLogLink != System.String.Empty)
-                System.Console.WriteLine(infoLogLink);
+            if (infoLogLink != String.Empty)
+                Console.WriteLine(infoLogLink);
 
             //Now that it's done, clean up.
             //When the shader program is linked, it no longer needs the individual shaders attacked to it; the compiled code is copied into the shader program.
@@ -127,11 +127,11 @@ namespace Asteroids.OGL.GameEngine.Utils
         //This section is dedicated to cleaning up the shader after it's finished.
         //Doing this solely in a finalizer results in a crash because of the Object-Oriented Language Problem
         //( https://www.khronos.org/opengl/wiki/Common_Mistakes#The_Object_Oriented_Language_Problem )
-        private bool disposedValue = false;
+        private bool _disposedValue = false;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
@@ -140,7 +140,7 @@ namespace Asteroids.OGL.GameEngine.Utils
 
                 GL.DeleteProgram(Handle);
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 
