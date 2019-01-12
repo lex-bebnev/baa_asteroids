@@ -8,8 +8,8 @@ namespace Asteroids.Engine.Managers
     /// </summary>
     public static class StateManager
     {
-        private static Dictionary<string, IGameState> _gameStatesDictionary = new Dictionary<string, IGameState>();
-        private static IGameState _currentGameState = null;
+        private static Dictionary<string, IGameState> GameStatesDictionary = new Dictionary<string, IGameState>();
+        private static IGameState CurrentGameState = null;
 
         /// <summary>
         ///     Update current state
@@ -17,7 +17,7 @@ namespace Asteroids.Engine.Managers
         /// <param name="elapsedTime">Time since last update</param>
         public static void Update(float elapsedTime)
         {
-            _currentGameState?.Update(elapsedTime);
+            CurrentGameState?.Update(elapsedTime);
         }
 
         /// <summary>
@@ -26,8 +26,8 @@ namespace Asteroids.Engine.Managers
         /// <param name="newState"></param>
         public static void AddState(IGameState newState)
         {
-            _gameStatesDictionary.Add(newState.Name, newState);
-            _currentGameState = newState;
+            GameStatesDictionary.Add(newState.Name, newState);
+            CurrentGameState = newState;
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Asteroids.Engine.Managers
         /// <returns></returns>
         public static IGameState GetCurrentGameState()
         {
-            return _currentGameState;
+            return CurrentGameState;
         }
     }
 }

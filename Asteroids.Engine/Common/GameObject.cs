@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using Asteroids.Engine.Components;
 using Asteroids.Engine.Interfaces;
 using IComponent = Asteroids.Engine.Components.Interfaces.IComponent;
@@ -28,6 +26,10 @@ namespace Asteroids.Engine.Common
             TransformComponent.Parent = this; //TODO refactoring, add in component list
         }
 
+        /// <summary>
+        ///     Add component to the game object
+        /// </summary>
+        /// <param name="component">Component</param>
         public void AddComponent(IComponent component)
         {
             //TODO Make sure that this type of component is not added to the object.
@@ -45,7 +47,7 @@ namespace Asteroids.Engine.Common
         {
             if (typeof(T) == typeof(TransformComponent)) return TransformComponent;
             
-            foreach (var component in _components)
+            foreach (IComponent component in _components)
             {
                 if (component.GetType() == typeof(T)) return (T)component;
             }
@@ -58,9 +60,9 @@ namespace Asteroids.Engine.Common
         /// </summary>
         /// <param name="elapsed">Time elapsed since last update</param>
         /// <param name="world">Parent component of game object</param>
-        public virtual void Update(float elapsed, IGameState world)
+        public void Update(float elapsed, IGameState world)
         {
-            foreach (var component in _components)
+            foreach (IComponent component in _components)
             {
                 component.Update(elapsed);
             }
@@ -70,9 +72,9 @@ namespace Asteroids.Engine.Common
         /// <summary>
         ///     Render game object on screen
         /// </summary>
-        public virtual void Render()
+        public void Render()
         {
-            foreach (var component in _components)
+            foreach (IComponent component in _components)
             {
                 component.Render();
             }

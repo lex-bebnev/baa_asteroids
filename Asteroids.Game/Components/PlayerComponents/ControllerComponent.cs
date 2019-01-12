@@ -8,7 +8,7 @@ namespace Asteroids.Game.Components.PlayerComponents
     {
         private static float VELOCITY = 150.0f;
         private static float ANGULAR_VELOCITY = 180.0f;
-        private static float DGAR_FACTOR = 0.001f;
+        private static float DGAR_FACTOR = 0.25f;
         
         
         public override void Update(float elapsedTime)

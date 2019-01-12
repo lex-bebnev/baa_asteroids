@@ -8,15 +8,8 @@ namespace Asteroids.Engine.Components
     {
         public GameObject Parent { get; set; }
         
-        /// <summary>
-        ///     Update component state
-        /// </summary>
-        /// <param name="elapsedTime"></param>
         public virtual void Update(float elapsedTime) {}
 
-        /// <summary>
-        ///     Render component
-        /// </summary>
         public virtual void Render() {}
     }
 }
