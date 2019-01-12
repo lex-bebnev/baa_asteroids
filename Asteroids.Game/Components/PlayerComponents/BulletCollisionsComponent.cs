@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Asteroids.Engine.Common;
 using Asteroids.Engine.Components;
 using Asteroids.Engine.Interfaces;
 using Asteroids.Game.Factories;
 using Asteroids.OGL.GameEngine.Utils;
+using OpenTK;
 
 namespace Asteroids.Game.Components.PlayerComponents
 {
@@ -13,8 +16,6 @@ namespace Asteroids.Game.Components.PlayerComponents
         private float _width;
         private float _height;
         private bool _isBreaking;
-
-        private int VAO;
         
         public BulletCollisionsComponent(IGameState gameWorld, float width, float height, bool isBreaking = false)
         {
@@ -25,26 +26,22 @@ namespace Asteroids.Game.Components.PlayerComponents
             float x = _width / 2.0f;
             float y = _height / 2.0f;
             _isBreaking = isBreaking;
-            
-            VAO = Renderer.LoadObject(new float[]{x,y,0.0f, -x,y,0.0f, x,-y,0.0f, -x,-y,0.0f}, new uint[]{0,1,2, 1,3,2}).VAO;
         }
 
         public override void Update(float elapsedTime)
         {
-            var colideObjects = _gameWorld.GameObjects.Where(item => item.Tag == "Bullet").Select(item => item);
-            var playerObject = _gameWorld.GameObjects.Where(item => item.Tag == "Player").Select(item => item).SingleOrDefault();
-            var playerState = (PlayerStateComponent) playerObject?.GetComponent<PlayerStateComponent>();
+            IEnumerable<GameObject> colideObjects = _gameWorld.GameObjects.Where(item => item.Tag == "Bullet").Select(item => item);
+            GameObject playerObject = _gameWorld.GameObjects.Where(item => item.Tag == "Player").Select(item => item).SingleOrDefault();
+            PlayerStateComponent playerState = (PlayerStateComponent) playerObject?.GetComponent<PlayerStateComponent>();
             
-            var positionTwo = Parent.TransformComponent.Position;
-            foreach (var colideObject in colideObjects)
+            Vector3 positionTwo = Parent.TransformComponent.Position;
+            foreach (GameObject colideObject in colideObjects)
             {
-                //float coliderSize = 20.0f; //TODO Unnecessary
-                
-                var positionOne = colideObject.TransformComponent.Position;
-                bool collisionX = (positionOne.X + _width/*coliderSize*/) >= positionTwo.X &&
-                                  (positionTwo.X + _width/*coliderSize*/) >= positionOne.X;
-                bool collisionY = (positionOne.Y + _height/*coliderSize*/) >= positionTwo.Y &&
-                                  (positionTwo.Y + _height/*coliderSize*/) >= positionOne.Y;
+                Vector3 positionOne = colideObject.TransformComponent.Position;
+                bool collisionX = (positionOne.X + _width) >= positionTwo.X &&
+                                  (positionTwo.X + _width) >= positionOne.X;
+                bool collisionY = (positionOne.Y + _height) >= positionTwo.Y &&
+                                  (positionTwo.Y + _height) >= positionOne.Y;
                 
                 if (!(collisionX && collisionY)) continue;
                 _gameWorld.GameObjects.Remove(colideObject);
@@ -59,14 +56,9 @@ namespace Asteroids.Game.Components.PlayerComponents
         {
             if (Parent.Tag != "Asteroid" || !_isBreaking) return;
 
-            _gameWorld.AddGameObject(AsteroidFactory.GetAsteroid(Parent.TransformComponent.Position, 0.3f, _gameWorld, false));
-            _gameWorld.AddGameObject(AsteroidFactory.GetAsteroid(Parent.TransformComponent.Position, 0.4f,_gameWorld, false));
-            _gameWorld.AddGameObject(AsteroidFactory.GetAsteroid(Parent.TransformComponent.Position, 0.3f,_gameWorld, false));
-        }
-        
-        public override void Render()
-        {
-            //Renderer.DrawTriangle(VAO, 6, Parent.TransformComponent.Position, Parent.TransformComponent.Rotation, Parent.TransformComponent.Scale);
+            _gameWorld.AddGameObject(AsteroidFactory.GetAsteroid(Parent.TransformComponent.Position, 25.0f, _gameWorld, false));
+            _gameWorld.AddGameObject(AsteroidFactory.GetAsteroid(Parent.TransformComponent.Position, 30.0f, _gameWorld, false));
+            _gameWorld.AddGameObject(AsteroidFactory.GetAsteroid(Parent.TransformComponent.Position, 25.0f, _gameWorld, false));
         }
     }
 }

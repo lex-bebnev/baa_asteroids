@@ -5,36 +5,29 @@ namespace Asteroids.Game.Components.CommonComponents
 {
     public class SpriteRendererComponent: BaseComponent
     {
-        private static readonly float[] _verteces = new float[] {
+        private static readonly float[] Verteces = new float[] {
             0.5f,  0.5f, 0.0f,      1.0f, 1.0f, 
             0.5f, -0.5f, 0.0f,      1.0f, 0.0f, 
             -0.5f, -0.5f, 0.0f,     0.0f, 0.0f,
             -0.5f,  0.5f, 0.0f,     0.0f, 1.0f  };
-        private static readonly int _vertexCount = 6;
-        private static readonly uint[] _indices = new uint[] { 
+        private static readonly int VertexCount = 6;
+        private static readonly uint[] Indices = new uint[] { 
             0, 1, 3,
             1, 2, 3 };
-        /*
-        private static int _gpuVertexBufferHandle;*/
+        
         private Texture _gpuTexture;
-        private int VAO;
-        private int VBO;
-        private int EBO;
-        
-        
+        private LoadResult _gpuBindedData;
+
         public SpriteRendererComponent(string spriteName)
         {
             _gpuTexture = new Texture($"D:\\gameProjects\\Asteroids_clone\\Asteroids.Game\\Resources\\Sprites\\{spriteName}");
-            LoadResult buffers = Renderer.LoadSprite(_verteces, _indices, _gpuTexture);
-            VAO = buffers.VAO;
-            VBO = buffers.VBO;
-            EBO = buffers.EBO;
+            _gpuBindedData = Renderer.LoadSprite(Verteces, Indices, _gpuTexture);
         }
 
         public override void Render()
         {
-            Renderer.RenderSprite(VAO, 
-                _vertexCount,
+            Renderer.RenderSprite(_gpuBindedData.VAO, 
+                VertexCount,
                 _gpuTexture, 
                 Parent.TransformComponent.Position,
                 Parent.TransformComponent.Rotation,

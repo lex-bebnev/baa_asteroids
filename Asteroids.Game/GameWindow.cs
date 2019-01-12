@@ -8,19 +8,20 @@ namespace Asteroids.Game
 {
     public class GameWindow: BaseEngine
     {
-        private Dictionary<string, IGameState> _gameStates = new Dictionary<string, IGameState>();
+        private readonly Dictionary<string, IGameState> _gameStates = new Dictionary<string, IGameState>();
         private IGameState _currentGameState;
         
-        public GameWindow(int width, int height, string title) : base(width, height, title)
-        {
-        }
+        public GameWindow(int width, int height, string title)
+            : base(width, height, title) {}
         
         public override void InitializeStates()
         {
             Console.WriteLine("Initialize GameState...");
+            
             var level = new SandboxGameState("Level");
             _gameStates.Add(level.Name, level);
             _currentGameState = level;
+            
             Console.WriteLine("Initialize GameState complete");
         }
 

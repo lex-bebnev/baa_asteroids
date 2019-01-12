@@ -45,5 +45,9 @@ namespace Asteroids.Engine.Interfaces
         /// </summary>
         void Render();
         
+        /// <summary>
+        ///     Size of the world - example 800 X 600 
+        /// </summary>
+        float[] GameWorldSize { get; }
     }
 }

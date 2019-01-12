@@ -5,13 +5,13 @@ namespace Asteroids.Game.Components.PlayerComponents
 {
     public class LifetimeComponent: BaseComponent
     {
-        private float _baseTTL;
-        private IGameState _gameWorld;
+        private readonly float _timeToLive;
+        private readonly IGameState _gameWorld;
         private float _liveTime;
         
-        public LifetimeComponent(IGameState world, float baseTtl)
+        public LifetimeComponent(IGameState world, float timeToLive)
         {
-            _baseTTL = baseTtl;
+            _timeToLive = timeToLive;
             _gameWorld = world;
             _liveTime = 0;
         }
@@ -19,7 +19,7 @@ namespace Asteroids.Game.Components.PlayerComponents
         public override void Update(float elapsedTime)
         {
             _liveTime += elapsedTime;
-            if (_liveTime > _baseTTL)
+            if (_liveTime > _timeToLive)
             {
                 _gameWorld.GameObjects.Remove(Parent);
             }

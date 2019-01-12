@@ -8,6 +8,8 @@ namespace Asteroids.Game.Components.EnemyComponents
         private static Random Randomizer = new Random();
         private float _velocity;
         private float _angularVelocity;
+        private PhysicsComponent _physics;
+        
         
         public AsteroidAiComponent(int minVelocity, int maxVelocity)
         {
@@ -17,10 +19,14 @@ namespace Asteroids.Game.Components.EnemyComponents
 
         public override void Update(float elapsedTime)
         {
-            PhysicsComponent physics = (PhysicsComponent)Parent.GetComponent<PhysicsComponent>();
-            if(physics == null) return;
-            physics.Velocity = _velocity;
-            physics.AngularVelocity = _angularVelocity;
+            if (_physics == null)
+            {
+                _physics = (PhysicsComponent)Parent.GetComponent<PhysicsComponent>();
+                if (_physics == null) return;
+            }
+            
+            _physics.Velocity = _velocity;
+            _physics.AngularVelocity = _angularVelocity;
         }
     }
 }

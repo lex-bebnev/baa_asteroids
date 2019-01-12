@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Asteroids.Engine.Common;
 using Asteroids.Engine.Components;
 using Asteroids.Engine.Interfaces;
+using OpenTK;
 
 namespace Asteroids.Game.Components.PlayerComponents
 {
     public class PlayerCollisionsComponent: BaseComponent
     {
-        private IGameState _gameWorld;
-        private float _width;
-        private float _height;
+        private readonly IGameState _gameWorld;
+        private readonly float _width;
+        private readonly float _height;
 
         public PlayerCollisionsComponent(IGameState gameWorld, float width, float height)
         {
@@ -20,21 +23,19 @@ namespace Asteroids.Game.Components.PlayerComponents
 
         public override void Update(float elapsedTime)
         {
-            var colideObjects = _gameWorld.GameObjects.Where(item => item.Tag == "Asteroid" || item.Tag == "Ufo").Select(item => item);
-            var positionTwo = Parent.TransformComponent.Position;
-            foreach (var colideObject in colideObjects)
+            IEnumerable<GameObject> colideObjects = _gameWorld.GameObjects.Where(item => item.Tag == "Asteroid" || item.Tag == "Ufo").Select(item => item);
+            Vector3 positionTwo = Parent.TransformComponent.Position;
+            foreach (GameObject colideObject in colideObjects)
             {
-                float coliderSize = 20.0f; //TODO Unnecessary
-                
-                var positionOne = colideObject.TransformComponent.Position;
-                bool collisionX = (positionOne.X + _width/*coliderSize*/) >= positionTwo.X &&
-                                  (positionTwo.X + _width/*coliderSize*/) >= positionOne.X;
-                bool collisionY = (positionOne.Y + _height/*coliderSize*/) >= positionTwo.Y &&
-                                  (positionTwo.Y + _height/*coliderSize*/) >= positionOne.Y;
+                Vector3 positionOne = colideObject.TransformComponent.Position;
+                bool collisionX = (positionOne.X + _width) >= positionTwo.X &&
+                                  (positionTwo.X + _width) >= positionOne.X;
+                bool collisionY = (positionOne.Y + _height) >= positionTwo.Y &&
+                                  (positionTwo.Y + _height) >= positionOne.Y;
                 
                 if (!(collisionX && collisionY)) continue;
-                //_gameWorld.GameObjects.Remove(Parent);
-                var playerState = (PlayerStateComponent)Parent.GetComponent<PlayerStateComponent>();
+                
+                PlayerStateComponent playerState = (PlayerStateComponent)Parent.GetComponent<PlayerStateComponent>();
                 if(playerState != null)
                     playerState.IsAlive = false;
                 return;

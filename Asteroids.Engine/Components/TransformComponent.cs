@@ -16,5 +16,13 @@ namespace Asteroids.Engine.Components
             Scale = scale;
             Direction = direction;
         }
+
+        public TransformComponent(Vector3 position, Vector3 scale): this(position, Vector3.Zero, scale, Vector3.Zero)
+        {
+        }
+
+        public TransformComponent(): this(Vector3.Zero, Vector3.Zero, Vector3.One, Vector3.Zero)
+        {
+        }
     }
 }

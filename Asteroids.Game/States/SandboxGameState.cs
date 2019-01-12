@@ -19,7 +19,9 @@ namespace Asteroids.Game.States
     {
         public string Name { get; }
         public bool IsReady { get; private set; }
-
+        public float[] GameWorldSize { get; } = { 800.0f, 600.0f}; //Width and height 2D world
+        
+        
         private IList<GameObject> _gameObjects;
         public IList<GameObject> GameObjects
         {
@@ -124,7 +126,7 @@ namespace Asteroids.Game.States
             player.AddComponent(new ControllerComponent());
             player.AddComponent(new PhysicsComponent());
             player.AddComponent(new GunComponent(this));
-            player.AddComponent(new CoordinateComponent());
+            player.AddComponent(new CoordinateComponent(this));
             player.AddComponent(new PlayerCollisionsComponent(this, 20.0f, 20.0f));
             player.AddComponent(new PlayerStateComponent());
 

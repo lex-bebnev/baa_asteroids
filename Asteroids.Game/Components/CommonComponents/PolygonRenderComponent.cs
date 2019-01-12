@@ -40,9 +40,6 @@ namespace Asteroids.Game.Components.CommonComponents
             VBO = buffers.VBO;
             EBO = buffers.EBO;
             
-            //buffers = Renderer.LoadObject(new float[]{0.0f, 0.0f, 0.0f}, new uint[] {0});
-            //_centerVAO = buffers.VAO;
-
             Console.WriteLine("Setup polygon mesh complete.");
         }
         
@@ -58,14 +55,8 @@ namespace Asteroids.Game.Components.CommonComponents
                 Parent.TransformComponent.Position,
                 Parent.TransformComponent.Rotation,
                 Parent.TransformComponent.Scale);
-
-            Renderer.RenderText($"{Parent.TransformComponent.Position.X:F1}, {Parent.TransformComponent.Position.Y:F1}", Parent.TransformComponent.Position, 1);
-
-            /*Renderer.DrawPoint(_centerVAO, 
-                Parent.TransformComponent.Position, 
-                Parent.TransformComponent.Rotation, 
-                Parent.TransformComponent.Scale);
-        */
+            
+            //Renderer.RenderText($"{Parent.TransformComponent.Position.X:F1}, {Parent.TransformComponent.Position.Y:F1}", Parent.TransformComponent.Position, 1);
         }
           
     }

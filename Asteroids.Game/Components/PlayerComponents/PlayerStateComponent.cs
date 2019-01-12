@@ -7,15 +7,9 @@ namespace Asteroids.Game.Components.PlayerComponents
 {
     public class PlayerStateComponent: BaseComponent
     {
-        private bool _isAlive = true;
         private int _score = 0;
         
-        public bool IsAlive
-        {
-            get => _isAlive;
-            set => _isAlive = value;
-        }
-        
+        public bool IsAlive { get; set; } = true;
         public int Score
         {
             get => _score;

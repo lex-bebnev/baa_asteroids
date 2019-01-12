@@ -12,7 +12,7 @@ namespace Asteroids.Game.Factories
 {
     public static class UfoFactory
     {
-        static float[] UfoVertecies =
+        private static readonly float[] UfoVertecies =
         {
             -0.5f, 0.0f, 0.0f,
             0.5f, 0.0f, 0.0f,
@@ -23,7 +23,7 @@ namespace Asteroids.Game.Factories
             -0.05f, 0.5f, 0.0f,
             0.05f, 0.5f, 0.0f
         };
-        static uint[] UfoIndeces =
+        private static readonly uint[] UfoIndeces =
         {
             0, 1, 2,
             1, 2, 3,
@@ -33,24 +33,24 @@ namespace Asteroids.Game.Factories
             4, 5, 7
         };
 
+        private static LoadResult? GpuBindedPolygonData;
+        
         public static GameObject GetUfoGameObject(Vector3 coordinate, Vector3 scale, IGameState gameWotld)
         {
-            //TODO Load only once 
-            var mesh = Renderer.LoadObject(UfoVertecies, UfoIndeces);
+            if(!GpuBindedPolygonData.HasValue) 
+                GpuBindedPolygonData = Renderer.LoadObject(UfoVertecies, UfoIndeces);
             
             GameObject ufo = new GameObject(
                 "Ufo",
-                new TransformComponent(coordinate,
-                    new Vector3(0.0f, 0.0f, 0.0f), 
-                    scale, 
-                    new Vector3(0.0f, 0.0f, 0.0f))
+                new TransformComponent(coordinate, scale)
             );
-            //ufo.AddComponent(new PolygonRenderComponent(mesh.VAO, UfoIndeces.Length));
+            
+            //ufo.AddComponent(new PolygonRenderComponent(GpuBindedPolygonData.Value.VAO, UfoIndeces.Length));
             ufo.AddComponent(new SpriteRendererComponent("ufo-2.png"));
             ufo.AddComponent(new PhysicsComponent());
             ufo.AddComponent(new UfoAiComponent(gameWotld));
             ufo.AddComponent(new BulletCollisionsComponent(gameWotld, 20.0f, 20.0f));
-            ufo.AddComponent(new CoordinateComponent());
+            ufo.AddComponent(new CoordinateComponent(gameWotld));
 
             return ufo;
         }

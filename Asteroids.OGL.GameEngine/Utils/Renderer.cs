@@ -12,7 +12,7 @@ namespace Asteroids.OGL.GameEngine.Utils
         public int VBO;
         public int EBO;
         public int VAO;
-
+        
         public LoadResult(int vbo, int ebo, int vao)
         {
             VBO = vbo;
@@ -118,7 +118,6 @@ namespace Asteroids.OGL.GameEngine.Utils
             shader.SetMatrix4("model", modelView);
             shader.SetMatrix4("view", Matrix4.CreateTranslation(0.0f, 0.0f, -1.0f));
         }
-
         
         public static void SetupRenderer(GameWindow window)
         {
@@ -251,6 +250,7 @@ namespace Asteroids.OGL.GameEngine.Utils
             GL.DrawElements(PrimitiveType.Triangles, size, DrawElementsType.UnsignedInt, 0);
            
             GL.BindVertexArray(0);
+            GL.BindTexture(TextureTarget.Texture2D, 0);
             GL.Disable(EnableCap.Blend);
         }
 
