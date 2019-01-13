@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asteroids_clone", "Asteroids_clone\Asteroids_clone.csproj", "{4DF64A6C-0577-48E0-8F30-5C3F11B78BA2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asteroids.Engine", "Asteroids.Engine\Asteroids.Engine.csproj", "{A7687332-0C24-465C-947D-3D50E0C9314C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asteroids.OGL.GameEngine", "Asteroids.OGL.GameEngine\Asteroids.OGL.GameEngine.csproj", "{FE8FFADB-0418-4DEC-AE39-FA47AACC0FA7}"
@@ -14,10 +12,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4DF64A6C-0577-48E0-8F30-5C3F11B78BA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4DF64A6C-0577-48E0-8F30-5C3F11B78BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4DF64A6C-0577-48E0-8F30-5C3F11B78BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4DF64A6C-0577-48E0-8F30-5C3F11B78BA2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A7687332-0C24-465C-947D-3D50E0C9314C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A7687332-0C24-465C-947D-3D50E0C9314C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7687332-0C24-465C-947D-3D50E0C9314C}.Release|Any CPU.ActiveCfg = Release|Any CPU
