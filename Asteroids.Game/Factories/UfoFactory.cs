@@ -40,11 +40,12 @@ namespace Asteroids.Game.Factories
         {
             if(!GpuBindedPolygonData.HasValue) 
                 GpuBindedPolygonData = Renderer.LoadObject(UfoVertecies, UfoIndeces);
+
+            TransformComponent transform = new TransformComponent(coordinate, scale);
+
+            transform.Size = new Vector2(1.0f * transform.Scale.X, 0.7f * transform.Scale.Y);
             
-            GameObject ufo = new GameObject(
-                "Ufo",
-                new TransformComponent(coordinate, scale)
-            );
+            GameObject ufo = new GameObject("Ufo", transform);
             
             if(Settings.RenderMode == RenderModes.Polygons) ufo.AddComponent(new PolygonRenderComponent(GpuBindedPolygonData.Value.VAO, UfoIndeces.Length));
             else ufo.AddComponent(new SpriteRendererComponent("ufo-2.png"));

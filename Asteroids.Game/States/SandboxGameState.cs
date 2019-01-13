@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Asteroids.Engine.Common;
-using Asteroids.Engine.Components;
 using Asteroids.Engine.Interfaces;
-using Asteroids.Game.Components.CommonComponents;
 using Asteroids.Game.Components.PlayerComponents;
 using Asteroids.Game.Factories;
 using Asteroids.Game.Utils;
@@ -18,8 +16,7 @@ namespace Asteroids.Game.States
     {
         private static float UFO_RESPAWN_TIME = 1.0f;
 
-        private IColiderDetector _coliderDetector;        
-        private IList<GameObject> _gameObjects;
+        private readonly IColiderDetector _coliderDetector;
         private GameObject _player;
         private PlayerStateComponent _playerState;
         private int _ufoCount;
@@ -29,10 +26,8 @@ namespace Asteroids.Game.States
         
         public delegate void SelectHandler(string selectedMenu);
         public event SelectHandler Select; 
-        public IList<GameObject> GameObjects
-        {
-            get { return _gameObjects; }
-        }
+        public IList<GameObject> GameObjects { get; private set; }
+
         public string Name { get; }
         public bool IsReady { get; private set; }
         public float[] GameWorldSize { get; } = { 800.0f, 600.0f}; //Width and height 2D world
@@ -40,7 +35,7 @@ namespace Asteroids.Game.States
         public SandboxGameState(string name)
         {
             Name = name;
-            _gameObjects = new List<GameObject>();
+            GameObjects = new List<GameObject>();
             _coliderDetector = new ColiderDetector();
             IsReady = false;
         }
@@ -52,7 +47,8 @@ namespace Asteroids.Game.States
             _ufoCount = 0;
             _asteroidsCount = 0;
             
-            _player = AddPlayer();
+            _player = PlayerFatory.GetPlayer(this);
+            _playerState = (PlayerStateComponent) _player.GetComponent<PlayerStateComponent>();
             
             AddGameObject(_player);
             
@@ -72,7 +68,8 @@ namespace Asteroids.Game.States
         {
             for (int i = 0; i < count; i++)
             {
-                AddGameObject(UfoFactory.GetUfoGameObject(new Vector3(_randomizer.Next(-390, 390), 310.0f, -2.0f), new Vector3(45.0f, 25.0f, 1.0f),
+                AddGameObject(UfoFactory.GetUfoGameObject(new Vector3(_randomizer.Next(-390, 390), 310.0f, -2.0f), 
+                    new Vector3(45.0f, 25.0f, 1.0f),
                     this));
                 _ufoCount++;
             }
@@ -94,9 +91,6 @@ namespace Asteroids.Game.States
         {
             for (int i = 0; i < count; i++)
             {
-                int value = _randomizer.Next(0, 100);
-                int y = value > 50 ? -320 : 320; 
-                
                 AddGameObject(AsteroidFactory.GetAsteroid(coordinate, 25.0f, this, false));
             }
         }
@@ -113,16 +107,11 @@ namespace Asteroids.Game.States
             switch (obj.Tag)
             {
                 case "Asteroid":
-                {
                     _asteroidsCount--;
                     break;
-                }
                 case "Ufo":
-                {
                     _ufoCount--;
                     break;
-                }
-                default: break;
             }
         }
 
@@ -134,14 +123,14 @@ namespace Asteroids.Game.States
             {
                 if (InputManager.KeyDown(Key.Enter))
                 {
-                    _gameObjects = new List<GameObject>();
+                    GameObjects = new List<GameObject>();
                     Load();
                 }
                 else
                 if (InputManager.KeyPress(Key.Escape))
                 {
                     IsReady = false;
-                    _gameObjects.Clear();
+                    GameObjects.Clear();
                     Select?.Invoke("Menu");
                 }
 
@@ -179,7 +168,13 @@ namespace Asteroids.Game.States
                 RemoveGameObject(obj2);
                 _playerState.IncreaseScore();
                 if(IsBulletAsteroidCollision(obj1, obj2))
-                    SpawnAsteroidsFragments(3, GetAsteroidCoordinate(obj1, obj2));   
+                    SpawnAsteroidsFragments(3, GetAsteroidCoordinate(obj1, obj2));
+                return;
+            }
+            if (IsLaserEnemyCollision(obj1, obj2))
+            {
+                RemoveGameObject(obj1.Tag == "Laser" ? obj2 : obj1);
+                _playerState.IncreaseScore();
             }
         }
 
@@ -200,6 +195,12 @@ namespace Asteroids.Game.States
                    || (IsEnemy(obj1) && obj2.Tag == "Bullet");
         }
 
+        private static bool IsLaserEnemyCollision(GameObject obj1, GameObject obj2)
+        {
+            return (obj1.Tag == "Laser" && IsEnemy(obj2)) 
+                   || (IsEnemy(obj1) && obj2.Tag == "Laser");
+        }
+        
         private static bool IsEnemy(GameObject obj)
         {
             return (obj.Tag == "Ufo" || obj.Tag == "Asteroid" || obj.Tag == "Fragment");
@@ -207,9 +208,9 @@ namespace Asteroids.Game.States
 
         private void GameObjectsUpdate(float elapsedTime)
         {
-            for (int i = 0; i < _gameObjects.Count; i++)
+            for (int i = 0; i < GameObjects.Count; i++)
             {
-                _gameObjects[i].Update(elapsedTime, this);
+                GameObjects[i].Update(elapsedTime, this);
             }
         }
 
@@ -217,14 +218,15 @@ namespace Asteroids.Game.States
         {
             if(!IsReady) return;
 
-            for (int i = 0; i < _gameObjects.Count; i++)
+            for (int i = 0; i < GameObjects.Count; i++)
             {
-                _gameObjects[i].Render();
+                GameObjects[i].Render();
             }
 
             if (_playerState.IsAlive) return;
             Renderer.RenderText("GAME OVER", new Vector3(-45.0f, 50.0f, -1.0f), 1);
             Renderer.RenderText("Press \"ENTER\" to restart", new Vector3(-100.0f, -150.0f, -1.0f), 1);
+            Renderer.RenderText("Press \"ESC\" and back in Menu", new Vector3(-115.0f, -175.0f, -1.0f), 1);
         }
 
         private void GameLogicUpdate(float elapsedTime)
@@ -240,49 +242,5 @@ namespace Asteroids.Game.States
             }
             if (_asteroidsCount < 4) SpawnAsteroids(1);
         }
-        
-        #region Private methods
-
-        private GameObject AddPlayer()
-        {
-            //TODO Create resource manager
-            float[] shipVertices =
-            {
-                //Position          
-                0.0f,   0.25f, -1.0f, 
-                -0.25f,   0.4f, -1.0f, 
-                0.25f,   0.4f, -1.0f, 
-                0.0f,  -0.4f, -1.0f
-            };
-            uint[] shipIndices =
-            {
-                0, 1, 3,
-                0, 3, 2
-            };
-       
-            GameObject player = new GameObject(
-                "Player",
-                new TransformComponent(new Vector3(0.0f, 0.0f, -2.0f),
-                    new Vector3(0.0f, 0.0f, 0.0f),
-                    new Vector3(45.0f, 45.0f, 1.0f),
-                    new Vector3(0.0f, 0.0f, 0.0f)));
-            
-            if(Settings.RenderMode == RenderModes.Polygons) player.AddComponent(new PolygonRenderComponent(shipVertices, shipIndices));     
-            else player.AddComponent(new SpriteRendererComponent("ship-1.png"));
-            
-            player.AddComponent(new ControllerComponent());
-            player.AddComponent(new PhysicsComponent());
-            player.AddComponent(new GunComponent(this));
-            player.AddComponent(new CoordinateComponent(this));
-            PlayerStateComponent state = new PlayerStateComponent();
-            player.AddComponent(state);
-
-            _playerState = state;
-            
-            return player;
-        }
-            
-        #endregion
-
     }
 }

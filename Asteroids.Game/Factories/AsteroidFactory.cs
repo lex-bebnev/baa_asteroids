@@ -20,20 +20,24 @@ namespace Asteroids.Game.Factories
         
         public static GameObject GetAsteroid(Vector3 coordinate, float scale, IGameState gameWorld, bool isFragment = true)
         {
-            var rendererComponent = GenerateAsteroidMesh();
+            IComponent rendererComponent = GenerateAsteroidMesh(out Vector2 size);
             
-            var rotations = r.Next(0, 360);
+            int rotations = r.Next(0, 360);
             
             int minVelocity = isFragment ? 80 : 130;
             int maxVelocity = isFragment ? 120 : 290;
+
+            TransformComponent transform = new TransformComponent(coordinate,
+                new Vector3(0.0f, 0.0f, rotations),
+                new Vector3(scale, scale, 1.0f),
+                Vector3.Zero);
             
-            GameObject asteroid = new GameObject(
-                isFragment ? "Asteroid" : "Fragment",
-                new TransformComponent(coordinate,
-                    new Vector3(0.0f, 0.0f, rotations), 
-                    new Vector3(scale, scale, 1.0f), 
-                    Vector3.Zero)
-            );
+            transform.Size = new Vector2(size.X * transform.Scale.X, size.Y * transform.Scale.Y);
+            
+            string tag = isFragment ? "Asteroid" : "Fragment";
+            
+            
+            GameObject asteroid = new GameObject(tag, transform);
             
             if(Settings.RenderMode == RenderModes.Polygons) asteroid.AddComponent(rendererComponent);
             else asteroid.AddComponent(new SpriteRendererComponent(isFragment ? "asteroid-2.png": "asteroid-3.png"));
@@ -44,7 +48,7 @@ namespace Asteroids.Game.Factories
             return asteroid;
         }
         
-        private static IComponent GenerateAsteroidMesh()
+        private static IComponent GenerateAsteroidMesh(out Vector2 size)
         {
             int minRadius = 30;
             int maxRadius = 50;
@@ -64,6 +68,8 @@ namespace Asteroids.Game.Factories
             uint prevIndex = 0;
             uint currentIndex = 1;
 
+            float xMax = 0, yMax = 0, xMin = 0, yMin= 0;
+            
             for (float angle = 0; angle < tau; angle += (float) (tau / granularity))
             {
                 int angleVary = r.Next(minVary, maxVary);
@@ -74,6 +80,11 @@ namespace Asteroids.Game.Factories
                 float x = (float) Math.Sin(angleFinal) * radius;
                 float y = (float) -Math.Cos(angleFinal) * radius;
 
+                if (x > xMax) xMax = x;
+                if (y > yMax) yMax = y;
+                if (x < xMin) xMin = y;
+                if (y < yMin) yMin = y;
+                
                 points.Add(x);
                 points.Add(y);
                 points.Add(0.0f);
@@ -98,6 +109,9 @@ namespace Asteroids.Game.Factories
             indices.Add(1);
 
             IComponent mesh = new PolygonRenderComponent(points.ToArray(), indices.ToArray());
+
+            size = new Vector2(Math.Abs(xMax)+Math.Abs(xMin),Math.Abs(yMax)+Math.Abs(yMin));
+            
             return mesh;
         }
     }

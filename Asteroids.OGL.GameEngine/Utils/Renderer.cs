@@ -254,7 +254,7 @@ namespace Asteroids.OGL.GameEngine.Utils
             GL.BindTexture(TextureTarget.Texture2D, 0);
             GL.Disable(EnableCap.Blend);
         }
-
+        
         public static void Unload()
         {
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);

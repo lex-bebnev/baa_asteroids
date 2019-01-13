@@ -39,9 +39,12 @@ namespace Asteroids.Game.Factories
             if (!GpuBindedData.HasValue)
                 GpuBindedData = Renderer.LoadObject(Vertices, Indices);
 
+            Vector3 scale = Settings.RenderMode == RenderModes.Polygons ? new Vector3(2.5f, 2.5f, 1.0f) : new Vector3(5.0f, 5.0f, 1.0f);
+            
             TransformComponent transfom = new TransformComponent(parentTransformComponent.Position, parentTransformComponent.Rotation,
-                new Vector3(5.0f, 5.0f, 1.0f),
+                scale,
                 parentTransformComponent.Direction);
+            transfom.Size = new Vector2(2.0f * transfom.Scale.X);
             
             PhysicsComponent physics = new PhysicsComponent {Velocity = baseVelocity}; 
             LifetimeComponent bulletLifetime = new LifetimeComponent(gameWorld, TimeToLive);
@@ -50,7 +53,7 @@ namespace Asteroids.Game.Factories
             
             bullet.AddComponent(physics);
 
-            if(Settings.RenderMode == RenderModes.Polygons)bullet.AddComponent(new PolygonRenderComponent(GpuBindedData.Value.VAO, Indices.Length));
+            if(Settings.RenderMode == RenderModes.Polygons) bullet.AddComponent(new PolygonRenderComponent(GpuBindedData.Value.VAO, Indices.Length));
             else bullet.AddComponent(new SpriteRendererComponent("bullet-1.png"));            
             bullet.AddComponent(bulletLifetime);
             
@@ -63,17 +66,16 @@ namespace Asteroids.Game.Factories
                 GpuBindedData = Renderer.LoadObject(Vertices, Indices);
 
             TransformComponent transfom = new TransformComponent(parentTransformComponent.Position, parentTransformComponent.Rotation,
-                new Vector3(5.0f, 5.0f, 1.0f),
+                new Vector3(5.0f, 10.0f, 1.0f),
                 parentTransformComponent.Direction);    
+            transfom.Size = new Vector2(transfom.Scale.X, transfom.Scale.Y);
             
-            PhysicsComponent physics = new PhysicsComponent {Velocity = 0};
-            /*
-            PolygonRenderComponent renderer = new PolygonRenderComponent(GpuBindedData.Value.VAO, Indices.Length);
-            SpriteRendererComponent spriteRenderer = new SpriteRendererComponent("laser-1.png", SpriteVertices, Indices);
-            */
-
+            PhysicsComponent physics = new PhysicsComponent {Velocity = 600.0f};
+            
             LifetimeComponent lifetime = new LifetimeComponent(gameWorld, TimeToLive);
-            LaseBehaviourComponent laserBehaviour = new LaseBehaviourComponent(gameWorld);
+            
+            //Comented - because not implemeted dynamic colider, don't work with AABB
+            //LaseBehaviourComponent laserBehaviour = new LaseBehaviourComponent(gameWorld); 
             
             GameObject laserShot = new GameObject("Laser", transfom);
             
@@ -81,8 +83,7 @@ namespace Asteroids.Game.Factories
             if(Settings.RenderMode == RenderModes.Polygons) laserShot.AddComponent(new PolygonRenderComponent(GpuBindedData.Value.VAO, Indices.Length));
             else laserShot.AddComponent(new SpriteRendererComponent("laser-1.png", SpriteVertices, Indices));
             laserShot.AddComponent(lifetime);
-            laserShot.AddComponent(laserBehaviour);
-
+            
             return laserShot;
         }
     }

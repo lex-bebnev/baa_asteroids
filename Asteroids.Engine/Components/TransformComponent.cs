@@ -8,6 +8,7 @@ namespace Asteroids.Engine.Components
         public Vector3 Rotation { get; set; }
         public Vector3 Scale { get; set; }
         public Vector3 Direction { get; set; }
+        public Vector2 Size { get; set; }
         
         public TransformComponent(Vector3 position, Vector3 rotation, Vector3 scale, Vector3 direction)
         {
