@@ -23,6 +23,12 @@ namespace Asteroids.Game.Components.CommonComponents
             _gpuTexture = new Texture($"D:\\gameProjects\\Asteroids_clone\\Asteroids.Game\\Resources\\Sprites\\{spriteName}");
             _gpuBindedData = Renderer.LoadSprite(Verteces, Indices, _gpuTexture);
         }
+        
+        public SpriteRendererComponent(string spriteName, float[] vertices, uint[] indices)
+        {
+            _gpuTexture = new Texture($"D:\\gameProjects\\Asteroids_clone\\Asteroids.Game\\Resources\\Sprites\\{spriteName}");
+            _gpuBindedData = Renderer.LoadSprite(vertices, indices, _gpuTexture);
+        }
 
         public override void Render()
         {

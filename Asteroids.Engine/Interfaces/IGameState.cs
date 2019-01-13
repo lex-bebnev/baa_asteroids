@@ -33,6 +33,12 @@ namespace Asteroids.Engine.Interfaces
         /// </summary>
         /// <param name="obj"></param>
         void AddGameObject(GameObject obj);
+
+        /// <summary>
+        ///     Remove game object from state
+        /// </summary>
+        /// <param name="obj"></param>
+        void RemoveGameObject(GameObject obj);
         
         /// <summary>
         ///     Update game state

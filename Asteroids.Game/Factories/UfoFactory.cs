@@ -5,6 +5,7 @@ using Asteroids.Game.Components;
 using Asteroids.Game.Components.CommonComponents;
 using Asteroids.Game.Components.EnemyComponents;
 using Asteroids.Game.Components.PlayerComponents;
+using Asteroids.Game.Utils;
 using Asteroids.OGL.GameEngine.Utils;
 using OpenTK;
 
@@ -45,11 +46,11 @@ namespace Asteroids.Game.Factories
                 new TransformComponent(coordinate, scale)
             );
             
-            //ufo.AddComponent(new PolygonRenderComponent(GpuBindedPolygonData.Value.VAO, UfoIndeces.Length));
-            ufo.AddComponent(new SpriteRendererComponent("ufo-2.png"));
+            if(Settings.RenderMode == RenderModes.Polygons) ufo.AddComponent(new PolygonRenderComponent(GpuBindedPolygonData.Value.VAO, UfoIndeces.Length));
+            else ufo.AddComponent(new SpriteRendererComponent("ufo-2.png"));
+            
             ufo.AddComponent(new PhysicsComponent());
             ufo.AddComponent(new UfoAiComponent(gameWotld));
-            ufo.AddComponent(new BulletCollisionsComponent(gameWotld, 20.0f, 20.0f));
             ufo.AddComponent(new CoordinateComponent(gameWotld));
 
             return ufo;

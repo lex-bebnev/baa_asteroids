@@ -9,6 +9,7 @@ using Asteroids.Game.Components;
 using Asteroids.Game.Components.CommonComponents;
 using Asteroids.Game.Components.EnemyComponents;
 using Asteroids.Game.Components.PlayerComponents;
+using Asteroids.Game.Utils;
 using OpenTK;
 
 namespace Asteroids.Game.Factories
@@ -17,29 +18,29 @@ namespace Asteroids.Game.Factories
     {
         private static Random r = new Random();
         
-        public static GameObject GetAsteroid(Vector3 coordinate, float scale, IGameState gameWorld, bool isBreaking = true)
+        public static GameObject GetAsteroid(Vector3 coordinate, float scale, IGameState gameWorld, bool isFragment = true)
         {
             var rendererComponent = GenerateAsteroidMesh();
             
             var rotations = r.Next(0, 360);
             
-            int minVelocity = isBreaking ? 80 : 130;
-            int maxVelocity = isBreaking ? 120 : 290;
+            int minVelocity = isFragment ? 80 : 130;
+            int maxVelocity = isFragment ? 120 : 290;
             
             GameObject asteroid = new GameObject(
-                "Asteroid",
+                isFragment ? "Asteroid" : "Fragment",
                 new TransformComponent(coordinate,
                     new Vector3(0.0f, 0.0f, rotations), 
                     new Vector3(scale, scale, 1.0f), 
                     Vector3.Zero)
             );
-            //asteroid.AddComponent(rendererComponent);
-            asteroid.AddComponent(new SpriteRendererComponent(isBreaking ? "asteroid-2.png": "asteroid-3.png"));
+            
+            if(Settings.RenderMode == RenderModes.Polygons) asteroid.AddComponent(rendererComponent);
+            else asteroid.AddComponent(new SpriteRendererComponent(isFragment ? "asteroid-2.png": "asteroid-3.png"));
+            
             asteroid.AddComponent(new PhysicsComponent());
             asteroid.AddComponent(new AsteroidAiComponent(minVelocity,maxVelocity));
-            asteroid.AddComponent(new BulletCollisionsComponent(gameWorld, 20.0f, 20.0f, isBreaking));
             asteroid.AddComponent(new CoordinateComponent(gameWorld));
-            
             return asteroid;
         }
         

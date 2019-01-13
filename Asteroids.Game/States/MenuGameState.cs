@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Asteroids.Engine.Common;
 using Asteroids.Engine.Interfaces;
+using Asteroids.Game.Utils;
 using Asteroids.OGL.GameEngine.Managers;
 using Asteroids.OGL.GameEngine.Utils;
 using OpenTK;
@@ -16,6 +17,9 @@ namespace Asteroids.Game.States
         public string Name { get; }
         public bool IsReady { get; private set; } = false;
 
+        public delegate void SelectHandler(string selectedMenu);
+        public event SelectHandler Select; 
+        
         public MenuGameState(string name)
         {
             Name = name;
@@ -36,23 +40,37 @@ namespace Asteroids.Game.States
             GameObjects.Add(obj);
         }
 
+        public void RemoveGameObject(GameObject obj)
+        {
+            GameObjects.Remove(obj);
+        }
+
         public void Update(float elapsedTime)
         {
-            if (InputManager.KeyDown(Key.S))
+            if (InputManager.KeyPress(Key.S))
             {
-                
+                Select?.Invoke("Start");
+                Console.WriteLine("Start game");
             }
-            if (InputManager.KeyDown(Key.E))
+            if (InputManager.KeyPress(Key.E))
             {
-                
+                Select?.Invoke("Exit");
+                Console.WriteLine("Exit");
+            }
+            if (InputManager.KeyPress(Key.Tab))
+            {
+                Settings.RenderMode = Settings.RenderMode == RenderModes.Polygons
+                    ? RenderModes.Sprites
+                    : RenderModes.Polygons;
+                Console.WriteLine("Switch render mode");
             }
         }
 
         public void Render()
         {
-            Renderer.RenderText("Start - \"S\"", new Vector3(-45.0f, 50.0f, -1.0f), 1);
-            Renderer.RenderText("Exit - \"E\"", new Vector3(-45.0f, 50.0f, -1.0f), 1);
+            Renderer.RenderText("Start - \"S\"", new Vector3(-370.0f, 50.0f, -1.0f), 1);
+            Renderer.RenderText($"Switch render model <{Enum.GetName(typeof(RenderModes), Settings.RenderMode)}> - \"Tab\"", new Vector3(-370.0f, 25.0f, -1.0f), 1);
+            Renderer.RenderText("Exit - \"E\"", new Vector3(-370.0f, 0.0f, -1.0f), 1);
         }
-
     }
 }

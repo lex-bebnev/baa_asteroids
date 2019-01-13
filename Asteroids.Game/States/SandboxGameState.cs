@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Asteroids.Engine.Common;
 using Asteroids.Engine.Components;
-using Asteroids.Engine.Components.Interfaces;
 using Asteroids.Engine.Interfaces;
-using Asteroids.Game.Components;
 using Asteroids.Game.Components.CommonComponents;
-using Asteroids.Game.Components.EnemyComponents;
 using Asteroids.Game.Components.PlayerComponents;
 using Asteroids.Game.Factories;
+using Asteroids.Game.Utils;
 using Asteroids.OGL.GameEngine.Managers;
 using Asteroids.OGL.GameEngine.Utils;
 using OpenTK;
@@ -22,7 +19,8 @@ namespace Asteroids.Game.States
         public string Name { get; }
         public bool IsReady { get; private set; }
         public float[] GameWorldSize { get; } = { 800.0f, 600.0f}; //Width and height 2D world
-        
+
+        private IColiderDetector _coliderDetector;
         
         private IList<GameObject> _gameObjects;
         public IList<GameObject> GameObjects
@@ -30,12 +28,22 @@ namespace Asteroids.Game.States
             get { return _gameObjects; }
         }
 
-        private GameObject _player; 
+        private GameObject _player;
+        private PlayerStateComponent _playerState;
+
+        private int _ufoCount = 0;
+        private int _asteroidsCount = 0;
+
+        private Random _randomizer = new Random();
+        
+        public delegate void SelectHandler(string selectedMenu);
+        public event SelectHandler Select; 
         
         public SandboxGameState(string name)
         {
             Name = name;
             _gameObjects = new List<GameObject>();
+            _coliderDetector = new ColiderDetector();
             IsReady = false;
         }
         
@@ -43,19 +51,56 @@ namespace Asteroids.Game.States
         {
             Console.WriteLine("Load game state...");
             
-            _player = AddPlayer(); //TODO Create factory
+            _ufoCount = 0;
+            _asteroidsCount = 0;
+            
+            _player = AddPlayer();
             
             AddGameObject(_player);
             
-            AddGameObject(UfoFactory.GetUfoGameObject(new Vector3(-300.0f, -150.0f, -2.0f), new Vector3(45.0f, 25.0f, 1.0f), this));
-            AddGameObject(UfoFactory.GetUfoGameObject(new Vector3(300.0f, 150.0f, -2.0f), new Vector3(45.0f, 25.0f, 1.0f), this));
-           
-            AddGameObject(AsteroidFactory.GetAsteroid(new Vector3(50.0f, 0.0f, -2.0f), 50.0f, this));
-            AddGameObject(AsteroidFactory.GetAsteroid(new Vector3(400.0f, -200.0f, -2.0f), 50.0f, this));
-            AddGameObject(AsteroidFactory.GetAsteroid(new Vector3(-350.0f, -230.0f, -2.0f), 50.0f, this));
-            
+            SpawnEnemies();
+
             IsReady = true;
             Console.WriteLine("Load gamestate complete");
+        }
+
+        private void SpawnEnemies()
+        {
+            SpawnUfo(1);
+            SpawnAsteroids(4);
+        }
+
+        private void SpawnUfo(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                AddGameObject(UfoFactory.GetUfoGameObject(new Vector3(_randomizer.Next(-390, 390), -300.0f, -2.0f), new Vector3(45.0f, 25.0f, 1.0f),
+                    this));
+                _ufoCount++;
+            }
+        }
+        
+        private void SpawnAsteroids(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                int value = _randomizer.Next(0, 100);
+                int y = value > 50 ? -300 : 300; 
+                
+                AddGameObject(AsteroidFactory.GetAsteroid(new Vector3(_randomizer.Next(-390, 390), y, -2.0f), 50.0f, this));
+                _asteroidsCount++;
+            }
+        }
+        
+        private void SpawnAsteroidsFragments(int count, Vector3 coordinate)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                int value = _randomizer.Next(0, 100);
+                int y = value > 50 ? -320 : 320; 
+                
+                AddGameObject(AsteroidFactory.GetAsteroid(coordinate, 25.0f, this, false));
+            }
         }
 
         public void AddGameObject(GameObject obj)
@@ -63,21 +108,107 @@ namespace Asteroids.Game.States
             if(obj == null) return;
             GameObjects.Add(obj);
         }
-        
+
+        public void RemoveGameObject(GameObject obj)
+        {
+            GameObjects.Remove(obj);
+            switch (obj.Tag)
+            {
+                case "Asteroid":
+                {
+                    _asteroidsCount--;
+                    break;
+                }
+                case "Ufo":
+                {
+                    _ufoCount--;
+                    break;
+                }
+                default: break;
+            }
+        }
+
         public void Update(float elapsedTime)
         {
             if(!IsReady) return;
 
-            if (!GameLogicUpdate())
+            if (!_playerState.IsAlive)
             {
                 if (InputManager.KeyDown(Key.Enter))
                 {
                     _gameObjects = new List<GameObject>();
                     Load();
                 }
+                else
+                if (InputManager.KeyPress(Key.Escape))
+                {
+                    IsReady = false;
+                    _gameObjects.Clear();
+                    Select?.Invoke("Menu");
+                }
+
                 return;
             }
             
+            GameObjectsUpdate(elapsedTime);
+            CheckCollisions();
+            GameLogicUpdate();
+        }
+
+        private void CheckCollisions()
+        {
+            for (int i = 0; i < GameObjects.Count; i++)
+            {
+                for (int j = i+1; j < GameObjects.Count; j++)
+                {
+                    bool isColide = _coliderDetector.CheckCollision(GameObjects[i],GameObjects[j]);
+                    if(!isColide) continue;
+                    ResolveCollision(GameObjects[i], GameObjects[j]);
+                }
+            }
+        }
+
+        private void ResolveCollision(GameObject obj1, GameObject obj2)
+        {
+            if (obj1.Tag == "Player" && IsEnemy(obj2))
+            {
+                _playerState.IsAlive = false;
+                return;
+            }
+            if (IsBulletEnemyCollision(obj1, obj2))
+            {
+                RemoveGameObject(obj1);
+                RemoveGameObject(obj2);
+                _playerState.IncreaseScore();
+                if(IsBulletAsteroidCollision(obj1, obj2))
+                    SpawnAsteroidsFragments(3, GetAsteroidCoordinate(obj1, obj2));   
+            }
+        }
+
+        private static Vector3 GetAsteroidCoordinate(GameObject obj1, GameObject obj2)
+        {
+            return obj1.Tag == "Asteroid" ? obj1.TransformComponent.Position : obj2.TransformComponent.Position;
+        }
+
+        private static bool IsBulletAsteroidCollision(GameObject obj1, GameObject obj2)
+        {
+            return (obj1.Tag == "Bullet" && obj2.Tag == "Asteroid") 
+                   || (obj1.Tag == "Asteroid" && obj2.Tag == "Bullet");
+        }
+        
+        private static bool IsBulletEnemyCollision(GameObject obj1, GameObject obj2)
+        {
+            return (obj1.Tag == "Bullet" && IsEnemy(obj2)) 
+                   || (IsEnemy(obj1) && obj2.Tag == "Bullet");
+        }
+
+        private static bool IsEnemy(GameObject obj)
+        {
+            return (obj.Tag == "Ufo" || obj.Tag == "Asteroid" || obj.Tag == "Fragment");
+        }
+
+        private void GameObjectsUpdate(float elapsedTime)
+        {
             for (int i = 0; i < _gameObjects.Count; i++)
             {
                 _gameObjects[i].Update(elapsedTime, this);
@@ -93,17 +224,15 @@ namespace Asteroids.Game.States
                 _gameObjects[i].Render();
             }
 
-            if (!GameLogicUpdate())
-            {
-                Renderer.RenderText("GAME OVER", new Vector3(-45.0f, 50.0f, -1.0f), 1);
-                Renderer.RenderText("Press \"ENTER\" to restart", new Vector3(-100.0f, -150.0f, -1.0f), 1);
-            }
+            if (_playerState.IsAlive) return;
+            Renderer.RenderText("GAME OVER", new Vector3(-45.0f, 50.0f, -1.0f), 1);
+            Renderer.RenderText("Press \"ENTER\" to restart", new Vector3(-100.0f, -150.0f, -1.0f), 1);
         }
 
-        private bool GameLogicUpdate()
+        private void GameLogicUpdate()
         {
-            PlayerStateComponent playerState = (PlayerStateComponent) _player.GetComponent<PlayerStateComponent>();
-            return playerState.IsAlive;
+            if (_ufoCount < 1) SpawnUfo(1);
+            if (_asteroidsCount < 4) SpawnAsteroids(1);
         }
         
         #region Private methods
@@ -127,23 +256,25 @@ namespace Asteroids.Game.States
        
             GameObject player = new GameObject(
                 "Player",
-                new TransformComponent(new Vector3(0.5f, 0.0f, -2.0f),
+                new TransformComponent(new Vector3(0.0f, 0.0f, -2.0f),
                     new Vector3(0.0f, 0.0f, 0.0f),
                     new Vector3(45.0f, 45.0f, 1.0f),
-                    new Vector3(0.0f, -1.0f, 0.0f)));
+                    new Vector3(0.0f, 0.0f, 0.0f)));
             
-            //player.AddComponent(new PolygonRenderComponent(shipVertices, shipIndices));     
-            player.AddComponent(new SpriteRendererComponent("ship-1.png"));
+            if(Settings.RenderMode == RenderModes.Polygons) player.AddComponent(new PolygonRenderComponent(shipVertices, shipIndices));     
+            else player.AddComponent(new SpriteRendererComponent("ship-1.png"));
+            
             player.AddComponent(new ControllerComponent());
             player.AddComponent(new PhysicsComponent());
             player.AddComponent(new GunComponent(this));
             player.AddComponent(new CoordinateComponent(this));
-            player.AddComponent(new PlayerCollisionsComponent(this, 20.0f, 20.0f));
-            player.AddComponent(new PlayerStateComponent());
+            PlayerStateComponent state = new PlayerStateComponent();
+            player.AddComponent(state);
 
+            _playerState = state;
+            
             return player;
         }
-        
             
         #endregion
 

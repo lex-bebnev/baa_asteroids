@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Asteroids.Engine.Interfaces;
 using Asteroids.Game.States;
 using Asteroids.OGL.GameEngine;
@@ -18,11 +19,34 @@ namespace Asteroids.Game
         {
             Console.WriteLine("Initialize GameState...");
             
-            var level = new SandboxGameState("Level");
+            SandboxGameState level = new SandboxGameState("Level");
+            level.Select += OnSelect;
             _gameStates.Add(level.Name, level);
-            _currentGameState = level;
+            
+            MenuGameState menu = new MenuGameState("Main Menu");
+            menu.Select += OnSelect;
+            _gameStates.Add(menu.Name, menu);
+            
+            _currentGameState = menu;
             
             Console.WriteLine("Initialize GameState complete");
+        }
+
+        private void OnSelect(string selectedmenu)
+        {
+            switch (selectedmenu)
+            {
+                    case "Start":
+                       _gameStates.TryGetValue("Level", out _currentGameState);
+                        break;
+                    case "Exit":
+                        Exit();
+                        break;
+                    case "Menu":
+                       _gameStates.TryGetValue("Main Menu", out _currentGameState);
+                        break;
+
+            }
         }
 
         public override void Update(float elapsedMilliseconds)

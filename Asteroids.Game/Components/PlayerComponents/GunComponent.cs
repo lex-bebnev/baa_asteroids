@@ -58,7 +58,7 @@ namespace Asteroids.Game.Components.PlayerComponents
             
             if (!(_chargeLaserTime > LASER_CHARGE_TIME)) return;
 
-            GameObject laserShot = BulletFactory.GetLaserShotObject(Parent.TransformComponent, BASE_LASER_VELOCITY, _gameWorld);
+            GameObject laserShot = BulletFactory.GetLaserShotObject(Parent.TransformComponent, _gameWorld);
             _gameWorld.AddGameObject(laserShot);
             
             Console.WriteLine("Laser Fire!");

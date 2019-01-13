@@ -46,6 +46,7 @@
     <Compile Include="Components\Interfaces\IComponent.cs" />
     <Compile Include="Components\PhysicsComponent.cs" />
     <Compile Include="Components\TransformComponent.cs" />
+    <Compile Include="Interfaces\IColiderDetector.cs" />
     <Compile Include="Interfaces\IGameState.cs" />
     <Compile Include="Managers\StateManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
