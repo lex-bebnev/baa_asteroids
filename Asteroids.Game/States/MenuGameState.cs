@@ -68,9 +68,14 @@ namespace Asteroids.Game.States
 
         public void Render()
         {
+            Renderer.RenderText("Asteroids", new Vector3(-40.0f, 200.0f, -1.0f), 1);
+            
             Renderer.RenderText("Start - \"S\"", new Vector3(-370.0f, 50.0f, -1.0f), 1);
             Renderer.RenderText($"Switch render model <{Enum.GetName(typeof(RenderModes), Settings.RenderMode)}> - \"Tab\"", new Vector3(-370.0f, 25.0f, -1.0f), 1);
             Renderer.RenderText("Exit - \"E\"", new Vector3(-370.0f, 0.0f, -1.0f), 1);
+            
+            
+            Renderer.RenderText("Developer - Bebnev Alexander", new Vector3(-370.0f, -270.0f, -1.0f), 1);
         }
     }
 }

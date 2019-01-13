@@ -16,28 +16,26 @@ namespace Asteroids.Game.States
 {
     public class SandboxGameState: IGameState
     {
-        public string Name { get; }
-        public bool IsReady { get; private set; }
-        public float[] GameWorldSize { get; } = { 800.0f, 600.0f}; //Width and height 2D world
+        private static float UFO_RESPAWN_TIME = 1.0f;
 
-        private IColiderDetector _coliderDetector;
-        
+        private IColiderDetector _coliderDetector;        
         private IList<GameObject> _gameObjects;
+        private GameObject _player;
+        private PlayerStateComponent _playerState;
+        private int _ufoCount;
+        private int _asteroidsCount;
+        private float _ufoDeadTime;
+        private readonly Random _randomizer = new Random();
+        
+        public delegate void SelectHandler(string selectedMenu);
+        public event SelectHandler Select; 
         public IList<GameObject> GameObjects
         {
             get { return _gameObjects; }
         }
-
-        private GameObject _player;
-        private PlayerStateComponent _playerState;
-
-        private int _ufoCount = 0;
-        private int _asteroidsCount = 0;
-
-        private Random _randomizer = new Random();
-        
-        public delegate void SelectHandler(string selectedMenu);
-        public event SelectHandler Select; 
+        public string Name { get; }
+        public bool IsReady { get; private set; }
+        public float[] GameWorldSize { get; } = { 800.0f, 600.0f}; //Width and height 2D world
         
         public SandboxGameState(string name)
         {
@@ -74,7 +72,7 @@ namespace Asteroids.Game.States
         {
             for (int i = 0; i < count; i++)
             {
-                AddGameObject(UfoFactory.GetUfoGameObject(new Vector3(_randomizer.Next(-390, 390), -300.0f, -2.0f), new Vector3(45.0f, 25.0f, 1.0f),
+                AddGameObject(UfoFactory.GetUfoGameObject(new Vector3(_randomizer.Next(-390, 390), 310.0f, -2.0f), new Vector3(45.0f, 25.0f, 1.0f),
                     this));
                 _ufoCount++;
             }
@@ -152,7 +150,7 @@ namespace Asteroids.Game.States
             
             GameObjectsUpdate(elapsedTime);
             CheckCollisions();
-            GameLogicUpdate();
+            GameLogicUpdate(elapsedTime);
         }
 
         private void CheckCollisions()
@@ -229,9 +227,17 @@ namespace Asteroids.Game.States
             Renderer.RenderText("Press \"ENTER\" to restart", new Vector3(-100.0f, -150.0f, -1.0f), 1);
         }
 
-        private void GameLogicUpdate()
+        private void GameLogicUpdate(float elapsedTime)
         {
-            if (_ufoCount < 1) SpawnUfo(1);
+            if (_ufoCount < 1)
+            {
+                _ufoDeadTime += elapsedTime;
+                if (_ufoDeadTime > UFO_RESPAWN_TIME)
+                {
+                    SpawnUfo(1);
+                    _ufoDeadTime = 0;
+                }
+            }
             if (_asteroidsCount < 4) SpawnAsteroids(1);
         }
         

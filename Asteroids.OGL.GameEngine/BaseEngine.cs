@@ -21,6 +21,8 @@ namespace Asteroids.OGL.GameEngine
         {
             Console.WriteLine("Engine initialization...");
             
+            WindowBorder = WindowBorder.Fixed;
+            
             InputManager.Initialize(this);
             InitializeStatesInternal();
 
