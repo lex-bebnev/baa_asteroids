@@ -47,12 +47,12 @@ namespace Asteroids.Game.States
 
         public void Update(float elapsedTime)
         {
-            if (InputManager.KeyPress(Key.S))
+            if (InputManager.KeyPress(Key.Enter))
             {
                 Select?.Invoke("Start");
                 Console.WriteLine("Start game");
             }
-            if (InputManager.KeyPress(Key.E))
+            if (InputManager.KeyPress(Key.Escape))
             {
                 Select?.Invoke("Exit");
                 Console.WriteLine("Exit");
@@ -70,10 +70,14 @@ namespace Asteroids.Game.States
         {
             Renderer.RenderText("Asteroids", new Vector3(-40.0f, 200.0f, -1.0f), 1);
             
-            Renderer.RenderText("Start - \"S\"", new Vector3(-370.0f, 50.0f, -1.0f), 1);
+            Renderer.RenderText("Start - \"Enter\"", new Vector3(-370.0f, 50.0f, -1.0f), 1);
             Renderer.RenderText($"Switch render model <{Enum.GetName(typeof(RenderModes), Settings.RenderMode)}> - \"Tab\"", new Vector3(-370.0f, 25.0f, -1.0f), 1);
-            Renderer.RenderText("Exit - \"E\"", new Vector3(-370.0f, 0.0f, -1.0f), 1);
+            Renderer.RenderText("Exit - \"Esc\"", new Vector3(-370.0f, 0.0f, -1.0f), 1);
             
+            Renderer.RenderText("Controls:", new Vector3(-370.0f, -25.0f, -1.0f), 1);
+            Renderer.RenderText("Move Forward: \"Up (W)\"", new Vector3(-370.0f, -50.0f, -1.0f), 1);
+            Renderer.RenderText("Rotate: \"Left/Right (A/D)\"", new Vector3(-370.0f, -75.0f, -1.0f), 1);
+            Renderer.RenderText("Fire: \"F\", Laser: \"Space\"", new Vector3(-370.0f, -100.0f, -1.0f), 1);
             
             Renderer.RenderText("Developer - Bebnev Alexander", new Vector3(-370.0f, -270.0f, -1.0f), 1);
         }

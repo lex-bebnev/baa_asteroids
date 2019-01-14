@@ -30,7 +30,7 @@ namespace Asteroids.Game.Components.PlayerComponents
         {
             if(_physics == null) return;
             
-            if (InputManager.KeyDown(Key.W))
+            if (InputManager.KeyDown(Key.W) || InputManager.KeyDown(Key.Up))
                 _physics.Velocity = VELOCITY;
             else
                 _physics.Velocity = 0.0f;
@@ -39,9 +39,9 @@ namespace Asteroids.Game.Components.PlayerComponents
         private void HandleRotateInput()
         {
             if(_physics == null) return;
-            if (InputManager.KeyDown(Key.A))
+            if (InputManager.KeyDown(Key.A) || InputManager.KeyDown(Key.Left))
                 _physics.AngularVelocity = ANGULAR_VELOCITY;
-            else if (InputManager.KeyDown(Key.D))
+            else if (InputManager.KeyDown(Key.D) || InputManager.KeyDown(Key.Right))
                 _physics.AngularVelocity = -ANGULAR_VELOCITY;
             else _physics.AngularVelocity = 0;
         }

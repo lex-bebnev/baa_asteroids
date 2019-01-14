@@ -14,7 +14,7 @@ namespace Asteroids.OGL.GameEngine
     /// </summary>
     public abstract class BaseEngine: GameWindow
     {    
-        protected GameClock Timer;
+        protected readonly GameClock Timer;
         
         public BaseEngine(int width, int height, string title) 
             : base(width, height, GraphicsMode.Default, title)

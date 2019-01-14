@@ -119,6 +119,13 @@ namespace Asteroids.Game.States
         {
             if(!IsReady) return;
 
+            if (InputManager.KeyPress(Key.Escape))
+            {
+                IsReady = false;
+                GameObjects.Clear();
+                Select?.Invoke("Menu"); 
+            }
+            
             if (!_playerState.IsAlive)
             {
                 if (InputManager.KeyDown(Key.Enter))
@@ -126,14 +133,6 @@ namespace Asteroids.Game.States
                     GameObjects = new List<GameObject>();
                     Load();
                 }
-                else
-                if (InputManager.KeyPress(Key.Escape))
-                {
-                    IsReady = false;
-                    GameObjects.Clear();
-                    Select?.Invoke("Menu");
-                }
-
                 return;
             }
             
