@@ -45,6 +45,9 @@
     <Reference Include="QuickFont, Version=4.4.6948.29788, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\QuickFont.dll</HintPath>
     </Reference>
+    <Reference Include="QuickFont, Version=4.4.6948.31209, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\lib\QuickFont.dll</HintPath>
+    </Reference>
     <Reference Include="SharpFont, Version=4.0.1.200, Culture=neutral, PublicKeyToken=48add4c483071cdf">
       <HintPath>..\lib\SharpFont.dll</HintPath>
     </Reference>
