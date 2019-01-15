@@ -50,8 +50,9 @@ namespace Asteroids.Game.Factories
             if(Settings.RenderMode == RenderModes.Polygons) ufo.AddComponent(new PolygonRenderComponent(GpuBindedPolygonData.Value.VAO, UfoIndeces.Length));
             else ufo.AddComponent(new SpriteRendererComponent("ufo-2.png"));
             
-            ufo.AddComponent(new PhysicsComponent());
-            ufo.AddComponent(new UfoAiComponent(gameWotld));
+            ufo.AddComponent(new PhysicsComponent(){Velocity = 80.0f});
+            //ufo.AddComponent(new UfoAiComponent(gameWotld));
+            ufo.AddComponent(new FollowingComponent("Player", gameWotld));
             ufo.AddComponent(new CoordinateComponent(gameWotld));
 
             return ufo;

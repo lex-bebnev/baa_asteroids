@@ -45,10 +45,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\ControlCommands\RotateCommand.cs" />
+    <Compile Include="Commands\ControlCommands\VelocityChangeCommand.cs" />
+    <Compile Include="Commands\InputHandlers\PlayerInputHandler.cs" />
     <Compile Include="Components\CommonComponents\CoordinateComponent.cs" />
     <Compile Include="Components\CommonComponents\PolygonRenderComponent.cs" />
     <Compile Include="Components\CommonComponents\SpriteRendererComponent.cs" />
     <Compile Include="Components\EnemyComponents\AsteroidAiComponent.cs" />
+    <Compile Include="Components\EnemyComponents\FollowingComponent.cs" />
     <Compile Include="Components\EnemyComponents\UfoAiComponent.cs" />
     <Compile Include="Components\PlayerComponents\BulletCollisionsComponent.cs" />
     <Compile Include="Components\PlayerComponents\ControllerComponent.cs" />
@@ -56,6 +60,7 @@
     <Compile Include="Components\PlayerComponents\LaserShotBehaviourComponent.cs" />
     <Compile Include="Components\PlayerComponents\LifetimeComponent.cs" />
     <Compile Include="Components\PlayerComponents\PlayerCollisionsComponent.cs" />
+    <Compile Include="Components\PlayerComponents\PlayerControllerComponent.cs" />
     <Compile Include="Components\PlayerComponents\PlayerStateComponent.cs" />
     <Compile Include="Factories\AsteroidFactory.cs" />
     <Compile Include="Factories\BulletFactory.cs" />

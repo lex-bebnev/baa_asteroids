@@ -41,8 +41,9 @@ namespace Asteroids.Game.Factories
             if(Settings.RenderMode == RenderModes.Polygons) player.AddComponent(new PolygonRenderComponent(ShipVertices, ShipIndices));     
             else player.AddComponent(new SpriteRendererComponent("ship-1.png"));
             
-            player.AddComponent(new ControllerComponent());
-            player.AddComponent(new PhysicsComponent());
+            //player.AddComponent(new ControllerComponent());
+            player.AddComponent(new PlayerControllerComponent());
+            player.AddComponent(new PhysicsComponent(){DragFactor = 0.25f});
             player.AddComponent(new GunComponent(gameWorld));
             player.AddComponent(new CoordinateComponent(gameWorld));
             player.AddComponent(new PlayerStateComponent());
