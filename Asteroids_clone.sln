@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asteroids.OGL.GameEngine", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asteroids.Game", "Asteroids.Game\Asteroids.Game.csproj", "{F3389821-3833-4902-A123-89F11ADEC90C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asteroids.Engine.V2", "Asteroids.Engine.V2\Asteroids.Engine.V2.csproj", "{33D3F529-BF64-47BE-8E9D-03AA477AE0F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{F3389821-3833-4902-A123-89F11ADEC90C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3389821-3833-4902-A123-89F11ADEC90C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3389821-3833-4902-A123-89F11ADEC90C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33D3F529-BF64-47BE-8E9D-03AA477AE0F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33D3F529-BF64-47BE-8E9D-03AA477AE0F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33D3F529-BF64-47BE-8E9D-03AA477AE0F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33D3F529-BF64-47BE-8E9D-03AA477AE0F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
